@@ -1,0 +1,1 @@
+../Script/hmmscan-parser.sh

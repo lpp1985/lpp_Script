@@ -1,0 +1,1 @@
+../Script/sff2fasta.pl
