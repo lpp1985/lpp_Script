@@ -1,0 +1,6 @@
+[submodule "genomescope"]
+	path = genomescope
+	url = https://github.com/schatzlab/genomescope 
+[submodule "go/src"]
+	path = go/src
+	url = https://github.com/lpp1985/GoLang.git
