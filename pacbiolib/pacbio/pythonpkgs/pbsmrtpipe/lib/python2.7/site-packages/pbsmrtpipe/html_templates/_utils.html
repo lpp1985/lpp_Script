@@ -1,0 +1,184 @@
+<!-- Index page utils -->
+{% macro build_settings_table(settings_list) -%}
+
+<h3>Workflow Settings</h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Setting</th>
+        <th>Value</th>
+    </tr>
+    </thead>
+    {% for d in settings_list %}
+    <tr>
+        <td>{{ d.name }}</td>
+        <td> {{ d.value }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{%- endmacro %}
+
+<!-- Task List -->
+{% macro build_task_summary_table(tasks) -%}
+
+<h3>Task Settings</h3>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Task</th>
+        <th>run time</th>
+        <th>state</th>
+    </tr>
+    </thead>
+    {% for t in tasks %}
+    <tr>
+        <td>{{ t.name }}</td>
+        <td> {{ t.run_time }}</td>
+        <td>{{ t.state }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+{%- endmacro %}
+
+{% macro build_total_progress_bar(complete) -%}
+
+<div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="60"
+         aria-valuemin="0" aria-valuemax="100" style="width: {{complete}}%;">
+        <span class="sr-only"> {{value}}% Complete</span>
+    </div>
+</div>
+
+{%- endmacro %}
+
+{% macro build_progress_bars(name_value_list) -%}
+{# name_value_list should be a list of {name: module_name, complete:int} where int is [0,100] #}
+
+<div class="progress">
+    {% for d in name_value_list %}
+    <div class="progress-bar progress-bar-info" role="progressbar"
+         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+         style="width: {{complete}}%">
+        <span class="sr-only">40% {{name}} Complete</span>
+    </div>
+    {% endfor %}
+</div>
+{%- endmacro %}
+
+<!-- Task List -->
+{% macro build_task_detail_table(task_details) -%}
+
+<h3>Task Settings</h3>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Task</th>
+        <th>run time</th>
+        <th>state</th>
+    </tr>
+    </thead>
+    {% for t in tasks %}
+    <tr>
+        <td>{{ t.name }}</td>
+        <td> {{ t.run_time }}</td>
+        <td>{{ t.state }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{%- endmacro %}
+
+
+{% macro build_report_list(reports) -%}
+<ul class="list-group">
+    {% for report in reports -%}
+    <li class="list-group-item"><a href="results/{{ report.path }}">{{ report.name }}</a></li>
+    {% endfor %}
+</ul>
+
+{%- endmacro %}
+
+{% macro build_data_list(reports) -%}
+<ul class="list-group">
+    {% for report in reports -%}
+    <li class="list-group-item"><a href="data/{{ report.path }}">{{ report.name }} ({{ report.ext }})</a></li>
+    {% endfor %}
+</ul>
+
+{%- endmacro %}
+
+<!-- Convert the Metadata.rdf file to -->
+
+{% macro build_metric_table(metadata_rdf) -%}
+
+<table>
+    <thead>
+    <tr>
+        <th>Task Name</th>
+        <th>Run Time (sec)</th>
+    </tr>
+    </thead>
+    <tr>
+        <td>Task 1</td>
+        <td>10.0</td>
+    </tr>
+    <tr>
+        <td>Task 2</td>
+        <td>121.00</td>
+    </tr>
+</table>
+
+{%- endmacro %}
+
+<!-- Macro used to build a time of Module run times -->
+{% macro build_workflow_module_table(datum, total_time) -%}
+<!-- list of Data [{module_name:'ModuleName', time:1234.12},...] -->
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Module Name</th>
+        <th>Run Time (sec)</th>
+        <th>Percent Run Time</th>
+    </tr>
+    </thead>
+    {% for d in datum %}
+    <tr>
+        <td>{{ d.module_name }}</td>
+        <td> {{ '%0.2f'| format(d.time|float) }}</td>
+        {% set p_time = d.time / total_time * 100 %}
+        <td>{{'%0.2f' | format(p_time|float)}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{%- endmacro %}
+
+<!-- Macro used to build a table of module name, task name, run time -->
+{% macro build_workflow_task_table(datum, total_time) -%}
+<!-- list of items [{module_name:'ErrorCorrection', task_name:'aTaskName', time:1234.123},...]  -->
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Module Name</th>
+        <th>Task Name</th>
+        <th>Run Time (sec)</th>
+        <th>Percent</th>
+        <th>State</th>
+    </tr>
+    </thead>
+    {% for d in datum %}
+    <tr>
+        <td>{{ d.module_name }}</td>
+        <td> {{ d.task_name }}</td>
+        <td> {{ '%0.2f'| format(d.time|float) }}</td>
+        {% set p_time = d.time / total_time * 100 %}
+        <td>{{'%0.2f' | format(p_time|float)}}</td>
+        <td> Successful</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{%- endmacro %}

@@ -1,0 +1,48 @@
+{
+    "version": "0.1.3",
+    "driver": {
+        "serialization": "json",
+        "exe": "python -m pbfalcon.tasks.scatter1_run_daligner_jobs --resolved-tool-contract ",
+        "env": {}
+    },
+    "tool_contract_id": "pbfalcon.tasks.scatter1_run_daligner_jobs",
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.scattered",
+        "resource_types": [],
+        "description": "Scatter Daligner Jobs",
+        "schema_options": [],
+        "output_types": [
+            {
+                "title": "Chunk of .fasta for daligner, stage-1",
+                "description": "Chunked JSON Filtered Fasta",
+                "default_name": "fasta.chunked",
+                "id": "cjson_out",
+                "file_type_id": "PacBio.FileTypes.CHUNK"
+            }
+        ],
+        "_comment": "Created by v0.4.14",
+        "nchunks": "$max_nchunks",
+        "name": "Scatter Daligner",
+        "input_types": [
+            {
+                "description": "Pac Bio ???",
+                "title": "Config",
+                "id": "config",
+                "file_type_id": "PacBio.FileTypes.json"
+            },
+            {
+                "description": "Pac Bio ???",
+                "title": "Bash",
+                "id": "bash",
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ],
+        "chunk_keys": [
+            "$chunk.json_id",
+            "$chunk.bash_id"
+        ],
+        "nproc": 1,
+        "is_distributed": false,
+        "tool_contract_id": "pbfalcon.tasks.scatter1_run_daligner_jobs"
+    }
+}

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# ---- error handling
+set -o errexit;
+set -o posix;
+set -o pipefail;
+set -o errtrace;
+unexpected_error() {
+    local errstat=$?
+    echo "${g_prog:-$(basename $0)}: Error! Encountered unexpected error at 'line $(caller)', bailing out..." 1>&2
+    exit $errstat;
+}
+trap unexpected_error ERR;
+
+function bn() { local name="${1##*/}"; echo "${name%$2}"; }
+function dn(){ local d="${1%${1##*/}}"; [[ x"${d:=./}" != x"/" ]] && d=${d%?};echo "$d";}
+
+g_prog=$(bn "$0");
+g_progdir=$(dn "$0");
+#g_progdir_abs=$(cd "$g_progdir" && pwd -P)
+g_progdir_abs=$(cd $(dn $(readlink -f "$0")) && pwd -P)
+
+# ----- main
+
+JAVA_HOME="$g_progdir_abs/../../../thirdparty/jre/jre_8u71" \
+   exec "$g_progdir_abs/../bin/get-smrt-server-status" ${1+"$@"}

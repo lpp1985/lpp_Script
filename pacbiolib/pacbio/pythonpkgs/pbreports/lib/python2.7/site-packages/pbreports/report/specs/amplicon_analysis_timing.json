@@ -1,0 +1,45 @@
+{
+    "id": "amplicon_analysis_timing",
+    "version": "3.2",
+    "title": "Amplicon Analysis Timing",
+    "description": null,
+    "attributes": [],
+    "tables": [
+        {
+            "id": "result_table",
+            "description": null,
+            "columns": [
+                {
+                    "header": "Barcode Name",
+                    "type": "string",
+                    "format": null,
+                    "id": "barcode_col",
+                    "description": "A string containing the pair of barcode indices for which the following metrics apply, or a 0 if not barcoded. The barcode entries are represented as a pair of dash-separated number, with each number representing one of the two barcodes used for that amplicon."
+                },
+                {
+                    "header": "Hours",
+                    "type": "int",
+                    "format": null,
+                    "id": "hour_col",
+                    "description": ""
+                },
+                {
+                    "header": "Minutes",
+                    "type": "int",
+                    "format": null,
+                    "id": "minute_col",
+                    "description": null
+                },
+                {
+                    "header": "Total Time (seconds)",
+                    "type": "int",
+                    "format": null,
+                    "id": "second_col",
+                    "description": null
+                }
+            ],
+            "title": "Amplicon Analysis Timing Summary"
+        }
+    ],
+    "plotGroups": []
+}

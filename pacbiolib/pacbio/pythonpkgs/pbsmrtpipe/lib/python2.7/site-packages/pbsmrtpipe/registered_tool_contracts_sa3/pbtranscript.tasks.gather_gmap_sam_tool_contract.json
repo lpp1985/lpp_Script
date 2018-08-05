@@ -1,0 +1,37 @@
+{
+    "version": "1.0.0.177900",
+    "driver": {
+        "serialization": "json",
+        "exe": "python -m pbtranscript.tasks.gather_gmap_sam --resolved-tool-contract ",
+        "env": {}
+    },
+    "tool_contract_id": "pbtranscript.tasks.gather_gmap_sam",
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.gathered",
+        "resource_types": [],
+        "description": "Chunk Gather for GMAP SAM",
+        "schema_options": [],
+        "output_types": [
+            {
+                "title": "SAM",
+                "description": "Gathered SAM",
+                "default_name": "Gathered SAM",
+                "id": "sam_out",
+                "file_type_id": "PacBio.FileTypes.sam"
+            }
+        ],
+        "_comment": "Created by v0.3.30",
+        "name": "Gather GMAP SAM",
+        "input_types": [
+            {
+                "description": "Gathered CHUNK Json with chunk key",
+                "title": "Gather CHUNK Json",
+                "id": "cjson_in",
+                "file_type_id": "PacBio.FileTypes.CHUNK"
+            }
+        ],
+        "nproc": 1,
+        "is_distributed": true,
+        "tool_contract_id": "pbtranscript.tasks.gather_gmap_sam"
+    }
+}

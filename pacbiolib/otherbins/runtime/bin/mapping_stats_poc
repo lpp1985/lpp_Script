@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# ---- error handling
+set -o errexit;
+set -o posix;
+set -o pipefail;
+set -o errtrace;
+unexpected_error() {
+    local errstat=$?
+    echo "${g_prog:-$(basename $0)}: Error! Encountered unexpected error at 'line $(caller)', bailing out..." 1>&2
+    exit $errstat;
+}
+trap unexpected_error ERR;
+
+# Force the path to only what we need, saving off the original path
+# PATH_ORIG=$PATH;
+# PATH=/usr/bin:/bin
+
+g_prog=$(basename "$0");
+g_progdir=$(dirname "$0");
+g_progdir_abs=$(dirname $(readlink -f "$0"));
+
+if [[ ! -z "$SMRT_RUNTIMEBINLOG_ENABLE" ]] ; then 
+    logfile="${g_progdir_abs}/../../../../rwdir/log/runtimebin.log"
+
+    ppid=$(ps h -p "$$" -o %P)
+
+    echo "=-=-= $g_prog: (pid: $$): $(date) ($(date +%s))" >> $logfile
+    # These are other options for printing out the process tree, none optimal:
+    #     LANG= pstree -p -g -s -a -A $$
+    #     LANG= pstree -p -g -s -a -A
+    #     LANG= pstree -p -s -a
+    #     LANG= pstree -p -s -a $$
+    #     ps f -p "$ppid" -g "$ppid" -O "%P"
+    ps f -O "%P %U" >> $logfile 2>&1 || true
+    echo >> $logfile
+fi
+
+exec "${g_progdir_abs}/../../../../private/otherbins/all/bin/$g_prog" ${1+"$@"}

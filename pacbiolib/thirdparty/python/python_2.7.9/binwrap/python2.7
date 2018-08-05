@@ -1,0 +1,353 @@
+#!/bin/bash
+
+# ---- error handling
+set -o errexit;
+set -o posix;
+set -o pipefail;
+set -o errtrace;
+unexpected_error() {
+    local errstat=$?
+    echo "${g_prog:-$(basename $0)}: Error! Encountered unexpected error at 'line $(caller)', bailing out..." 1>&2
+    exit $errstat;
+}
+trap unexpected_error ERR;
+
+# Force the path to only what we need, saving off the original path
+# PATH_ORIG=$PATH;
+# PATH=/usr/bin:/bin
+
+g_prog=$(basename "$0");
+g_progdir=$(dirname "$0");
+g_progdir_abs=$(dirname $(readlink -f "$0"));
+
+# ---- error functions
+merror() {
+    echo "$g_prog: Error! ""$@" 1>&2;
+    exit 1;
+}
+minterror() {
+    echo "$g_prog: Internal Error! ""$@" 1>&2;
+    exit 1;
+}
+mwarn() {
+    echo "$g_prog: Warning! ""$@" 1>&2;}
+
+
+# ---- global
+g_python_exe="${g_progdir_abs}/../bin/python"
+
+g_verbose=false
+if [[ ! -z "${SMRTDEBUG_BINWRAP_PYTHON+$SMRTDEBUG_BINWRAP_PYTHON}" ]] ; then
+    g_verbose=true
+fi
+
+# ---- subroutines
+
+printcmd() {
+    ! $g_verbose && return 0;
+
+    local -a envs;
+    local -a args;
+
+    # Separate the leading environment variable settings from the command args
+    local envdone=false;
+    for i in ${1+"$@"}; do 
+	if ! $envdone && [[ $i =~ ^([[:alpha:]_][[:alnum:]_]*)=([\"\'].*) ]]; then
+	    envs+=( "${BASH_REMATCH[1]}=${BASH_REMATCH[2]}" )
+	elif ! $envdone && [[ $i =~ ^([[:alpha:]_][[:alnum:]_]*)=(.*) ]]; then
+	    envs+=( "${BASH_REMATCH[1]}='${BASH_REMATCH[2]}'" )
+	else
+	    envdone=true;
+	    # NOTE: with "set -u nounset" set, we have to use += or do 
+	    #       something like this (since "${args[@]}" and "${#args[@]}"
+	    #       will give errors if the array is empty).  Another option
+	    #       is:
+	    #           args=( "${args[@]+${args[@]}}" "$i" );
+	    args+=( "$i" );
+	fi
+    done
+
+    # Determine the command in a format that can be printed out and 
+    # copy-and-pasted directly into a shell and can be run with an "eval".
+    # NOTE: Another option is to use:
+    #          cmd=$(printf '%q ' ${1+"$@"})
+    #       But it will use backslashes instead of quotes, which is fine for
+    #       executing, but it doesn't look as natural as with quotes.  Plus
+    #       using quotes make it look like the trace output under "set -x"
+    #       or "set -o xtrace"
+    local cmd
+    cmd=$( PS4=; set -x; ( true "${args[@]}" ) 2>&1 ); 
+    cmd=${cmd#true };
+    [[ ! -z "${envs[@]+set}" ]] && cmd="${envs[@]} $cmd"
+
+    # Print out the command if neceassry.  The output should be 
+    # copy-and-pastable directly into a shell.
+    echo "$cmd"
+}
+
+
+# ---- main
+
+if [[ x"${__SMRTINTERNAL_PYTHON_BINWRAP_ACTIVE+$__SMRTINTERNAL_PYTHON_BINWRAP_ACTIVE}" == x"1" ]] ; then
+
+    # Sanity check to make sure our environment is actually something like
+    # we expect, if not we'll set the environment below.  It seems that SGE
+    # impose a per-env variable size limit on single environment variable of
+    # exactly 10K characters, and silently truncates if a variable exceeds
+    # that limit.  This check will make sure that the last part of the 
+    # python path that we need still exists in PYTHONPATH (though there is 
+    # a chance the users PYTHONPATH may be missing).  If it does not, then
+    # we will prepend the full path for all the *PATH* environment variables
+    # we require.
+    # NOTE: The length of the absolute path to the install directory will have
+    #       an effect if we see this problem (approximately less than 50 
+    #       characters will probably keep the path under 10k).
+    if [[ $PYTHONPATH =~ xmlbuilder/xmlbuilder_[\.0-9]+/lib/python2.7/site-packages ]] &&
+       [[ $LD_LIBRARY_PATH =~ /openssl/openssl_ ]] &&
+       [[ $PATH =~ /python/python_ ]] ; then
+
+	# We are being called from a python script that already set up the 
+	# wrapper environment.  Bypass the environent munging and specifically
+	# avoid increasing the environment size each recursion because of 
+	# prepending to the environment (bug 31307)
+	
+	# Print the command if we are in verbose mode (i.e. the environment
+	# variable 'SMRTDEBUG_BINWRAP_PYTHON' is set):
+	printcmd \
+	    __SMRTINTERNAL_PYTHON_BINWRAP_ACTIVE=1 \
+	    PYTHONDONTWRITEBYTECODE=1 \
+	    PATH="$PATH" \
+	    PYTHONPATH="$PYTHONPATH" \
+	    LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
+                exec "$g_python_exe" ${1+"$@"}
+
+
+	__SMRTINTERNAL_PYTHON_BINWRAP_ACTIVE=1 \
+	    PYTHONDONTWRITEBYTECODE=1 \
+	    PATH="$PATH" \
+	    PYTHONPATH="$PYTHONPATH" \
+	    LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
+               exec "$g_python_exe" ${1+"$@"}
+
+	# rest of script below will be ignored, i.e. exec will exit the script 
+    fi
+fi
+
+
+# QUESTION: Should we stomp on PATH, PYTHONPATH and LD_LIBRARY_PATH?  Or should
+#           we just prepend to them and pass the original settings through?
+# ANSWER: Yes, we should pass them through so we can use this wrapper to 
+#         run any custom script which requires its own PYTHONPATH,
+#         LD_LIBRARY_PATH and PATH.  If we want to ensure that we have 
+#         absolute control over these variables for our internal scripts,
+#         we can do that in the wrappers that call this wrapper.
+#
+# That overrides this answer...
+# ANSWER: It's not 100% clear how we should handle this quite yet.  But, 
+#         the hope is that we will be able to overwrite all of them, with 
+#         the assumption that we will know exactly what python modules and 
+#         what subcommands we will run.  Wrappers for the subcommands should
+#         set LD_LIBRARY_PATH as appropriate for the subcommand (so passing
+#         LD_LIBRARY_PATH from the caller should not be needed).  And we should
+#         know all the python packages we are supporting and they should be
+#         specified in g_python_pythonpath below, so passing PYTHONPATH should
+#         not be needed.  We should also know exactly which subcommands will
+#         be called from which python scripts.  And instead of finding them
+#         on the path, we should specify __SMRTPRIVATE_<PROGNAME>_EXEPATH in
+#         the wrapper script for the calling wrapper script for each 
+#         subcommand, rather than finding them on the PATH.  For example, 
+#         if 'pbalign' requires calling the 'bamtools' subcommand, the wrapper
+#         script for pbalign (which should be calling this python script), 
+#         should specify the absolute path to bamtools by setting the
+#         __SMRTPRIVATE_BAMTOOLS_EXEPATH environment variable.
+#
+#         But that being said, we have not implemented the __SMRTPRIVATE
+#         environment variables yet so we still need to set PATH for the
+#         moment.  But we should be able to overwrite LD_LIBRARY_PATH and 
+#         PYTHONPATH.  We currently need this for calling the graphviz 'dot'
+#         executable from pbsmrtpipe, pbtestkit-runner and pbtools-runner, 
+#         and for calling 'bamtools' from pbalign.
+#
+#         As a safety net, we will also support passing through all the 
+#         path variables (PATH, PYTHONPATH and LD_LIBRARY_PATH) if the
+#         SMRT_PYTHON_PASS_PATH_ENVVARS environment variable is not empty.
+
+
+# Set the LD_LIBRARY_PATH for the thirdparty modules that require shared libs
+g_python_ldlibdirs=""
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/gcc/gcc-4.9.2/lib"
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/libpng/libpng_1.6.18/lib"
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/freetype/freetype_2.6/lib"
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/hdf5/hdf5_1.8.12+pbi86/lib"
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/zlib/zlib_1.2.8/lib"
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/bzip2/bzip2_1.0.6/lib"
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/ncurses/ncurses_5.9/lib"
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/readline/readline_6.3/lib"
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/openssl/openssl_1.0.2a/lib"
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/python/python_2.7.9/lib"
+
+# Add libcurl to ldlibdirs (it is needed by pyBigWig)
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../pacbio/pbcopper/lib"
+
+# Add pacbio libraries to ldlibdirs
+# libpbcopper.so needed by ConsensusCore2.py
+g_python_ldlibdirs="$g_python_ldlibdirs:${g_progdir_abs}/../../../../thirdparty/curl/curl_7.47.1/lib"
+
+# Set the PATH variable.  Ultimately we expect that this should just be the
+# empty string.
+g_python_path=""
+# FIXME: Pick up the __SMRTPRIVATE_<PROGNAME>_EXEPATH environment variables
+#        and put the parent directories into the path.  This is just a stopgap
+#        until the underlying python scripts pick up the __SMRTPRIVATE_*
+#        variables directly (and we won't need to set the path)
+for i in ${!__SMRTPRIVATE_*}; do
+    # Ignore any variables that don't match the __SMRTPRIVATE_*_EXEPATH format
+    [[ ! $i =~ _EXEPATH$ ]] && continue;
+    parentdir=$(dirname "${!i}")
+    g_python_path="$g_python_path:$parentdir"
+done
+# Also pick up __SMRTPRIVATE_EXEPATH__<PROGNAME>
+for i in ${!__SMRTPRIVATE_EXEPATH__*}; do
+    parentdir=$(dirname "${!i}")
+    g_python_path="$g_python_path:$parentdir"
+done
+
+
+# FIXME: Put internal/otherbins/runtime/bin in the path to pick up subcommands
+#        that we may not have specified properly in the calling wrapper 
+#        scripts.  This is just a safety net and we expect this to go away.
+g_python_path="$g_python_path:${g_progdir_abs}/../../../../../private/otherbins/runtime/bin"
+# FIXME: Safety net, append the caller's PATH, just in case we are calling 
+#        something that is not in our internal or thirdparty bin directories
+#        (which we should pick up from the runtime/bin path above).  We expect
+#        to remove this:
+g_python_path="$g_python_path:$PATH"
+
+# Set the PYTHONPATH for all the internal and thirdparty python packages that
+# we support
+g_python_pythonpath=""
+# Add the paths to the pacbio python packages
+for i in "${g_progdir_abs}/../../../../pacbio/pythonpkgs/"*"/lib/python2.7/site-packages"; do
+    g_python_pythonpath="$g_python_pythonpath:$i";
+done
+# Add the paths to the thirdparty python packages
+for i in "${g_progdir_abs}/../../../../thirdparty/pythonpkgs/"*/*"/lib/python2.7/site-packages"; do
+    g_python_pythonpath="$g_python_pythonpath::$i";
+done
+
+
+
+# We expect that we should be able to override all the path related variables
+# (PATH, PYTHONPATH, LD_LIBRARY_PATH), i.e there should be no need to inherit
+# the values of any of path variable from the caller since we should be 
+# self-condtained and know exactly which subcommands and which python modules 
+# we will be using  The subcommands should be wrappers that set LD_LIBRARY_PATH
+# correctly as needed.  We also expect that we can specify the absolute path 
+# to any subcommand through environment varialbles of the form:
+#      __SMRTPRIVATE_<PROGNAME>_EXEPATH
+#
+# We'll allow a safety net which will allow the path variables (SMRT_PATH, 
+# SMRT_PYTHONPATH, SMRT_LD_LIBRARY_PATH) to modify the path variables if
+# SMRT_PYTHON_PASS_SMRTPATH_ENVVARS is set.
+if [[ ! -z "$SMRT_PYTHON_PASS_SMRTPATH_ENVVARS" ]] ; then
+    g_python_path="$g_python_path:$SMRT_PATH";
+    g_python_pythonpath="$g_python_pythonpath:$SMRT_PYTHONPATH";
+    g_python_ldlibdirs="$g_python_ldlibdirs:$SMRT_LD_LIBRARY_PATH";
+fi
+
+# But, just in case, we'll allow a safety net which will allow the path 
+# variables (PATH, PYTHONPATH, LD_LIBRARY_PATH) to pass through, if the
+# SMRT_PYTHON_PASS_PATH_ENVVARS is set.
+if [[ ! -z "$SMRT_PYTHON_PASS_PATH_ENVVARS" ]] ; then
+    g_python_path="$g_python_path:$PATH";
+    g_python_pythonpath="$g_python_pythonpath:$PYTHONPATH";
+    g_python_ldlibdirs="$g_python_ldlibdirs:$LD_LIBRARY_PATH";
+fi
+
+# Clean up leading and trailing colons (:) and any empty paths (::)
+# g_python_path cleanup
+while [[ $g_python_path =~ :: ]]; do
+    g_python_path=${g_python_path//::/:};
+done
+g_python_path=${g_python_path#:};
+g_python_path=${g_python_path%:};
+# g_python_pythonpath cleanup
+while [[ $g_python_pythonpath =~ :: ]]; do
+    g_python_pythonpath=${g_python_pythonpath//::/:};
+done
+g_python_pythonpath=${g_python_pythonpath#:};
+g_python_pythonpath=${g_python_pythonpath%:};
+# g_python_libdirs cleanup
+while [[ $g_python_ldlibdirs =~ :: ]]; do
+    g_python_ldlibdirs=${g_python_ldlibdirs//::/:};
+done
+g_python_ldlibdirs=${g_python_ldlibdirs#:};
+g_python_ldlibdirs=${g_python_ldlibdirs%:};
+
+# Make sure we pass the callers's original PYTHONPATH, LD_LIBRARY_PATH, PATH
+# according to the ANSWER: to the QUESTION: above
+# LD_LIBRARY_PATH:
+g_python_ldlibdirs="$g_python_ldlibdirs:$LD_LIBRARY_PATH"
+g_python_ldlibdirs=${g_python_ldlibdirs#:};
+# PYTHONPATH:
+g_python_pythonpath="$g_python_pythonpath:$PYTHONPATH"
+g_python_pythonpath=${g_python_pythonpath#:};
+# PATH:
+g_python_path="$g_python_path:$PATH"
+g_python_path=${g_python_path#:};
+
+
+# This stuff is basically for development only, where we want to adjust the
+#
+# LD_LIBRARY_PATH, PYTHONPATH and PATH on the command line.
+# Even though we pass the environment through with the -V option of SGE, at 
+# least some versions of SGE have a bug where the environement variables get
+# truncated at 10000 characters, which can come into play with things like
+# PYTHONPATH.
+#
+# So allow these special SMRT_PYTHON_*_PREPEND and SMRT_PYTHON_*_APPEND
+# variables to modify the variables after we've set them to our pacbio
+# specific paths.  This should work a bit better than trying modify and 
+# pass the underlying variables (like PYTHONPATH) directly.
+if [[ ! -z "$SMRT_PYTHON_LDLIBPATH_PREPEND" ]] ; then
+    g_python_ldlibdirs="$SMRT_PYTHON_LDLIBPATH_PREPEND:$g_python_ldlibdirs"
+fi
+if [[ ! -z "$SMRT_PYTHON_PYTHONPATH_PREPEND" ]] ; then
+    g_python_pythonpath="$SMRT_PYTHON_PYTHONPATH_PREPEND:$g_python_pythonpath"
+fi
+if [[ ! -z "$SMRT_PYTHON_PATH_PREPEND" ]] ; then
+    g_python_path="$SMRT_PYTHON_PATH_PREPEND:$g_python_path"
+fi
+if [[ ! -z "$SMRT_PYTHON_LDLIBPATH_APPEND" ]] ; then
+    g_python_ldlibdirs="$g_python_ldlibdirs:$SMRT_PYTHON_LDLIBPATH_APPEND"
+fi
+if [[ ! -z "$SMRT_PYTHON_PYTHONPATH_APPEND" ]] ; then
+    g_python_pythonpath="$g_python_pythonpath:$SMRT_PYTHON_PYTHONPATH_APPEND"
+fi
+if [[ ! -z "$SMRT_PYTHON_PATH_APPEND" ]] ; then
+    g_python_path="$g_python_path:$SMRT_PYTHON_PATH_APPEND"
+fi
+
+# Call python, specifying the paths we expect to use. 
+# Inhibit the generation of python bytecodes (.pyc) files (see bug 27735 
+# for details).  Basically we will remove all .pyc and .pyo files in our
+# production install tree, and inhibit auto create of the .pyc files at
+# execution time.  Among other things, this allows us to maintain the 
+# install tree as a read-only (invariant) directory structure.
+
+# Print the command if we are in verbose mode (i.e. the environment
+# variable 'SMRTDEBUG_BINWRAP_PYTHON' is set):
+printcmd \
+__SMRTINTERNAL_PYTHON_BINWRAP_ACTIVE=1 \
+PYTHONDONTWRITEBYTECODE=1 \
+PATH="$g_python_path" \
+PYTHONPATH="$g_python_pythonpath" \
+LD_LIBRARY_PATH="$g_python_ldlibdirs" \
+    exec "$g_python_exe" ${1+"$@"}
+
+__SMRTINTERNAL_PYTHON_BINWRAP_ACTIVE=1 \
+PYTHONDONTWRITEBYTECODE=1 \
+PATH="$g_python_path" \
+PYTHONPATH="$g_python_pythonpath" \
+LD_LIBRARY_PATH="$g_python_ldlibdirs" \
+    exec "$g_python_exe" ${1+"$@"}

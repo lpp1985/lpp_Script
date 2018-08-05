@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<pacbioAnalysisInputs>
+    <header id="016437" />
+    <dataReferences>
+        <url ref="run:0000000-0000"><location>/mnt/secondary-siv/testdata/LIMS/2311485/0002/Analysis_Results/m120720_021612_ethan_c100379892550000001523029910101231_s1_p0.bas.h5</location></url>
+        <url ref="run:0000000-0001"><location>/mnt/secondary-siv/testdata/LIMS/2311485/0002/Analysis_Results/m120720_021612_ethan_c100379892550000001523029910101231_s2_p0.bas.h5</location></url>
+    </dataReferences>
+</pacbioAnalysisInputs>

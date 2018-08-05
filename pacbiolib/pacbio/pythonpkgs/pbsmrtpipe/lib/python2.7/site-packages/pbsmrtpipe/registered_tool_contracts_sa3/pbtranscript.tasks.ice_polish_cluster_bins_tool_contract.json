@@ -1,0 +1,51 @@
+{
+    "version": "1.0.0.177015", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.ice_polish_cluster_bins --resolved-tool-contract", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.ice_polish_cluster_bins", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard", 
+        "resource_types": [
+            "$tmpdir"
+        ], 
+        "description": "Constants used.", 
+        "schema_options": [], 
+        "output_types": [
+            {
+                "title": "Polish Done Txt file", 
+                "description": "Polish Done Txt file.", 
+                "default_name": "polish_chunks_done", 
+                "id": "polish done txt", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ], 
+        "_comment": "Created by v0.3.25", 
+        "name": "pbtranscript.tasks.ice_polish_cluster_bins", 
+        "input_types": [
+            {
+                "description": "Polish Chunk Tasks Pickle", 
+                "title": "PICKLE", 
+                "id": "polish_chunk_pickle", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "description": "Setinel file", 
+                "title": "Sentinel In", 
+                "id": "sentinel_in", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }, 
+            {
+                "description": "PacBio SubreadSet", 
+                "title": "SubreadSet In", 
+                "id": "subreads_in", 
+                "file_type_id": "PacBio.DataSet.SubreadSet"
+            }
+        ], 
+        "nproc": "$max_nproc", 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.ice_polish_cluster_bins"
+    }
+}

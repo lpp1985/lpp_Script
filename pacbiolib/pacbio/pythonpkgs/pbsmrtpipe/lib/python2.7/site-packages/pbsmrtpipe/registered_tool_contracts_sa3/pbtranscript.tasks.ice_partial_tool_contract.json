@@ -1,0 +1,51 @@
+{
+    "version": "1.0.0.174838", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.ice_partial --resolved-tool-contract", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.ice_partial", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard", 
+        "resource_types": [
+            "$tmpdir"
+        ], 
+        "description": "\nCalls 'ice_partial.py one'.\n", 
+        "schema_options": [], 
+        "output_types": [
+            {
+                "title": "JSON pickle", 
+                "description": "Output pickle file", 
+                "default_name": "ice_partial_one", 
+                "id": "out_pickle", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }
+        ], 
+        "_comment": "Created by v0.3.20", 
+        "name": "pbtranscript.tasks.ice_partial", 
+        "input_types": [
+            {
+                "description": "ContigSet of non-full-length reads", 
+                "title": "ContigSet", 
+                "id": "input_fasta", 
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            }, 
+            {
+                "description": "Reference fasta file, most likely ref_consensus.fasta from ICE output", 
+                "title": "Reference ContigSet", 
+                "id": "ref_fasta", 
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            }, 
+            {
+                "description": "A FOFN of ccs.h5 or ccs.bam (e.g., ccs.fofn), which contain quality values of consensus (CCS) reads. If not given, assume there is no QV information available.", 
+                "title": "CCS dataset", 
+                "id": "ccs_fofn", 
+                "file_type_id": "PacBio.DataSet.ConsensusReadSet"
+            }
+        ], 
+        "nproc": "$max_nproc", 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.ice_partial"
+    }
+}

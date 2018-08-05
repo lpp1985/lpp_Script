@@ -1,0 +1,11 @@
+{{ title }}
+{{ "=" * ((title|length) + 5) }}
+
+Contents:
+
+.. toctree::
+    :maxdepth: 1
+
+    {% for pipeline_id in pipeline_ids %}
+    {{ pipeline_id }}
+    {% endfor %}

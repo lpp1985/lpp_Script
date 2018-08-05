@@ -1,0 +1,9 @@
+{% from '_rst_utils.tmpl' import entry_points_summary %}
+{% from '_rst_utils.tmpl' import task_options_summary %}
+{% from '_rst_utils.tmpl' import pipeline_header %}
+
+{{ pipeline_header(pipeline) }}
+
+{{ entry_points_summary(entry_points) }}
+
+{{ task_options_summary(task_options, task_table_summary) }}

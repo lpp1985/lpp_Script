@@ -1,0 +1,68 @@
+<smrtpipeSettings>
+
+    <protocol name="resequencing">
+        <option name="reference">
+            <value>/mnt/secondary-siv/references/ecoli_k12_MG1655</value>
+        </option>
+        <option name="noise.data">
+            <value>-77.27,0.08654,0.00121</value>
+        </option>
+        <option name="use_subreads">
+            <value>True</value>
+        </option>
+    </protocol>
+
+    <moduleStage name="fetch">
+        <module id="P_Fetch"/>
+    </moduleStage>
+
+    <moduleStage name="filter">
+        <module id="P_Filter">
+            <option name="trim">
+                <value>True</value>
+            </option>
+            <option name="filters">
+                <value>MinRL=50,MinReadScore=0.65</value>
+            </option>
+        </module>
+        <module id="P_FilterReports"/>
+    </moduleStage>
+
+    <moduleStage name="mapping">
+        <module id="P_Mapping">
+            <option name="maxDivergence">
+                <value>30</value>
+            </option>
+            <option name="pbalign_opts">
+                <value>--seed=1 --minAccuracy=0.75 --minLength=50 --algorithmOptions="-useQuality"</value>
+            </option>
+            <option name="minAnchorSize">
+                <value>12</value>
+            </option>
+            <option name="maxHits">
+                <value>10</value>
+            </option>
+            <option name="samBam">
+                <value>True</value>
+            </option>
+            <option name="placeRepeatsRandomly">
+                <value>True</value>
+            </option>
+            <option name="pulseMetrics">
+                <value>DeletionQV,IPD,InsertionQV,PulseWidth,QualityValue,MergeQV,SubstitutionQV,DeletionTag</value>
+            </option>
+            <option name="gff2Bed">
+                <value>True</value>
+            </option>
+            <option name="loadPulsesOpts">
+                <value>bymetric</value>
+            </option>
+            <option name="concordant">
+                <value>True</value>
+            </option>
+        </module>
+
+        <module id="P_MappingReports"/>
+
+    </moduleStage>
+</smrtpipeSettings>

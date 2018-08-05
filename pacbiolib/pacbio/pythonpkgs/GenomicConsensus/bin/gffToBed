@@ -1,0 +1,208 @@
+#! python
+
+"""
+Convert .gff to .bed format.
+"""
+
+import sys
+import os
+import time
+import json
+import logging
+import argparse
+import traceback
+
+from pbcommand.models import FileTypes, get_pbparser
+from pbcommand.cli import pbparser_runner
+from pbcommand.utils import setup_log
+from pbcore.io import GffReader, WriterBase
+
+__version__ = "3.0"
+
+log = logging.getLogger(__name__)
+
+class Constants(object):
+    TASK_ID = "genomic_consensus.tasks.gff2bed"
+    PURPOSE_ID = "genomic_consensus.task_options.gff2bed_purpose"
+    TRACK_NAME_ID = "genomic_consensus.task_options.track_name"
+    DESCRIPTION_ID = 'genomic_consensus.task_options.track_description'
+    USE_SCORE_ID = "genomic_consensus.task_options.use_score"
+    DRIVER_EXE = "gffToBed --resolved-tool-contract "
+
+#
+# (Ported from pbpy)
+#
+
+class BedRecord:
+    """Models a record in a BED file format"""
+    def __init__(self):
+        self.chrom=''
+        self.chromStart = 0
+        self.chromEnd = 0
+        self.name = ''
+        self.score = -1.00
+        self.strand = '+'
+
+    def __str__(self):
+        return '%s\t%d\t%d\t%s\t%.3f\t%s' % \
+            (self.chrom, self.chromStart, self.chromEnd, self.name, \
+              self.score, self.strand)
+
+class CoverageBedRecord(BedRecord):
+    @staticmethod
+    def fromAlignmentSummaryGffRecord(gff):
+        bed = CoverageBedRecord()
+        bed.chrom = gff.seqid
+        bed.chromStart = gff.start - 1
+        bed.chromEnd = gff.end
+        bed.name = 'meanCov'
+        bed.score = float(gff.cov2.split(',')[0])
+        bed.strand = gff.strand
+        return bed
+
+class VariantsBedRecord(BedRecord):
+    @staticmethod
+    def fromVariantGffRecord(gff):
+        bed = VariantsBedRecord()
+        bed.chrom = gff.seqid
+        bed.chromStart = gff.start - 1
+        bed.score = float(gff.confidence)
+        bed.strand = gff.strand
+
+        feature = gff.type
+        #GFF3 coordinates are 1-based and inclusive
+        #BED coordinates are 0-based and exclusive
+        if feature == 'insertion':
+            bed.chromEnd = bed.chromStart + 1
+            bed.name = '%d_%dins%s' % (bed.chromStart + 1,
+                                       bed.chromEnd + 1,
+                                       gff.variantSeq)
+        elif feature == 'deletion':
+            featureLen = len(gff.reference)
+            bed.chromEnd = bed.chromStart + featureLen
+            if featureLen == 1:
+                bed.name = "%ddel" % (bed.chromStart + 1)
+            else:
+                bed.name = '%d_%ddel' % (bed.chromStart + 1, bed.chromEnd)
+        elif feature == 'substitution':
+            bed.chromEnd = bed.chromStart + 1
+            bed.name = '%d%s>%s' % (bed.chromStart + 1,
+                                    gff.reference,
+                                    gff.variantSeq)
+        else:
+            print >> sys.stderr, 'Unsupported feature %s found in GFF3 file.' % feature
+
+        return bed
+
+class BedWriter(WriterBase):
+    """Outputs BED annotation track file"""
+    def __init__(self, outfile):
+        self._outfile = outfile
+
+    def close(self):
+        self._outfile.close()
+
+    def flush(self):
+        self._outfile.flush()
+
+    def writeHeader(self, name, description, useScore):
+        print >> self._outfile, 'track name=%s description="%s" useScore=%d' \
+            % (name, description, useScore)
+
+    def writeRecord(self, record):
+        print >> self._outfile, str(record)
+
+class GffToBed:
+    """
+    Utility for converting GFF3 to BED format. Currently supports
+    regional coverage or variant .bed output.
+    """
+    def __init__(self, args):
+        self.purpose = args.purpose
+        self.gffFile = args.gff
+        self.args = args
+
+        if self.purpose not in [ "variants", "coverage" ]:
+            raise ValueError(
+                "Purpose %s not supported. Must be one of: [variants|coverage]" % (self.purpose))
+
+
+    def run(self, out=sys.stdout):
+        with GffReader(self.gffFile) as reader, \
+             BedWriter(out)          as writer:
+
+            writer.writeHeader(self.args.name,
+                               self.args.description,
+                               self.args.useScore)
+            for gff in reader:
+                if self.purpose == 'coverage':
+                    bedRecord = CoverageBedRecord.fromAlignmentSummaryGffRecord(gff)
+                else:
+                    bedRecord = VariantsBedRecord.fromVariantGffRecord(gff)
+                writer.writeRecord(bedRecord)
+        return 0
+
+def args_runner(args, out=sys.stdout):
+    return GffToBed(args).run(out=out)
+
+def resolved_tool_contract_runner(resolved_tool_contract):
+    rtc = resolved_tool_contract
+    assert rtc.task.options[Constants.PURPOSE_ID] in ["coverage", "variants"]
+    args = [
+        rtc.task.options[Constants.PURPOSE_ID],
+        rtc.task.input_files[0],
+        "--useScore", str(rtc.task.options[Constants.USE_SCORE_ID]),
+   #     "--name", str(rtc.task.options[Constants.TRACK_NAME_ID]),
+   #     "--description", str(rtc.task.options[Constants.DESCRIPTION_ID]),
+    ]
+    # XXX HACK
+    args_ = get_contract_parser().arg_parser.parser.parse_args(args)
+    with open(rtc.task.output_files[0], "w") as f:
+        return args_runner(args_, out=f)
+
+def get_contract_parser():
+    p = get_pbparser(
+        tool_id=Constants.TASK_ID,
+        version=__version__,
+        name="gffToBed",
+        description=__doc__,
+        driver_exe=Constants.DRIVER_EXE,
+        default_level="ERROR")
+    ap = p.arg_parser.parser
+    tcp = p.tool_contract_parser
+    ap.add_argument("purpose", choices=["variants","coverage"],
+        help="Run purpose")
+    p.add_input_file_type(FileTypes.GFF, "gff",
+        "GFF file", "GFF file")
+    tcp.add_output_file_type(FileTypes.BED, "bed",
+        "Variant Calls", "List of variants from the reference", "output")
+    tcp.add_str(Constants.PURPOSE_ID, "purpose",
+        default="variants",
+        name="Purpose",
+        description="Run mode ('variants' or 'coverage')")
+    p.add_str(Constants.TRACK_NAME_ID, "name",
+        default="variants",
+        name="Track name",
+        description="track name to display in header")
+    p.add_str(Constants.DESCRIPTION_ID, 'description',
+        default="PacBio: snps, insertions, and deletions derived from consensus calls against reference",
+        name="Track description",
+        description="track description to display in header")
+    p.add_int(Constants.USE_SCORE_ID, "useScore",
+        default=0,
+        name="Use score",
+        description="whether or not to use score for feature display")
+    return p
+
+def main(argv=sys.argv):
+    mp = get_contract_parser()
+    return pbparser_runner(
+        argv=argv[1:],
+        parser=mp,
+        args_runner_func=args_runner,
+        contract_runner_func=resolved_tool_contract_runner,
+        alog=log,
+        setup_log_func=setup_log)
+
+if __name__ == '__main__':
+    sys.exit(main())

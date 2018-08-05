@@ -1,0 +1,10 @@
+{'LvZao': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/LvZao.read1.fastq', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/LvZao.read2.fastq'], 'YP': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YP.read1.fastq', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/YP.read2.fastq'], 'YS': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YS.noN.fastq'], 'YSTL': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YSTL.noN.fastq'], 'YT': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YT.noN.fastq'], 'YL': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YL.noN.fastq']}
+LvZao start to QC
+YP start to QC
+0
+0
+######################################################
+######################################################
+######################################################
+	
+All the Multiple Ker Assembly is Finished ,Start to cluster and Assembly

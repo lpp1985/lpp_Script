@@ -1,0 +1,6 @@
+\subsection{基因岛分析}
+{% if GI|length>0 %}
+发现{{ length(GI) }}个基因岛。{% else %}未发现基因岛。{% endif %}
+{% for eachgi , table in GI %}
+    \input{  "{{table}}"   }
+{%   endfor %}

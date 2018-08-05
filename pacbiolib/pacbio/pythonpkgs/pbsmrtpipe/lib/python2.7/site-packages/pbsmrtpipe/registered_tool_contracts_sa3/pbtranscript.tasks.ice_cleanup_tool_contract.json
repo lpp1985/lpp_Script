@@ -1,0 +1,45 @@
+{
+    "version": "1.0.0.177551", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.ice_cleanup --resolved-tool-contract ", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.ice_cleanup", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard", 
+        "resource_types": [
+            "$tmpdir"
+        ], 
+        "description": "Constants used TOOL_ID", 
+        "schema_options": [], 
+        "output_types": [
+            {
+                "title": "Sentinel file", 
+                "description": "Output sentinel file", 
+                "default_name": "ice_cleanup_done", 
+                "id": "ice_cleanup_sentinel", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ], 
+        "_comment": "Created by v0.3.25", 
+        "name": "pbtranscript.tasks.ice_cleanup", 
+        "input_types": [
+            {
+                "description": "Cluster chunks pickle file", 
+                "title": "Pickle In", 
+                "id": "cluster_chunks_pickle", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "description": "Setinel file", 
+                "title": "Sentinel In", 
+                "id": "ice_polish_cluster_bins_sentinel", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ], 
+        "nproc": "$max_nproc", 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.ice_cleanup"
+    }
+}

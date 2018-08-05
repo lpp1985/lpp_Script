@@ -1,0 +1,50 @@
+{% macro entry_point_summary(entry_point) -%}
+
+    ::
+
+    :id: {{ entry_point.entryId }}
+    :name: {{ entry_point.name }}
+    :fileTypeId: {{ entry_point.fileTypeId }}
+
+
+{%- endmacro %}
+
+{% macro entry_points_summary(entry_points) -%}
+
+EntryPoints ({{ entry_points|length }})
+^^^^^^^^^^^^^^^^^^^
+
+{% for entry_point in entry_points %}
+    {{ entry_point_summary(entry_point) }}
+{% endfor %}
+
+{%- endmacro %}
+
+
+{% macro task_options_summary(task_options, task_table_summary) -%}
+
+Task Options ({{ task_options|length }})
+^^^^^^^^^^^^^^^^^^^^^^^
+
+{% if task_options %}
+{# Nat already had a rst table summary #}
+{{ task_table_summary }}
+{% else %}
+    No task options
+{% endif %}
+
+{%- endmacro %}
+
+
+{% macro pipeline_header(pipeline) -%}
+
+Pipeline {{ pipeline.name }}
+---------{{ '-' * pipeline.name|length }}
+
+:id: {{ pipeline.id }}
+:name: {{ pipeline.name }}
+:version: {{ pipeline.version }}
+:tags: {{ pipeline.tags|join(", ") }}
+:description: {{ pipeline.description }}
+
+{%- endmacro %}

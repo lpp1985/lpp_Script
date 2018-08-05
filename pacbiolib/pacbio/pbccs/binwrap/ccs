@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# ---- error handling
+set -o errexit;
+set -o posix;
+set -o pipefail;
+set -o errtrace;
+unexpected_error() {
+    local errstat=$?
+    echo "${g_prog:-$(basename $0)}: Error! Encountered unexpected error at 'line $(caller)', bailing out..." 1>&2
+    exit $errstat;
+}
+trap unexpected_error ERR;
+
+# Force the path to only what we need, saving off the original path
+PATH_ORIG=$PATH;
+PATH=/usr/bin:/bin
+g_prog=$(basename "$0");
+g_progdir=$(dirname "$0");
+g_progdir_abs=$(dirname $(readlink -f "$0"));
+
+# ---- globals
+
+g_exe="${g_progdir_abs}/../../../../private/pacbio/pbccs/bin/ccs";
+
+g_ldlibpath=""
+g_ldlibpath="$g_ldlibpath:${g_progdir_abs}/../../../../private/pacbio/pbccs/lib";
+g_ldlibpath="$g_ldlibpath:${g_progdir_abs}/../../../../private/pacbio/pbcopper/lib";
+g_ldlibpath="$g_ldlibpath:${g_progdir_abs}/../../../../private/pacbio/pbbam/lib";
+g_ldlibpath="$g_ldlibpath:${g_progdir_abs}/../../../../private/pacbio/pbbam/lib";
+g_ldlibpath="$g_ldlibpath:${g_progdir_abs}/../../../../private/thirdparty/zlib/zlib_1.2.8/lib";
+g_ldlibpath="$g_ldlibpath:${g_progdir_abs}/../../../../private/thirdparty/gcc/gcc-4.9.2/lib";
+g_ldlibpath=${g_ldlibpath#:}
+
+# ---- main
+
+PATH="" \
+LD_LIBRARY_PATH="$g_ldlibpath" \
+    exec "$g_exe"  ${1+"$@"}

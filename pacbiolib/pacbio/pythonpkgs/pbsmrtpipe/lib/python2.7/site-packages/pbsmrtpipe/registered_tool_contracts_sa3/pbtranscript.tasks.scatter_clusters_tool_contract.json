@@ -1,0 +1,86 @@
+{
+    "version": "0.1.0", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.scatter_clusters --resolved-tool-contract ", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.scatter_clusters", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.scattered", 
+        "resource_types": [], 
+        "description": "\nSpecialized scatter task for pickle file containing clusters\n", 
+        "schema_options": [
+            {
+                "pb_option": {
+                    "default": 24, 
+                    "type": "integer", 
+                    "option_id": "pbsmrtpipe.task_options.dev_scatter_max_nchunks", 
+                    "name": "Max NChunks", 
+                    "description": "Maximum number of Chunks"
+                }, 
+                "title": "JSON Schema for pbsmrtpipe.task_options.dev_scatter_max_nchunks", 
+                "required": [
+                    "pbsmrtpipe.task_options.dev_scatter_max_nchunks"
+                ], 
+                "$schema": "http://json-schema.org/draft-04/schema#", 
+                "type": "object", 
+                "properties": {
+                    "pbsmrtpipe.task_options.dev_scatter_max_nchunks": {
+                        "default": 24, 
+                        "type": "integer", 
+                        "description": "Maximum number of Chunks", 
+                        "title": "Max NChunks"
+                    }
+                }
+            }
+        ], 
+        "output_types": [
+            {
+                "title": "Chunk JSON Filtered Fasta", 
+                "description": "Chunked JSON ContigSet", 
+                "default_name": "pickles.chunked", 
+                "id": "cjson_out", 
+                "file_type_id": "PacBio.FileTypes.CHUNK"
+            }
+        ], 
+        "_comment": "Created by v0.3.20", 
+        "nchunks": "$max_nchunks", 
+        "name": "Scatter ContigSet", 
+        "input_types": [
+            {
+                "description": "PacBio ContigSet", 
+                "title": "SubreadSet In", 
+                "id": "subreads_in", 
+                "file_type_id": "PacBio.DataSet.SubreadSet"
+            }, 
+            {
+                "description": "PacBio ContigSet", 
+                "title": "ContigSet", 
+                "id": "fasta_in", 
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            }, 
+            {
+                "description": "Cluster pickle file", 
+                "title": "Pickle", 
+                "id": "pickle_in", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "description": "Non-full-length pickle file", 
+                "title": "Pickle", 
+                "id": "nfl_pickle_in", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }
+        ], 
+        "chunk_keys": [
+            "$chunk.subreadset_id", 
+            "$chunk.contigset_id", 
+            "$chunk.pickle_id", 
+            "$chunk.nfl_pickle_id"
+        ], 
+        "nproc": 1, 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.scatter_clusters"
+    }
+}

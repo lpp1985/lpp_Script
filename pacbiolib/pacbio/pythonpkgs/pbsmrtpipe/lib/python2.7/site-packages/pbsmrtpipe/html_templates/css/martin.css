@@ -1,0 +1,211 @@
+/* This was taken from Martin. Should just use bootstrap */
+body {
+    font: normal 11px Arial, Helvetica, sans-serif;
+    color: #333;
+    background: #ffffff;
+    width: 888px;
+}
+
+a {
+    color: #333;
+    font-size: 12px;
+    text-decoration: none;
+}
+a:hover {
+    color: rgb(222,119,40);
+}
+a:active {
+    color: rgb(15,128,209);
+}
+
+table {
+    border-spacing: 0;
+}
+
+table, td, th {
+    vertical-align: middle;
+}
+
+.reportBody h4 {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    color: #333;
+    border-bottom: solid 1px #333;
+    text-transform: uppercase;
+}
+
+div.title {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#attrstable {
+    font-size: 12px;
+    width: 880px;
+}
+#attrstable td {
+    padding: 2px 8px;
+}
+#attrstable td.attr {
+    width: 90px;
+}
+#attrstable td:last-child {
+    text-align:right;
+}
+.settings-button {
+    font-size: 11px;
+}
+
+#graphgroup {
+    margin: 8px auto;
+    color: #333;
+    -moz-box-shadow: 4px 4px 4px #666;
+    -webkit-box-shadow: 4px 4px 4px #666;
+    box-shadow: 4px 4px 4px #666;
+    border: solid 1px #4d4d4d;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    padding-bottom: 30px;
+    font-size: 11px;
+}
+#graphgroup thead th:first-child {
+    -moz-border-radius-topleft: 4px;
+    -webkit-border-top-left-radius: 4px;
+}
+#graphgroup thead th:last-child {
+    -moz-border-radius-topright: 4px;
+    -webkit-border-top-right-radius: 4px;
+}
+
+#graphgroup div.graphtitle {
+    margin: 0 auto;
+    padding-top: 4px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    height: 26px;
+    background: #bfe0ec;
+    text-transform: capitalize;
+    -moz-border-radius-topright: 4px;
+    -webkit-border-top-right-radius: 4px;
+}
+
+#graphGroupTable {
+    max-width: 650px;
+}
+#graphGroupTable div.graphtitle {
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    display: block;
+    height: default;
+    background: none;
+    text-transform: capitalize;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+}
+
+div.graphcaption {
+    margin-left: 60px;
+    width: 384px;
+    font-size: 11px;
+}
+
+div.errors {
+    width: 600px;
+    background: #eaeac0;
+    font: bold 13pt Verdana, Arial, Helvetica, sans-serif;
+    color: #ff0000;
+    border: 1px solid #70a0c0;
+    padding: 8px 8px 8px 8px;
+}
+
+div.tabletitle {
+    text-align: left;
+    font: bold 12pt Verdana, Arial, Helvetica, sans-serif;
+    color: #4f6b72;
+}
+
+#datatable {
+    margin: 8px auto;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border: solid 1px #4d4d4d;
+    -moz-box-shadow: 4px 4px 4px #666;
+    -webkit-box-shadow: 4px 4px 4px #666;
+    box-shadow: 4px 4px 4px #666;
+}
+
+#datatable th {
+    height: 24px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    background: #bfe0ec;
+    padding: 4px 8px 0 8px;
+}
+#datatable thead th:first-child {
+    -moz-border-radius-topleft: 4px;
+    -webkit-border-top-left-radius: 4px;
+}
+#datatable thead th:last-child {
+    -moz-border-radius-topright: 4px;
+    -webkit-border-top-right-radius: 4px;
+}
+
+#datatable th.nobg {
+}
+
+#datatable td {
+    font-size: 11px;
+    padding: 2px 8px;
+}
+
+#datatable td.alt {
+}
+
+#datatable td.rowname {
+}
+
+#datatable th.spec {
+    font-weight: bold;
+}
+
+#datatable th.specalt {
+    font-weight: bold;
+}
+
+.reportgroup {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #0079bc;
+    line-height: 16px;
+}
+.linklist {
+    list-style:none;
+    margin-left: 6px;
+    padding-left: 0;
+    font-size: 12px;
+}
+.pb-data-format {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 10px;
+    text-decoration: underline;
+    margin-left: 6px;
+}
+
+.footer {
+    margin-top: 20px;
+    padding-top: 6px;
+    border-top: 1px solid #333;
+    text-align: center;
+    font-size: 10px;
+}

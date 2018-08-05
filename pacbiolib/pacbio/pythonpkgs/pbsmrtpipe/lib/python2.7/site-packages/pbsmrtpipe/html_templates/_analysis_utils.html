@@ -1,0 +1,25 @@
+{% macro file_link_table(file_links) -%}
+
+    {%- if file_links -%}
+
+     <div class="panel panel-default">
+        <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Path</th>
+                </tr>
+                </thead>
+                {% for file_link in file_links %}
+                <tr>
+                    <td>{{ file_link.name }}</td>
+                    <td>{{ file_link.path }}</td>
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+    {% else %}
+        <p>No Analysis Reports Have Been Generated.</p>
+    {% endif %}
+
+{%- endmacro %}

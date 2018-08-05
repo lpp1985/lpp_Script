@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# ---- error handling
+set -o errexit;
+set -o posix;
+set -o pipefail;
+set -o errtrace;
+unexpected_error() {
+    local errstat=$?
+    echo "${g_prog:-$(basename $0)}: Error! Encountered unexpected error at 'line $(caller)', bailing out..." 1>&2
+    exit $errstat;
+}
+trap unexpected_error ERR;
+
+# Force the path to only what we need, saving off the original path
+PATH_ORIG=$PATH;
+PATH=/usr/bin:/bin
+
+g_prog=$(basename "$0");
+g_progdir=$(dirname "$0");
+g_progdir_abs=$(dirname $(readlink -f "$0"));
+
+# ---- error functions
+merror() {
+    echo "$g_prog: Error! ""$@" 1>&2;
+    exit 1;
+}
+minterror() {
+    echo "$g_prog: Internal Error! ""$@" 1>&2;
+    exit 1;
+}
+mwarn() {
+    echo "$g_prog: Warning! ""$@" 1>&2;}
+
+
+# ---- global
+g_bamtools_dir="${g_progdir_abs}/../../../../thirdparty/bamtools/bamtools_2.4.0+pbi86"
+g_bamtools_exe="$g_bamtools_dir/bin/bamtools-2.4.0"
+
+g_bamtools_ldlibdirs=""
+g_bamtools_ldlibdirs="$g_bamtools_ldlibdirs:${g_bamtools_dir}/lib"
+g_bamtools_ldlibdirs=${g_bamtools_ldlibdirs#:}
+
+# ---- main
+
+LD_LIBRARY_PATH="$g_bamtools_ldlibdirs:$g_progdir_abs/../../../../../thirdparty/gcc/gcc-4.9.2/lib" \
+    exec "$g_bamtools_exe" ${1+"$@"}

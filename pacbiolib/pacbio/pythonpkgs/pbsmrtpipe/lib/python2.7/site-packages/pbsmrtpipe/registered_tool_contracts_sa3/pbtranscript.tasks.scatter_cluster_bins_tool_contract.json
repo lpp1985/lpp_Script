@@ -1,0 +1,48 @@
+{
+    "version": "0.1.0", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.scatter_cluster_bins --resolved-tool-contract ", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.scatter_cluster_bins", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.scattered", 
+        "resource_types": [], 
+        "description": "\nSpecialized scatter task which spawns cluster_chunks.pickle.\n", 
+        "schema_options": [], 
+        "output_types": [
+            {
+                "title": "Chunk JSON Cluster Bins", 
+                "description": "Chunked JSON Cluster Bins", 
+                "default_name": "ice_cluster.chunked", 
+                "id": "cjson_out", 
+                "file_type_id": "PacBio.FileTypes.CHUNK"
+            }
+        ], 
+        "_comment": "Created by v0.3.25", 
+        "nchunks": "$max_nchunks", 
+        "name": "Scatter Cluster Bins", 
+        "input_types": [
+            {
+                "description": "Cluster chunks pickle file", 
+                "title": "Pickle In", 
+                "id": "cluster_chunks_pickle", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "description": "PacBio ConsensusReadSet", 
+                "title": "ConsensusReadSet In", 
+                "id": "ccs_in", 
+                "file_type_id": "PacBio.DataSet.ConsensusReadSet"
+            }
+        ], 
+        "chunk_keys": [
+            "$chunk.cluster_chunk_pickle_id", 
+            "$chunk.ccs_id"
+        ], 
+        "nproc": 1, 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.scatter_cluster_bins"
+    }
+}

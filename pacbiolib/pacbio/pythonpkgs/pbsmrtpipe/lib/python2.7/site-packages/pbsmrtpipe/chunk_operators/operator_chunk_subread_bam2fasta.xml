@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_subread_bam2fasta">
+
+    <task-id>pbcoretools.tasks.bam2fasta</task-id>
+
+    <scatter>
+        <scatter-task-id>pbcoretools.tasks.subreadset_zmw_scatter</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.subreadset_id" in="pbcoretools.tasks.bam2fasta:0"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_fasta</gather-task-id>
+                <chunk-key>$chunk.fasta_id</chunk-key>
+                <task-output>pbcoretools.tasks.bam2fasta:0</task-output>
+            </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

@@ -1,0 +1,57 @@
+{
+    "id": "coverage",
+    "version": "3.2",
+    "description": null,
+    "title": "Coverage",
+    "attributes": [
+        {
+            "description": "Mean depth of coverage over entire reference",
+            "type": "float",
+            "format": "{:,.0f}",
+            "id": "depth_coverage_mean",
+            "name": "Mean Coverage"
+        },
+        {
+            "description": "Percent of reference bases without coverage",
+            "type": "float",
+            "format": "{p:.2f} %",
+            "id": "missing_bases_pct",
+            "name": "Missing Bases"
+        }
+    ],
+    "tables": [],
+    "plotGroups": [
+        {
+            "id": "coverage_plots",
+            "plots": [
+                {
+                    "xlabel": "Reference Start Position",
+                    "description": null,
+                    "caption": "Coverage Across",
+                    "title": null,
+                    "ylabel": "Coverage",
+                    "id": "coverage_contig"
+                }
+            ],
+            "title": "Coverage Across Reference",
+            "description": null,
+            "legend": null
+        },
+        {
+            "id": "coverage_histogram_plot_group",
+            "plots": [
+                {
+                    "xlabel": "Coverage",
+                    "description": null,
+                    "caption": "Depth of Coverage Distribution ",
+                    "title": "Depth of Coverage Distribution ",
+                    "ylabel": "Reference Regions",
+                    "id": "coverage_histogram"
+                }
+            ],
+            "title": "Depth of Coverage",
+            "description": null,
+            "legend": null
+        }
+    ]
+}

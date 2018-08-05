@@ -1,0 +1,57 @@
+{
+    "version": "0.1.0", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.create_chunks --resolved-tool-contract ", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.create_chunks", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard", 
+        "resource_types": [], 
+        "description": "\nCreate chunk tasks for ICE, ice_partial, and ice_polish, after\nbinning (separate_flnc) is done.\n  nfl.contigset will be scattered into chunks when chunk mode is true.\n  All chunk tasks for ICE will be saved to ice_cluster.pickle as a list.\n  All chunk tasks for ice_partial will be saved to ice_partial.pickle as a list.\n  All chunk tasks for ice_polish will be saved to ice_polish.pickle as a list.\n", 
+        "schema_options": [], 
+        "output_types": [
+            {
+                "title": "ICE CLUSTER CHUNK PICKLE", 
+                "description": "Pickle containing ICE chunk tasks", 
+                "default_name": "cluster_chunks", 
+                "id": "cluster_chunks", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "title": "ICE PARTIAL CHUNK PICKLE", 
+                "description": "Pickle containing ice_partial chunk tasks", 
+                "default_name": "partial_chunks", 
+                "id": "partial_chunks", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "title": "ICE POLISH CHUNK PICKLE", 
+                "description": "Pickle containing ice_polish (quiver|arrow) chunk tasks", 
+                "default_name": "polish_chunks", 
+                "id": "polish_chunks", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }
+        ], 
+        "_comment": "Created by v0.3.25", 
+        "name": "pbtranscript.tasks.create_chunks", 
+        "input_types": [
+            {
+                "description": "Separate flnc pickle file", 
+                "title": "Pickle In", 
+                "id": "separate_flnc_pickle_in", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "description": "Nfl Contigset", 
+                "title": "ContigSet In", 
+                "id": "nfl_contigset", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }
+        ], 
+        "nproc": "$max_nproc", 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.create_chunks"
+    }
+}

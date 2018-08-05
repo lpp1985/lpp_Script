@@ -1,0 +1,93 @@
+#!/usr/bin/env python
+
+# TODO This should disappear as soon as a Scala implementation of the tool
+# contract interface is available.
+
+"""
+Python wrapper for tool contract support in MotifMaker ('find' mode).
+"""
+
+import logging
+import os
+import sys
+
+from pbcommand.models import FileTypes, get_pbparser
+from pbcommand.cli import pbparser_runner
+from pbcommand.utils import setup_log
+from pbcore.io import ReferenceSet
+import pbcore.util.Process
+
+__version__ = "0.1"
+log = logging.getLogger(__name__)
+
+class Constants(object):
+    TOOL_ID = "motif_maker.tasks.find_motifs"
+    # XXX for testing purposes we want to run everything in-place, without
+    # installing
+    DIST_PATH = os.path.dirname(os.path.dirname(__file__))
+    DRIVER_EXE = "task_motifmaker_find --resolved-tool-contract "
+    MIN_SCORE_DEFAULT = 30.0
+    MIN_SCORE_ID = "motif_maker.task_options.min_score"
+
+def get_parser():
+    p = get_pbparser(
+        tool_id=Constants.TOOL_ID,
+        version=__version__,
+        name=Constants.TOOL_ID,
+        description=__doc__,
+        driver_exe=Constants.DRIVER_EXE,
+        nproc=1)
+    p.add_input_file_type(FileTypes.GFF, "gff", "GFF file",
+        "GFF file containing modified bases")
+    p.add_input_file_type(FileTypes.DS_REF, "reference", "ReferenceSet",
+        "Reference DataSet xml or Fasta sequence")
+    p.add_output_file_type(FileTypes.CSV, "csv", "Motifs Summary",
+        "Summary of analysis results for each motif", default_name="motifs")
+    p.add_float(Constants.MIN_SCORE_ID, "minScore",
+        Constants.MIN_SCORE_DEFAULT,
+        "Minimum Qmod score",
+        "Minimum Qmod score to use in motif finding")
+    return p
+
+def _run(reference_file, gff_file, csv_file, minScore):
+    fasta_file = ReferenceSet(reference_file).toExternalFiles()[0] 
+    args2 = [
+        "motifMaker",
+        "find",
+        "--gff", gff_file,
+        "--fasta", fasta_file,
+        "--output", csv_file,
+        "--minScore", str(minScore),
+    ]
+    cmd = " ".join(args2)
+    log.info(cmd)
+    output, errCode, errorMessage = pbcore.util.Process.backticks(cmd)
+    if errCode:
+        raise RuntimeError("MotifMaker failed with error %s" % errorMessage)
+    return 0
+
+def args_runner(args):
+    return _run(
+        reference_file=args.reference,
+        gff_file=args.gff,
+        csv_file=args.csv,
+        minScore=args.minScore)
+
+def resolved_tool_contract_runner(resolved_tool_contract):
+    return _run(
+        gff_file=resolved_tool_contract.task.input_files[0],
+        reference_file=resolved_tool_contract.task.input_files[1],
+        csv_file=resolved_tool_contract.task.output_files[0],
+        minScore=resolved_tool_contract.task.options[Constants.MIN_SCORE_ID])
+
+def main(argv=sys.argv):
+    return pbparser_runner(
+        argv[1:],
+        get_parser(),
+        args_runner,
+        resolved_tool_contract_runner,
+        log,
+        setup_log)
+
+if __name__ == "__main__":
+    sys.exit(main())

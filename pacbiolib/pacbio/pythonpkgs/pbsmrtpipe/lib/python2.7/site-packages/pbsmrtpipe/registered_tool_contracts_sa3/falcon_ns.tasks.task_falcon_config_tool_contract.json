@@ -1,0 +1,43 @@
+{
+    "driver": {
+        "env": {},
+        "exe": "python -m pbfalcon.tasks.basic  run-rtc  ",
+        "serialization": "json"
+    },
+    "tool_contract": {
+        "_comment": "Created by v0.4.14",
+        "description": "Quick tool task_falcon_config falcon_ns.tasks.task_falcon_config",
+        "input_types": [
+            {
+                "description": "description for PacBio.FileTypes.cfg_0",
+                "file_type_id": "PacBio.FileTypes.cfg",
+                "id": "Label PacBio.FileTypes.cfg_0",
+                "title": "<FileType id=PacBio.FileTypes.cfg name=config >"
+            },
+            {
+                "description": "description for PacBio.FileTypes.generic_fofn_1",
+                "file_type_id": "PacBio.FileTypes.generic_fofn",
+                "id": "Label PacBio.FileTypes.generic_fofn_1",
+                "title": "<FileType id=PacBio.FileTypes.generic_fofn name=generic >"
+            }
+        ],
+        "is_distributed": false,
+        "name": "Tool task_falcon_config",
+        "nproc": 1,
+        "output_types": [
+            {
+                "default_name": "file",
+                "description": "Generic JSON file",
+                "file_type_id": "PacBio.FileTypes.json",
+                "id": "json_id",
+                "title": "JSON"
+            }
+        ],
+        "resource_types": [],
+        "schema_options": [],
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "tool_contract_id": "falcon_ns.tasks.task_falcon_config"
+    },
+    "tool_contract_id": "falcon_ns.tasks.task_falcon_config",
+    "version": "0.0.0"
+}

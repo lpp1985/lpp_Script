@@ -1,0 +1,136 @@
+{
+  "tables": [
+    {
+      "id": "filtering_report.filter_stats_table",
+      "columns": [
+        {
+          "header": "Metrics",
+          "values": [
+            "Polymerase Read Bases",
+            "Polymerase Reads",
+            "Polymerase Read N50",
+            "Polymerase Read Length",
+            "Polymerase Read Quality"
+          ],
+          "id": "filtering_report.filter_stats_table.metrics"
+        },
+        {
+          "header": "Pre-Filter",
+          "values": [
+            219279027,
+            300584,
+            3449,
+            729,
+            0.26800000000000002
+          ],
+          "id": "filtering_report.filter_stats_table.pre_filter"
+        },
+        {
+          "header": "Post-Filter",
+          "values": [
+            213483772,
+            93408,
+            3451,
+            2285,
+            0.85599999999999998
+          ],
+          "id": "filtering_report.filter_stats_table.post_filter"
+        }
+      ],
+      "title": "Filtering"
+    }
+  ],
+  "_version": "2.3",
+  "_changelist": 138434,
+  "attributes": [
+    {
+      "name": "Mean Read Score",
+      "value": 0.26826606539269665,
+      "id": "filtering_report.mean_read_score_pre_filter"
+    },
+    {
+      "name": "Number of Bases",
+      "value": 213483772,
+      "id": "filtering_report.base_n_post_filter"
+    },
+    {
+      "name": "Number of Reads",
+      "value": 93408,
+      "id": "filtering_report.reads_n_post_filter"
+    },
+    {
+      "name": "Mean Read Length",
+      "value": 729,
+      "id": "filtering_report.mean_read_length_pre_filter"
+    },
+    {
+      "name": "Mean Read Score",
+      "value": 0.8555095387975142,
+      "id": "filtering_report.mean_read_score_post_filter"
+    },
+    {
+      "name": "N50 Read Length",
+      "value": 3451,
+      "id": "filtering_report.n50_read_length_post_filter"
+    },
+    {
+      "name": "Mean Read Length",
+      "value": 2285,
+      "id": "filtering_report.mean_read_length_post_filter"
+    },
+    {
+      "name": "N50 Read Length",
+      "value": 3449,
+      "id": "filtering_report.n50_read_length_pre_filter"
+    },
+    {
+      "name": "Number of Reads",
+      "value": 300584,
+      "id": "filtering_report.reads_n_pre_filter"
+    },
+    {
+      "name": "Number of Bases",
+      "value": 219279027,
+      "id": "filtering_report.base_n_pre_filter"
+    }
+  ],
+  "id": "filtering_report",
+  "plotGroups": [
+    {
+      "id": "filtering_report.filter_readlength",
+      "thumbnail": "post_filter_readlength_histogram_thumb.png",
+      "plots": [
+        {
+          "caption": null,
+          "image": "post_filter_readlength_histogram.png",
+          "id": "filtering_report.filter_readlength.post_filter_readlength_histogram"
+        },
+        {
+          "caption": null,
+          "image": "pre_filter_readlength_histogram.png",
+          "id": "filtering_report.filter_readlength.pre_filter_readlength_histogram"
+        }
+      ],
+      "legend": null,
+      "title": "Polymerase Read Length"
+    },
+    {
+      "id": "filtering_report.filter_quality",
+      "thumbnail": "post_filterread_score_histogram_thumb.png",
+      "plots": [
+        {
+          "caption": null,
+          "image": "pre_filterread_score_histogram.png",
+          "id": "filtering_report.filter_quality.pre_filterread_score_histogram"
+        },
+        {
+          "caption": null,
+          "image": "post_filterread_score_histogram.png",
+          "id": "filtering_report.filter_quality.post_filterread_score_histogram"
+        }
+      ],
+      "legend": null,
+      "title": "Polymerase Read Quality"
+    }
+  ]
+}

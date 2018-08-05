@@ -1,0 +1,230 @@
+#! python
+"""Job Archiving Util"""
+import os
+import sys
+import csv
+import time
+import shutil
+import logging
+import argparse
+import datetime
+import pprint
+from pysiv2 import utils
+import pbsmrtpipe.testkit.butler as B
+
+__version__ = 0.1
+
+log = logging.getLogger()
+logging.basicConfig(level=logging.INFO)
+
+
+def _setup_log():
+    str_formatter = '[%(levelname)s] %(asctime)-15s [%(name)s %(funcName)s %(lineno)d] %(message)s'
+    handler = logging.StreamHandler(sys.stdout)
+    formatter = logging.Formatter(str_formatter)
+    handler.setFormatter(formatter)
+    log.addHandler(handler)
+    log.setLevel(logging.DEBUG)
+
+
+def _validate(file_name):
+    if not os.path.exists(file_name):
+        msg = "Unable to find run root directory {r}".format(r=file_name)
+        log.error(msg)
+        raise IOError(msg)
+
+    return os.path.abspath(file_name)
+
+
+def get_parser():
+    desc = [
+        "Utility v{v} to archive completed SMRTLink jobs. Jobs are archived".format(
+            v=__version__),
+        "with the build version. The testkit id is used as the directory name",
+        "SMRT_ROOT must be defined to obtain the build/changelist version."
+        ""
+        ""]
+    parser = argparse.ArgumentParser(
+        version=__version__, description="\n".join(desc))
+    parser.add_argument('run_root_dir', type=_validate,
+                        help="Run root directory. e.g., /path/to/common/jobs/016")
+    parser.add_argument('archive_root_dir', type=_validate,
+                        help="Archive root directory. /path/to/archive")
+    parser.add_argument('--debug', action='store_true',
+                        help="Flag to print log to stdout.")
+    return parser
+
+
+def archive_dir(job_path, archive_job_dir):
+    """
+    Archive job dir to archive.
+
+    :param job_dir_name:
+    :param archive_job_dir:
+    :return:
+    """
+
+    files = 'butler.log butler.stdout butler.stderr index.html jenkins_testkit_xunit.xml ' \
+            'job.stderr job.stdout testkit_xunit.xml'.split()
+
+    job_dir_name = os.path.basename(os.path.dirname(job_path))
+    sub_dirs = 'html logs tasks workflow'.split()
+
+    log.info("Archiving {d} to {a}".format(d=job_dir_name, a=archive_job_dir))
+
+    if not os.path.exists(archive_job_dir):
+        os.makedirs(archive_job_dir)
+
+    job_root = os.path.dirname(job_path)
+    for f in os.listdir(job_root):
+        filename = os.path.join(job_root, f)
+        if os.path.isfile(filename):
+            shutil.copy(filename, os.path.dirname(archive_job_dir))
+
+    for f in files:
+        name = os.path.join(job_path, f)
+        archive_name = os.path.join(archive_job_dir, f)
+
+        if os.path.exists(name):
+            shutil.copy(name, archive_name)
+
+    for d in sub_dirs:
+        name = os.path.join(job_path, d)
+        archive_name = os.path.join(archive_job_dir, d)
+        # these files are too big to archive daily
+        ignore = shutil.ignore_patterns("*.bam", "*.pbi",
+                                        "*.bai", "*.fasta",
+                                        "*.fastq", "*.fai",
+                                        "*.gff", "*.gz")
+
+        if os.path.exists(name):
+            # Error here if there are duplicated id's in the testkit.cfg's
+            shutil.copytree(name, archive_name, ignore=ignore)
+
+    log.info("Successfully archived {s} to {d}".format(
+        s=job_dir_name, d=archive_job_dir))
+    return True
+
+
+JSONS = ['ccs_report.json',
+         'mapping_stats_report.json',
+         'motifs_report.json',
+         'isoseq_cluster_report.json',
+         'isoseq_classify_report.json'
+         ]
+
+
+def _write_csv(metrics, archive_root):
+    metric_summary = os.path.join(archive_root, 'metric_summary.csv')
+
+    with open(metric_summary, 'w') as f:
+        csv_out = csv.writer(f)
+        for metric in metrics:
+            csv_out.writerow(metric)
+    log.info("CSV written to: {c}".format(c=metric_summary))
+    return
+
+
+def write_metric_csv(root_archive_dir):
+    cfgs = utils.get_testkit_cfgs(root_archive_dir, only_completed=True)
+    changelist = utils.get_smrttools_changelist(os.environ['SMRT_ROOT'])
+    metric_list = []
+
+    if changelist != None:
+        for c in cfgs:
+            parsed_cfg = B.config_parser_to_butler(c)
+            output_dir = parsed_cfg.output_dir
+            job_id = parsed_cfg.job_id
+            for root, subfolder, files in os.walk(output_dir):
+                for f in files:
+                    if f in JSONS:
+                        file_path = os.path.join(root, f)
+                        if os.path.exists(file_path):
+                            metrics = utils.parse_metric_attributes(file_path)
+                            tups = [
+                                (changelist, job_id, ) + m for m in metrics]
+                            metric_list.extend(tups)
+
+    return _write_csv(metric_list, root_archive_dir)
+
+
+def archiver(testkit_cfgs, root_archive_dir):
+    """Core archive routine."""
+
+    if not os.path.exists(root_archive_dir):
+        os.mkdir(root_archive_dir)
+
+    successfully_archived_dirs = []
+
+    for testkit_cfg in testkit_cfgs:
+
+        job_dir = os.path.dirname(testkit_cfg)
+        testkit = B.config_parser_to_butler(testkit_cfg)
+        output_dir = testkit.output_dir
+        jobtype, testcase, job_output = output_dir.split('/')[-3:]
+        archive_dir_name = os.path.join(
+            root_archive_dir, '{j}_{t}'.format(j=jobtype, t=testcase), job_output)
+        state = archive_dir(output_dir, archive_dir_name)
+        successfully_archived_dirs.append(job_dir)
+
+    write_metric_csv(root_archive_dir)
+    return successfully_archived_dirs
+
+
+def main():
+    """Main point of entry"""
+    started_at = time.time()
+    parser = get_parser()
+    args = parser.parse_args()
+
+    debug = args.debug
+    run_root_dir = args.run_root_dir
+    archive_root_dir = args.archive_root_dir
+
+    if debug:
+        _setup_log()
+    else:
+        log.addHandler(logging.NullHandler())
+
+    # The Build Version is Absolutely Necessary. Exit if we can't find it.
+    if 'SMRT_ROOT' in os.environ:
+        build_version = utils.get_smrttools_changelist(os.environ['SMRT_ROOT'])
+    else:
+        msg = "Can not determine version from $SMRT_ROOT. Exiting"
+        raise ValueError(msg)
+
+    testkit_cfgs = utils.get_testkit_cfgs(run_root_dir, only_completed=True)
+    job_dir_names = [os.path.dirname(f) for f in testkit_cfgs]
+
+    if not job_dir_names:
+        msg = "Unable to find any jobs in {r}. Exiting.".format(r=run_root_dir)
+        sys.stdout.write(msg + "\n")
+
+    slug = datetime.datetime.now().strftime("_%Y-%m-%d-%H-%M-%S-%f")
+    archive_dir_name = os.path.join(
+        os.path.abspath(archive_root_dir), "build_" + build_version + slug)
+
+    log.info("Found {n} directories to archive.".format(n=len(job_dir_names)))
+    log.info(pprint.pformat(job_dir_names))
+
+    if os.path.exists(archive_dir_name):
+        msg = "Archive directory {d} already exists. Can not overwrite previously archived data.".format(
+            d=archive_dir_name)
+        log.error(msg)
+        raise IOError(msg)
+    else:
+        msg = "Archiving to {d}".format(d=archive_dir_name)
+        # hacky way to pass archive location to import script
+        log.info(msg)
+        os.mkdir(archive_dir_name)
+
+    state = archiver(testkit_cfgs, archive_dir_name)
+
+    run_time = time.time() - started_at
+    rcode = 0 if state else -1
+    log.info("Exiting {f} in {s:.2f} sec with return code {r}".format(
+        s=run_time, r=rcode, f=os.path.basename(__file__)))
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main())

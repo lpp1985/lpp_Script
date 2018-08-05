@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+
+Very similar to variantCaller chunk operator, from which this was copied
+
+-->
+<chunk-operator id="pbsmrtpipe.operators.chunk_ipd_summary">
+
+    <task-id>kinetics_tools.tasks.ipd_summary</task-id>
+
+    <scatter>
+        <!-- FIXME eventually want to remove this duplication -->
+        <scatter-task-id>pbcoretools.tasks.alignment_contig_scatter_basemods</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.alignmentset_id" in="kinetics_tools.tasks.ipd_summary:0"/>
+            <chunk out="$chunk.reference_id" in="kinetics_tools.tasks.ipd_summary:1" />
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_gff</gather-task-id>
+                <chunk-key>$chunk.gff_id</chunk-key>
+                <task-output>kinetics_tools.tasks.ipd_summary:0</task-output>
+            </chunk>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_bigwig</gather-task-id>
+                <chunk-key>$chunk.bw_id</chunk-key>
+                <task-output>kinetics_tools.tasks.ipd_summary:1</task-output>
+            </chunk>
+            <chunk>
+                <gather-task-id>kinetics_tools.tasks.gather_kinetics_h5</gather-task-id>
+                <chunk-key>$chunk.h5_id</chunk-key>
+                <task-output>kinetics_tools.tasks.ipd_summary:2</task-output>
+            </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

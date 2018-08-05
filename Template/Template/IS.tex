@@ -1,0 +1,8 @@
+\subsection{IS序列分析}
+
+使用ISFinder\cite{ISfinder}使用blastn进行预测，使用阈值为e value$1e-5$，{% if IS|length >0 %}共发现多个IS单元，结果如下表所示：{% for  table in IS %}
+\input{  "{{table}}"   }
+{% endfor %}
+{% else %}
+没有发现IS单元。
+{% endif  %}

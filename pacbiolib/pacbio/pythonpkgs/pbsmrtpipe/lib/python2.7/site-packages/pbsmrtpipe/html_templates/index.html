@@ -1,0 +1,101 @@
+{% extends "root_dir_base.html" %}
+
+<!-- pbsmrtpipe HTML Summary Overview Report
+
+The Report consists of:
+- overview page with data table and link to reports produced by pbreports
+- tasks tables
+- workflow tables and images
+- workflow datastore summary
+-->
+
+{% from '_utils.html' import build_settings_table %}
+{% from '_utils.html' import build_report_list %}
+{% from '_utils.html' import build_task_summary_table %}
+{% from '_utils.html' import build_total_progress_bar %}
+{% from '_utils.html' import build_data_list %}
+
+
+{% block title %} MyTitle {% endblock %}
+
+{% block body %}
+    <!-- Total Progress -->
+    <h4>Total Progress</h4>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{ build_total_progress_bar(80) }}
+        </div>
+    </div>
+
+    <!-- Module Progress -->
+    <h4>Module Progress</h4>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <!-- Progress Bars -->
+            <div class="progress">
+                <div class="progress-bar progress-bar-info" style="width: 20%">
+                    <span class="sr-only">20% Complete</span>
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-success"
+                     style="width: 40%">
+                    <span class="sr-only">40% Complete</span>
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-warning"
+                     style="width: 60%">
+                    <span class="sr-only">60% Complete</span>
+                </div>
+            </div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-danger"
+                     style="width: 80%">
+                    <span class="sr-only">80% Complete</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report files -->
+    <h4>Report</h4>
+    <div class="panel panel-default">
+        <div class="panel-heading">Reports</div>
+        <div class="panel-body">
+            {{ build_report_list(reports) }}
+        </div>
+    </div>
+
+    <!-- Data Files -->
+    <h4>Data Files</h4>
+    <div class="panel panel-default">
+        <div class="panel-heading">Data Files</div>
+        <div class="panel-body">
+            {{ build_data_list(data_files) }}
+        </div>
+    </div>
+
+     <!-- Workflow Errors Task errors if necessary -->
+    {%- if error_log %}
+        <h4>Workflow Errors</h4>
+        <div class="panel panel-danger">
+            <div class="panel-heading">Workflow Errors</div>
+            <div class="panel-body">
+                {{ error_log }}
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Task errors if necessary -->
+    {%- if task_error_log %}
+        <h4>Errors</h4>
+        <div class="panel panel-danger">
+            <div class="panel-heading">Task Errors</div>
+            <div class="panel-body">
+                {{ task_error_log }}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

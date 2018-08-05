@@ -1,0 +1,60 @@
+#! python
+import os
+import argparse
+import sys
+import logging
+from logging import log
+
+from pysiv2 import utils
+
+__author__ = 'gconcepcion'
+
+log = logging.getLogger()
+
+
+def setup_log(alog, file_name=None, level=logging.DEBUG):
+
+    if file_name is None:
+        handler = logging.StreamHandler(sys.stdout)
+    else:
+        handler = logging.FileHandler(file_name)
+
+    str_formatter = '[%(levelname)s] %(asctime)-15s [%(name)s %(funcName)s %(lineno)d] %(message)s'
+    formatter = logging.Formatter(str_formatter)
+    handler.setFormatter(formatter)
+    alog.addHandler(handler)
+    alog.setLevel(level)
+
+
+def get_parser():
+    desc = ["Generate a pbservice analysis.json from a testkit.cfg"]
+    parser = argparse.ArgumentParser(description="\n".join(desc))
+    parser.add_argument('testkit_cfg', help="Path to testkit.cfg")
+    parser.add_argument("-o", "--output", dest="output", action="store",
+                        help="Output file name - will be automatically "+
+                             "generated if not specified")
+    parser.add_argument(
+        '--debug', action='store_true', help='Debug to stdout.')
+    return parser
+
+
+def main():
+    parser = get_parser()
+    args = parser.parse_args()
+    testkit = args.testkit_cfg
+
+    if args.debug:
+        setup_log(log, level=logging.DEBUG)
+    else:
+        log.addHandler(logging.NullHandler())
+
+    if os.path.exists(testkit):
+        file_name = utils.testkit_to_analysis_json(testkit, output=args.output)
+        return 0
+    else:
+        log.error("Unable to find file: {f}".format(f=testkit))
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

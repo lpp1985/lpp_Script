@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<smrtpipeSettings>
+    <!-- Taken from Pysiv/jobs/BaseModification/short_ecoli -->
+  <global>
+    <option name="name">
+        <value>RS_Modification_and_Mofif_Analysis</value>
+    </option>
+    <option name="description">
+        <value>Detecting modifications and motifs.</value>
+    </option>
+    <option name="version">
+        <value>1</value>
+    </option>
+    <option name="state">
+        <value>active</value>
+    </option>
+    <option name="reference">
+        <value>/mnt/secondary-siv/references/short_ecoli</value>
+    </option>
+    <option name="fetch">
+        <value>common/protocols/preprocessing/Fetch.1.xml</value>
+    </option>
+    <option name="filtering">
+        <value>common/protocols/filtering/SFilter.1.xml</value>
+    </option>
+    <option name="mapping">
+        <value>common/protocols/mapping/BLASR_Resequencing.1.xml</value>
+    </option>
+    <option name="consensus">
+        <value>common/protocols/consensus/Quiver.1.xml</value>
+    </option>
+    <option name="postprocessing">
+        <value>common/protocols/postprocessing/ModificationandMotifDetection.1.xml</value>
+    </option>
+  </global>
+  <module name="P_Fetch">
+    <option name="description">
+        <value>Sets up inputs</value>
+    </option>
+  </module>
+  <module name="P_Filter">
+    <option name="minSubReadLength">
+        <value>50</value>
+    </option>
+    <option name="description">
+        <value>This module filters reads based on a minimum read length, subread length and read quality.</value>
+    </option>
+    <option name="minLength">
+        <value>50</value>
+    </option>
+    <option name="readScore">
+        <value>0.75</value>
+    </option>
+  </module>
+  <module name="P_FilterReports">
+  </module>
+  <module name="P_Mapping">
+    <option name="maxDivergence">
+        <value>30</value>
+    </option>
+    <option name="align_opts">
+        <value>--seed=1 --minAccuracy=0.75 --minLength=50 --useQuality</value>
+    </option>
+    <option name="minAnchorSize">
+        <value>12</value>
+    </option>
+    <option name="maxHits">
+        <value>10</value>
+    </option>
+    <option name="samBam">
+        <value>True</value>
+    </option>
+    <option name="placeRepeatsRandomly">
+        <value>True</value>
+    </option>
+    <option name="pulseMetrics">
+        <value>DeletionQV,IPD,SubstitutionTag,InsertionQV,PulseWidth,QualityValue,MergeQV,SubstitutionQV,DeletionTag</value>
+    </option>
+    <option name="gff2Bed">
+        <value>True</value>
+    </option>
+    <option name="concordant">
+        <value>True</value>
+    </option>
+    <option name="description">
+        <value>BLASR maps reads to genomes by finding the highest scoring local alignment or set of local alignments between the read and the genome. The first set of alignments is found by querying an index of the reference genome, and then refining until only high scoring alignments are retained.  Additional pulse metrics are loaded into the resulting cmp.h5 file to enable downstream use of the Quiver algorithm.</value>
+    </option>
+  </module>
+  <module name="P_GenomicConsensus">
+    <option name="makeVcf">
+        <value>True</value>
+    </option>
+    <option name="enableMapQVFilter">
+        <value>True</value>
+    </option>
+    <option name="outputConsensus">
+        <value>True</value>
+    </option>
+    <option name="makeBed">
+        <value>True</value>
+    </option>
+    <option name="description">
+        <value>Quiver identifies haploid  SNPs and indels by performing a local  realignment of reads using the full range of sequence quality metrics.</value>
+    </option>
+    <option name="algorithm">
+        <value>quiver</value>
+    </option>
+  </module>
+  <module name="P_ModificationDetection">
+    <option name="identifyModifications">
+        <value>True</value>
+    </option>
+    <option name="tetTreated">
+        <value>False</value>
+    </option>
+  </module>
+  <module name="P_MotifFinder">
+    <option name="minScore">
+        <value>30</value>
+    </option>
+  </module>
+</smrtpipeSettings>

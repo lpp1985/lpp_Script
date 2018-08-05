@@ -1,0 +1,415 @@
+\section{附录和说明}
+\subsection{名词解释}
+\subsubsection{Polymerase Reads}
+Polymerase Reads指测序下机产生的原始reads为Polymerase Reads。由于Pacbio采用环状文库进行测序，如果读长长于文库长度的话，每一个碱基会被覆盖多次。因此，Polymerase Reads的长度往往远高于文库的实际长度。
+\subsubsection{Subreads}
+Subreads指对Polymerase Reads进行后续处理后得到的reads。处理过程主要有两部：1.侦测Polymerase reads 序列中的Adapter序列并开环，并利用开环后的序列进行Consensus Calling以提升测序质量。2.对Consensus Calling后的序列进行质量检验，将低质量区域进行滤除。Polymerase Reads经过这两部分析后，得到了过滤后的数据叫做Subreads。
+\subsubsection{Observe Insert length}
+Polymerase Reads经过Adapter Detection开环后进行长度检验，其检验的方法是从一个apadter到下一个adapter序列之间的读长的平均值。
+\subsubsection{Overlap Graph}
+序列Overlap Graph也称为重叠关系图。序列组装是建立在序列末端具有重叠关系的基础上的。把每一个reads看成一个点，如果两个序列间有overlap 关系，就有一条带有方向的变将两个序列相连。其中边的出发方向代表序列的3‘端，边的进入方向，代表序列的5‘端。
+ 
+\section{结果说明}
+\subsection{总体结果展示}
+分析结果根目录下总共包含6个文件夹
+\begin{table}[htb]
+    \caption{分析结果目录结构说明}
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{llX}
+
+                    \toprule
+                    &\bfseries{目录}&\bfseries{用途}\\
+                    \midrule
+                    参考序列&reference/&存储参考序列\\
+                    步骤1.1&01-1.Circyled\_contig/&进行环化处理的Contig\\
+                    步骤1.2&01-2.Adjusted\_contig/&将环化处理后的结果在Oric位置进行开环的结果\\
+                    步骤1.3&01-3.Assembly\_END/&根据基因组大小对所有结果进行重新排序、命名\\
+                    步骤2&02.RepeatMask/&重复序列预测\\
+                    步骤3&03.Annotation/&序列基因预测，功能分析，生成GBK等文件\\
+                    步骤4&04.OtherDatabase/&基因与GO，KEGG，Nr，eggNOG进行比对\\
+                    步骤5&05.InsertionSequence/&IS序列预测\\
+                    步骤6&06.ProPhage/&噬菌体前体预测\\
+                    步骤7&07.Crispr/&Crispr单元预测\\
+                    步骤8&08.Genomic\_Island/&基因岛预测\\
+                    步骤9&09.AllResult/&所有结果的汇总表\\
+                    步骤10&10.CircleGraph/&基因组分析可视化图\\
+
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+　
+
+					
+\subsection{reference文件夹}
+包含一系列的gbk和fasta文件，这些文件是拼接得到序列在NCBI Blast NT库的best hit one结果。我们将其gbk文件和序列fasta文件下载下来，方便后续的比较基因组分析。
+\subsection{01-1. Circyled\_contig/文件夹}
+微生物基因组是环状序列，而我们拼接得到的是线性的字符串。在字符串两侧可能有过拼引起的序列重叠，我们将这些能够overlap在一起的重叠关系进行比对，并得到consensus Sequence，从而实现序列的环化。内部文件的结果为fasta格式。
+\subsection{01-2.Adjusted\_contig/文件夹}
+将所有的拼接结果预测复制起点，并从复制起点重新进行开环。对于有参考序列的物种，使用参考序列的开环基因作为开环结果，并将拼接结果重新开环，得到最终的分析结果。
+\subsection{Assembly\_END/文件夹}
+我们以长度小于$1MB$作为Plasmid和Chromosome区分标准，将所有的组装结果进行分类和重新编号。
+
+\subsection{02.RepeatMasker文件夹}
+通过组装结果与已知的转座子序列库进行比对来查找转座子序列。具体方法是，通过RepeatMasker 软件（使用 Repbase 数据库）和 RepeatProteinMasker 软件（使用 RepeatMasker自带的转座子蛋白库）两种方法来预测转座子；通过 TRF（ Tandem Repeat Finder）软件预测串联重复序列。
+\begin{table}[H]
+    \caption{重复序列分析结果}
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{0.8\textwidth}{XX}
+
+                    \toprule
+                    bfseries{文件名}&\bfseries{说明}\\
+                    \midrule
+                    total.fna.masked&重复序列mask后的序列\\
+                    total.fna.out&重复序列比对后的初始结果\\
+                    total.fna.out.gff&重复序列比对结果的gff文件\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+
+
+
+\subsection{03.Annotation/文件夹}
+对所有序列组装结果进行基因预测和ncRNA预测。并以基因预测结果的swissprot注释结果和COG注释结果作为标准，生成可提交NCBI的tbl文件。对于一些涉密菌株，我们直接生成GBK，gff等NCBI FTP下提供的文件格式，方便您日后的研究。
+\subsection{04.OtherDatabase文件夹}
+每一个染色体或者质粒我们都进行了分别的单独注释。结果包含
+Detail和Table两个文件夹：
+Detail文件夹是明细结果，包含：
+
+\begin{table}[H]
+    \caption{数据库注释结果}
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    bfseries{文件夹}&\bfseries{功能}\\
+                    \midrule
+                    Swiss文件夹&SwissProt 比对结果，Gene Ontology分析结果\\
+                    eggNOG文件夹&eggNOG比对结果，COG分析结果\\
+                    KEGG文件夹&KEGG Pathway 分析结果\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+其中，每一个文件夹下的都有Readme文件。Blast的e-value阈值统一为$1e-35$。
+Table文件夹是将所有结果按照染色体和不同数据库进行了分门别类的整理，详情请见其下的Readme文件。
+\subsubsection{Detail文件夹}
+\paragraph{Swiss文件夹}
+将所有的基因序列比对到swissprot数据库，并使用blast2go进行GO Mapping。所有的GO根据GO的有向无环图向上回溯，直到第三层。而后统计第三层GO的分析结果
+结果说明如下：
+\begin{table}[H]
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{文件}                  &\bfseries{说明}\\
+                    \midrule
+                    *.GO-mapping.detail             &基因映射到GO的列表，可以提交到WEGO等网站自动生成可视化结果。EXCEL打开\\
+                    *.Genome1.GO-mapping.list&根据有向无环图自动回溯的GO过程，包含每一个第三级GO下所包含的基因和期GO映射,用Excel打开。\\
+                    *\_GO.stats                     &每一个第三级GO所映射到的基因个数，由于GO是有向无环图结果，一个子GO可能具有多个parent GO。所以该部分的基因总
+数要大于实际的基因总数。Excel打开\\
+                    *\_GO.tsv                       &  每一个基因的GO详细映射结果，用Excel打开\\
+                    *\_SwissAlignment.tsv           &所有基因与swissprot数据库比对的详细结果，用Excel打开\\
+                    *.xls                           &Swissprot和Gene Ontology分析结果的整合结果。用Excel打开\\
+                    stat*                           &  GO分析的可视化结果。\\
+                    Draw.R                          &GO分析可视化画图脚本，用R运行。\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\paragraph{eggNOG文件夹}
+为所有预测到的蛋白质与Eggnog 4.2数据库进行比对后，Mapping到的COG结果。：
+文件夹结果如下：
+\begin{table}[H]
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{文件}                  &\bfseries{说明}\\
+                    \midrule
+                    *\_AlignEggNOG.tsv              &与eggNOG数据库的详细比对结果，Excel打开\\
+                    *\_COG.tsv                      &每一个基因的COG映射结果,Excel打开\\
+                    *\_COG.xls                      &每个基因与eggNOG比对和COG映射结果整合结果,Excel打开\\
+                    *\_COG.stats                    &每一个COG功能分类的基因个数统计表,Excel打开\\
+                    stat*                           &  GO分析的可视化结果。\\
+                    Draw.R                          &GO分析可视化画图脚本，用R运行。\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\paragraph{KEGG文件夹}
+该文件夹放置KEGG通路分析结果，我们将所得的序列比对到KEGG数据库并进一步映射到KO（KEGG Orthology），并通过KO映射到Pathway。附
+件说明如下：
+\begin{table}[H]
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{文件}                  &\bfseries{说明}\\
+                    \midrule
+                    *\_pathway.tsv                  &基因映射到KEGG KO 和Pathway的明细，用Excel打开
+                    *\_AlignKEGG.tsv 基因序列与KEGG数据库比对结果，用excel打开\\
+                    *\_PathwayCategory\_Stats.stat                      &KEGG每一个功能模块的Pathway映射到的基因个数统计,用excel打开stat.*  Pathway分析可视化结果，提供tiff和PDF两个版本\\
+                    *.tar.gz                                            &Pathway分析结果的可视化结果，请解压，有两个文件夹，其中doctree文件夹位搜索索引，无需打开。Pathway文件夹下是一个网站，请点击index.html观看，每一个Pathway如果有基因被比对上，后面会出现all字样。\\
+                    *.R                                                 &可视化画图脚本，用R语言运行，您可以根据需要自行调整。\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\paragraph{Nr文件夹}
+将所有的基因序列比对到Nr数据库,结果说明如下：
+\begin{table}[H]
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{文件}                  &\bfseries{说明}\\
+                    \midrule
+                    **.xls                 &详细的比对结果，用Excel打开。\\
+
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\paragraph{Nt文件夹}
+将所有的基因序列比对到Nt数据库,结果说明如下：
+\begin{table}[H]
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{文件}                  &\bfseries{说明}\\
+                    \midrule
+                    *.xls                           &详细的比对结果，用Excel打开。\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\subsubsection{Table文件夹}
+该文件夹放置所有注释分析的表格，分成两类，第一类是按照不同的数据库进行分类，每一个子文件夹放置的excel文件包含该数据库下所有
+样本的注释结果。第二类是按照样本来源分类，每一个子文件夹下放置不同染色体的基因注释信息附件说明如下：
+
+
+\begin{table}[H]
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{文件夹}                  &\bfseries{说明}\\
+                    \midrule
+                    Database文件夹                                                   &不同数据库注释的汇总文件\\
+                    Choromsome文件夹                                              &按照不同染色体进行的分类汇总文件\\
+                    All\_HasAnnotation.xlsx           &所有能够注释的基因的注释明细表\\
+
+                    GeneFeature+Annotation.xlsx        &注释的基因信息和基因序列等信息的总表\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\subsection{05.InsertionSequence文件夹}
+存储所有的IS分析结果
+
+使用在线网站ISFINDER（https://www-is.biotoul.fr/）预测IS序列，使用blastn$+$e value $1e-5$作为参数
+包含以下结果：
+\begin{table}[H]
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{文件}                  &\bfseries{说明}\\
+                    \midrule
+                    *.fa                            &预测到的IS序列\\
+                    
+                    *.xls                            &IS预测结果的表格\\
+                    *.stat                          &IS预测结果的统计结果，用excel打开！！\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\subsection{06.ProPhage文件夹}
+使用PhageFinder进行前噬菌体寻找。结果如下：
+\begin{table}[H]
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{文件}                  &\bfseries{说明}\\
+                    \midrule
+                    *.con                           &前噬菌体序列\\
+                    *.xls                           &前噬菌体序列的详细详细信息表格\\
+                    *.pep                           &前噬菌体内包含的蛋白\\
+                    *.seq                           &前噬菌体内包含的基因\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\subsection{07.Crispr文件夹}
+使用PILE-CR预测Crispr序列。
+\begin{table}[H]
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{文件}                  &\bfseries{说明}\\
+                    \midrule
+                    *\_DP.fa                        &Crispr串联重复序列\\
+                    *\_Spacer.fa                    &Crispr中Spacer序列\\
+                    *\_Spacer.xls                   &Crispr中Spacer详细注释结果和基因组位置\\
+                    *\_NtAlign.tsv                  &Crispr中Spacer的序列注释结果\\
+                    *\_RAW.txt                      &Pilercr原始分析结果\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\subsection{08.Genomic\_Island文件夹}
+使用GIHunter预测基因岛的结果。
+\begin{table}[H]
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{文件}                  &\bfseries{说明}\\
+                    \midrule
+                    *\_GIs.txt		                 &GIHunter预测的原始结果（如果没发现基因岛的话，该文件为空）\\
+                    *\_GI.xls		                 &基因岛的明细信息\\
+                    Genome1\_GI.stat	              &基因岛的长度统计信息\\
+                    *\_GIProtein.faa	              &基因岛内包含的蛋白质序列\\
+                    *\_GIGene.ffn		             &基因岛内包含的基因序列\\
+                    *\_GI.fa			             &基因岛完整序列\\
+                    *\_GI\_Component.xls	          &基因岛包含基因的明细信息\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\subsection{09.AllResult文件夹}
+包含一个excel文件，该文件包含所有的分析结果。
+\section{分析用软件版本和数据库版本}
+除图片和网页外，所有的序列文件如fasta等推荐使用notepad的文本编辑器打开。其余的文件推荐使用excel打开
+\begin{table}[H]
+        \begin{center}
+          
+        
+        \caption{分析所用软件和版本明细}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{ccX}
+
+                    \toprule
+                    \bfseries{用途}                  &\bfseries{软件名} &\bfseries{版本}\\
+                    \midrule
+                    		
+                    序列组装&HGAP	&v3.0\\
+                    数据过滤&SMRTPipe	&v2.3\\
+                    序列比对	&blasr	&v1.3.1.140182\\
+                    基因预测	&Prodigal	&v2.6\\
+                    信号肽预测	&Signalp	&v4.1\\
+                    RNA预测,Crispr预测	&Infernal	&v1.1.1\\
+                    tRNA tmRNA预测	&Aragorn	&v1.2.36\\
+                    数据清洗	&GATK	&v1.9\\
+                    二代数据比对	&BWA	&v0.9a\\
+                    Phage序列寻找	&Phage Finder	&v2.0\\
+                    Crispr 序列寻找&	PILE-CR	&V1.0\\
+                    KEGG富集&	KOBAS&	v2.0\\
+                    基因岛预测&	GIHunter	&v1.0（http://www5.esu.edu/cpsc/bioinfo/software/GIHunter/）\\
+
+                    rRNA预测&RNAmmer&	v 1.2\\
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\begin{table}[H]
+        \begin{center}
+
+
+        \caption{分析所用数据库和版本明细}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{XX}
+
+                    \toprule
+                    \bfseries{数据库}&\bfseries{版本}\\
+                    \midrule
+                    		
+                	
+                    KEGG &v74.0\\
+                    Nr	&2015/11/11\\
+                    Rfam	&v12.0\\
+                    EggNOG	&v4.2\\
+                    Gene Ontology	&2015/9/10\\
+
+                    \bottomrule
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+
+

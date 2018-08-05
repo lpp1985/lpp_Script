@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+    <!-- This will internally look up the TaskGroup by id -->
+    <template id="RS_Subreads.1" />
+    <options>
+    <!-- workflow level options. Same as with the Protocol -->
+        <option id="pbsmrtpipe.option.option_id1" >
+            <value>MyValue</value>
+        </option>
+        <option id="pbsmrtpipe.option.max_nproc" >
+            <value>24</value>
+        </option>
+    </options>
+    <!-- 'P module-esque options. This should be changed in a newer format,
+    but trying to keep it very similar to current Portal XML schema -->
+    <task-options>
+        <option id="pbsmrtpipe.task_option.option_id1">
+            <value>1234</value>
+        </option>
+        <option id="pbsmrtpipe.task_option.option_id2">
+            <value>abcd</value>
+        </option>
+    </task-options>
+</workflow>

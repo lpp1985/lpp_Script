@@ -1,0 +1,3 @@
+[console_scripts]
+pbservice = pbcommand.services.cli:main
+

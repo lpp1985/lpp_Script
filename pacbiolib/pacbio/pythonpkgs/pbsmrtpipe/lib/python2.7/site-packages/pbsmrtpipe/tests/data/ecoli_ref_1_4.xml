@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<reference_info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="v1.4.0" last_modified="2012-08-16T12:51:13-0700" id="ecoli_k12_MG1655" xsi:schemaLocation="http://www.w3.org/2001/XMLSchema-instance">
+    <reference>
+        <description>ecoli_k12_MG1655</description>
+        <file format="text/fasta">./sequence/ecoli_k12_MG1655.fasta</file>
+        <index_file type="indexer">./sequence/ecoli_k12_MG1655.fasta.index</index_file>
+        <index_file type="sawriter">./sequence/ecoli_k12_MG1655.fasta.sa</index_file>
+        <index_file type="gatk_dict">./sequence/ecoli_k12_MG1655.dict</index_file>
+        <index_file type="sam_idx">./sequence/ecoli_k12_MG1655.fasta.fai</index_file>
+        <max_contig_length>4639675</max_contig_length>
+        <num_contigs>1</num_contigs>
+        <type>sample</type>
+    </reference>
+    <contigs>
+        <contig length="4639675" id="ref000001" displayName="Escherichia_coli_K12">
+            <digest type="md5">05dc7a37701cdc6bcf154344a227983d</digest>
+            <header>Escherichia_coli_K12</header>
+        </contig>
+    </contigs>
+</reference_info>

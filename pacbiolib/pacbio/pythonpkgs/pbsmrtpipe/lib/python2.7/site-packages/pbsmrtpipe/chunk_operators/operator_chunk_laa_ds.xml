@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_laa_ds">
+
+    <task-id>pblaa.tasks.laa</task-id>
+
+    <scatter>
+        <scatter-task-id>pbcoretools.tasks.subreadset_barcode_scatter</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.subreadset_id" in="pblaa.tasks.laa:0"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_fastq</gather-task-id>
+                <chunk-key>$chunk.result_fastq_id</chunk-key>
+                <task-output>pblaa.tasks.laa:0</task-output>
+            </chunk>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_fastq</gather-task-id>
+                <chunk-key>$chunk.junk_fastq_id</chunk-key>
+                <task-output>pblaa.tasks.laa:1</task-output>
+            </chunk>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_csv</gather-task-id>
+                <chunk-key>$chunk.summary_csv_id</chunk-key>
+                <task-output>pblaa.tasks.laa:2</task-output>
+            </chunk>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_csv</gather-task-id>
+                <chunk-key>$chunk.input_csv_id</chunk-key>
+                <task-output>pblaa.tasks.laa:3</task-output>
+            </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

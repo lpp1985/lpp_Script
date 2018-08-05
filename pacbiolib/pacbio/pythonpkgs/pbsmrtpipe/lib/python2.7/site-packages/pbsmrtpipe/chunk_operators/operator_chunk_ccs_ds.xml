@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_ccs_ds">
+
+    <task-id>pbccs.tasks.ccs</task-id>
+
+    <scatter>
+        <scatter-task-id>pbcoretools.tasks.subreadset_zmw_scatter</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.subreadset_id" in="pbccs.tasks.ccs:0"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_ccsset</gather-task-id>
+                <chunk-key>$chunk.ccsset_id</chunk-key>
+                <task-output>pbccs.tasks.ccs:0</task-output>
+            </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

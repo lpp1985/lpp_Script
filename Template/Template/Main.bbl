@@ -1,0 +1,103 @@
+\begin{thebibliography}{10}
+
+\bibitem{HGAP}
+Chen-Shan Chin, David~H. Alexander, Patrick Marks, Aaron~A. Klammer, James
+  Drake, Cheryl Heiner, Alicia Clum, Alex Copeland, John Huddleston, Evan~E.
+  Eichler, Stephen~W. Turner, and Jonas Korlach.
+\newblock Nonhybrid, finished microbial genome assemblies from long-read smrt
+  sequencing data.
+\newblock {\em Nature Methods}, 10(6):563--569, 2013.
+\newblock identifier: nmeth.2474.
+
+\bibitem{RepeatMasker}
+N.~Chen.
+\newblock Using repeatmasker to identify repetitive elements in genomic
+  sequences.
+\newblock {\em Curr Protoc Bioinformatics}, Chapter 4:Unit 4.10, 2004.
+
+\bibitem{Repbase}
+W.~Bao, K.~K. Kojima, and O.~Kohany.
+\newblock Repbase update, a database of repetitive elements in eukaryotic
+  genomes.
+\newblock {\em Mob DNA}, 6:11, 2015.
+
+\bibitem{TRF}
+G.~Benson.
+\newblock Tandem repeats finder: a program to analyze dna sequences.
+\newblock {\em Nucleic Acids Res}, 27(2):573--80, 1999.
+
+\bibitem{Prodigal}
+Doug Hyatt, Gwo-Liang Chen, Philip~F. LoCascio, Miriam~L. Land, Frank~W.
+  Larimer, and Loren~J. Hauser.
+\newblock Prodigal: prokaryotic gene recognition and translation initiation
+  site identification.
+\newblock {\em BMC Bioinformatics}, 11(1):119, 2010.
+\newblock identifier: 1471-2105-11-119.
+
+\bibitem{Infernal}
+E.~P. Nawrocki and S.~R. Eddy.
+\newblock Infernal 1.1: 100-fold faster rna homology searches.
+\newblock {\em Bioinformatics}, 29(22):2933--2935, 2013.
+
+\bibitem{RNAmmer}
+K.~Lagesen, P.~Hallin, E.~A. Rodland, H.~H. Staerfeldt, T.~Rognes, and D.~W.
+  Ussery.
+\newblock Rnammer: consistent and rapid annotation of ribosomal rna genes.
+\newblock {\em Nucleic Acids Research}, 35(9):3100--3108, 2007.
+
+\bibitem{Phage_Finder}
+D.~E. Fouts.
+\newblock Phage\_finder\:automated identification and classification of
+  prophage regions in complete bacterial genome sequences.
+\newblock {\em Nucleic Acids Res}, 34(20):5839--51, 2006.
+
+\bibitem{PILER-CR}
+R.~C. Edgar.
+\newblock Piler-cr: fast and accurate identification of crispr repeats.
+\newblock {\em BMC Bioinformatics}, 8:18, 2007.
+
+\bibitem{Rfam}
+E.~P. Nawrocki, S.~W. Burge, A.~Bateman, J.~Daub, R.~Y. Eberhardt, S.~R. Eddy,
+  E.~W. Floden, P.~P. Gardner, T.~A. Jones, J.~Tate, and R.~D. Finn.
+\newblock Rfam 12.0: updates to the rna families database.
+\newblock {\em Nucleic Acids Research}, 43(D1):D130--D137, 2015.
+\newblock item\_number: gku1063.
+
+\bibitem{Nr}
+K.~D. Pruitt, T.~Tatusova, G.~R. Brown, and D.~R. Maglott.
+\newblock Ncbi reference sequences (refseq): current status, new features and
+  genome annotation policy.
+\newblock {\em Nucleic Acids Research}, 40(D1):D130--D135, 2011.
+\newblock item\_number: gkr1079.
+
+\bibitem{KEGG}
+M.~Kanehisa, M.~Araki, S.~Goto, M.~Hattori, M.~Hirakawa, M.~Itoh, T.~Katayama,
+  S.~Kawashima, S.~Okuda, T.~Tokimatsu, and Y.~Yamanishi.
+\newblock Kegg for linking genomes to life and the environment.
+\newblock {\em Nucleic Acids Research}, 36(Database):D480--D484, 2007.
+
+\bibitem{SWISS}
+K.~Watanabe and S.~Harayama.
+\newblock [swiss-prot: the curated protein sequence database on internet].
+\newblock {\em Tanpakushitsu Kakusan Koso}, 46(1):80--6, 2001.
+
+\bibitem{eggNOG}
+S.~Powell, K.~Forslund, D.~Szklarczyk, K.~Trachana, A.~Roth, J.~Huerta-Cepas,
+  T.~Gabaldon, T.~Rattei, C.~Creevey, M.~Kuhn, L.~J. Jensen, C.~von Mering, and
+  P.~Bork.
+\newblock eggnog v4.0: nested orthology inference across 3686 organisms.
+\newblock {\em Nucleic Acids Res}, 42(Database issue):D231--9, 2014.
+
+\bibitem{KOBAS}
+C.~Xie, X.~Mao, J.~Huang, Y.~Ding, J.~Wu, S.~Dong, L.~Kong, G.~Gao, C.~Y. Li,
+  and L.~Wei.
+\newblock Kobas 2.0: a web server for annotation and identification of enriched
+  pathways and diseases.
+\newblock {\em Nucleic Acids Res}, 39(Web Server issue):W316--22, 2011.
+
+\bibitem{ISfinder}
+P.~Siguier, J.~Perochon, L.~Lestrade, J.~Mahillon, and M.~Chandler.
+\newblock Isfinder: the reference centre for bacterial insertion sequences.
+\newblock {\em Nucleic Acids Res}, 34(Database issue):D32--6, 2006.
+
+\end{thebibliography}

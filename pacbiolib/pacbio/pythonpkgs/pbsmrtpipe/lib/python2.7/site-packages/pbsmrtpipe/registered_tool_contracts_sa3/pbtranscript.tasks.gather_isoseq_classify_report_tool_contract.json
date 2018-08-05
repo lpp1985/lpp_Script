@@ -1,0 +1,37 @@
+{
+    "version": "0.1.0", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.gather_isoseq_classify_report --resolved-tool-contract ", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.gather_isoseq_classify_report", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.gathered", 
+        "resource_types": [], 
+        "description": "General Chunk JSON Statistics Gather", 
+        "schema_options": [], 
+        "output_types": [
+            {
+                "title": "JSON", 
+                "description": "Gathered JSON", 
+                "default_name": "gathered", 
+                "id": "json_out", 
+                "file_type_id": "PacBio.FileTypes.json"
+            }
+        ], 
+        "_comment": "Created by v0.3.20", 
+        "name": "Dev JSON Gather", 
+        "input_types": [
+            {
+                "description": "Gathered CHUNK Json with Json chunk key", 
+                "title": "GCHUNK Json", 
+                "id": "cjson_in", 
+                "file_type_id": "PacBio.FileTypes.CHUNK"
+            }
+        ], 
+        "nproc": 1, 
+        "is_distributed": false, 
+        "tool_contract_id": "pbtranscript.tasks.gather_isoseq_classify_report"
+    }
+}

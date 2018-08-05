@@ -1,0 +1,79 @@
+{
+    "version": "0.1.0", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.scatter_ice_polish_cluster_bins --resolved-tool-contract ", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.scatter_ice_polish_cluster_bins", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.scattered", 
+        "resource_types": [], 
+        "description": "\nSpecialized scatter for ice_quiver of cluster bins.\nFor each cluster bin, scatter ice_quiver tasks into n\nchunks.\n", 
+        "schema_options": [
+            {
+                "pb_option": {
+                    "default": 24, 
+                    "type": "integer", 
+                    "option_id": "pbsmrtpipe.task_options.dev_scatter_max_nchunks", 
+                    "name": "Max NChunks", 
+                    "description": "Maximum number of Chunks"
+                }, 
+                "title": "JSON Schema for pbsmrtpipe.task_options.dev_scatter_max_nchunks", 
+                "required": [
+                    "pbsmrtpipe.task_options.dev_scatter_max_nchunks"
+                ], 
+                "$schema": "http://json-schema.org/draft-04/schema#", 
+                "type": "object", 
+                "properties": {
+                    "pbsmrtpipe.task_options.dev_scatter_max_nchunks": {
+                        "default": 24, 
+                        "type": "integer", 
+                        "description": "Maximum number of Chunks", 
+                        "title": "Max NChunks"
+                    }
+                }
+            }
+        ], 
+        "output_types": [
+            {
+                "title": "Chunk JSON Polish Tasks", 
+                "description": "Chunked JSON Polish Tasks", 
+                "default_name": "ice_polish.chunked", 
+                "id": "cjson_out", 
+                "file_type_id": "PacBio.FileTypes.CHUNK"
+            }
+        ], 
+        "_comment": "Created by v0.3.25", 
+        "nchunks": "$max_nchunks", 
+        "name": "Scatter Ice Polish Chunks", 
+        "input_types": [
+            {
+                "description": "Polish Chunk Tasks Pickle", 
+                "title": "PICKLE", 
+                "id": "polish_chunk_pickle", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "description": "Setinel file", 
+                "title": "Sentinel In", 
+                "id": "sentinel_in", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }, 
+            {
+                "description": "PacBio SubreadSet", 
+                "title": "SubreadSet In", 
+                "id": "subreads_in", 
+                "file_type_id": "PacBio.DataSet.SubreadSet"
+            }
+        ], 
+        "chunk_keys": [
+            "$chunk.polish_chunk_pickle_id", 
+            "$chunk.sentinel_id", 
+            "$chunk.subreads_id"
+        ], 
+        "nproc": 1, 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.scatter_ice_polish_cluster_bins"
+    }
+}

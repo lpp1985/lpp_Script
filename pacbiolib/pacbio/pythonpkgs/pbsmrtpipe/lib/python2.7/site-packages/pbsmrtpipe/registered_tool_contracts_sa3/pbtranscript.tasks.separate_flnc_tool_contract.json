@@ -1,0 +1,109 @@
+{
+    "version": "1.0.0.177900",
+    "driver": {
+        "serialization": "json",
+        "exe": "python -m pbtranscript.tasks.separate_flnc --resolved-tool-contract",
+        "env": {}
+    },
+    "tool_contract_id": "pbtranscript.tasks.separate_flnc",
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "resource_types": [
+            "$tmpdir"
+        ],
+        "description": "Constants used in tool contract.",
+        "schema_options": [
+            {
+                "pb_option": {
+                    "default": 1,
+                    "type": "integer",
+                    "option_id": "pbtranscript.task_options.bin_size_kb",
+                    "name": "Bin by read length in KB",
+                    "description": "Bin size by kb (default: 1)"
+                },
+                "title": "JSON Schema for pbtranscript.task_options.bin_size_kb",
+                "required": [
+                    "pbtranscript.task_options.bin_size_kb"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbtranscript.task_options.bin_size_kb": {
+                        "default": 1,
+                        "type": "integer",
+                        "description": "Bin size by kb (default: 1)",
+                        "title": "Bin by read length in KB"
+                    }
+                }
+            },
+            {
+                "pb_option": {
+                    "default": "[]",
+                    "type": "string",
+                    "option_id": "pbtranscript.task_options.bin_manual",
+                    "name": "Bin by read length manually",
+                    "description": "Bin manual (ex: (1,2,3,5)), overwrites bin_size_kb (default: [])"
+                },
+                "title": "JSON Schema for pbtranscript.task_options.bin_manual",
+                "required": [
+                    "pbtranscript.task_options.bin_manual"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbtranscript.task_options.bin_manual": {
+                        "default": "[]",
+                        "type": "string",
+                        "description": "Bin manual (ex: (1,2,3,5)), overwrites bin_size_kb (default: [])",
+                        "title": "Bin by read length manually"
+                    }
+                }
+            },
+            {
+                "pb_option": {
+                    "default": false,
+                    "type": "boolean",
+                    "option_id": "pbtranscript.task_options.bin_by_primer",
+                    "name": "Bin by primer",
+                    "description": "Instead of binning by size, bin by primer (overwrites --bin_size_kb and --bin_manual) (default: False)"
+                },
+                "title": "JSON Schema for pbtranscript.task_options.bin_by_primer",
+                "required": [
+                    "pbtranscript.task_options.bin_by_primer"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbtranscript.task_options.bin_by_primer": {
+                        "default": false,
+                        "type": "boolean",
+                        "description": "Instead of binning by size, bin by primer (overwrites --bin_size_kb and --bin_manual) (default: False)",
+                        "title": "Bin by primer"
+                    }
+                }
+            }
+        ],
+        "output_types": [
+            {
+                "title": "Bins of FLNC Reads",
+                "description": "output bins in pickle.",
+                "default_name": "separate_flnc",
+                "id": "out_pickle",
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }
+        ],
+        "_comment": "Created by v0.4.14",
+        "name": "pbtranscript.tasks.separate_flnc",
+        "input_types": [
+            {
+                "description": "FLNC reads ContigSet",
+                "title": "FASTA or ContigSet file",
+                "id": "flnc_fa",
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            }
+        ],
+        "nproc": "$max_nproc",
+        "is_distributed": true,
+        "tool_contract_id": "pbtranscript.tasks.separate_flnc"
+    }
+}

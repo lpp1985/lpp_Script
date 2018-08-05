@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_task_falcon0_cons">
+    <task-id>falcon_ns.tasks.task_falcon0_cons</task-id>
+    <scatter>
+        <scatter-task-id>pbfalcon.tasks.scatter_run_scripts_in_json_2</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.json_id" in="falcon_ns.tasks.task_falcon0_cons:0"/>
+            <chunk out="$chunk.txt_id" in="falcon_ns.tasks.task_falcon0_cons:1"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+           <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_txt</gather-task-id>
+                <chunk-key>$chunk.txt_id</chunk-key>
+                <task-output>falcon_ns.tasks.task_falcon0_cons:0</task-output>
+           </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

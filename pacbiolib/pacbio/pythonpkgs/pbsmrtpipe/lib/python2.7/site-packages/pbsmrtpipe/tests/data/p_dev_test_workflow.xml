@@ -1,0 +1,19 @@
+<smrtpipeSettings>
+    <!-- Developing test workflow -->
+    <protocol name="resequencing">
+        <option name="reference">
+            <value>/mnt/secondary-siv/references/ecoli_k12_MG1655</value>
+        </option>
+        <option name="noise.data">
+            <value>-77.27,0.08654,0.00121</value>
+        </option>
+        <option name="use_subreads">
+            <value>True</value>
+        </option>
+    </protocol>
+
+    <module id="P_DevTest">
+        <option name="sleep_time">4</option>
+    </module>
+
+</smrtpipeSettings>

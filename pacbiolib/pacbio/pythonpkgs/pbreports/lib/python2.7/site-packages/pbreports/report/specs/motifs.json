@@ -1,0 +1,142 @@
+{
+    "id": "motifs",
+    "version": "3.2",
+    "title": "Modified Base Motifs",
+    "description": null,
+    "attributes": [],
+    "tables": [
+        {
+            "title": "Modified Base Motifs",
+            "id": "motif_records",
+            "columns": [
+                {
+                    "header": "Motif",
+                    "type": "string",
+                    "format": null,
+                    "id": "motif_id",
+                    "description": "The nucleotide sequence of the methyltransferase recognition motif, using the standard IUPAC nucleotide alphabet."
+                },
+                {
+                    "header": "Modified Position",
+                    "type": "int",
+                    "format": "{:,d}",
+                    "id": "modified_position",
+                    "description": "The position within the motif that is modified with a 1-based coordinate system."
+                },
+                {
+                    "header": "Modification Type",
+                    "type": "string",
+                    "format": null,
+                    "id": "modification_type",
+                    "description": "The type of chemical modification most commonly identified at that motif- 'modified_base' means modification not recognized by the software."
+                },
+                {
+                    "header": "% of Motifs Detected",
+                    "type": "float",
+                    "format": "{p:.1f} %",
+                    "id": "percent_motifs_detected",
+                    "description": "The percentage of times that this motif was detected as modified across the entire genome."
+                },
+                {
+                    "header": "# of Motifs Detected",
+                    "type": "int",
+                    "format": "{:,d}",
+                    "id": "ndetected_motifs",
+                    "description": "The number of times that this motif was detected as modified across the entire genome."
+                },
+                {
+                    "header": "# of Motifs in Genome",
+                    "type": "int",
+                    "format": "{:,d}",
+                    "id": "nmotifs_in_genome",
+                    "description": "The number of times this motif occurs in the genome."
+                },
+                {
+                    "header": "Mean QV",
+                    "type": "float",
+                    "format": "{:,.1f}",
+                    "id": "mean_readscore",
+                    "description": "The mean modification QV for all instances where this motif was detected as modified."
+                },
+                {
+                    "header": "Mean Coverage",
+                    "type": "float",
+                    "format": "{:,.1f}",
+                    "id": "mean_coverage",
+                    "description": "The mean coverage for all instances where this motif was detected as modified."
+                },
+                {
+                    "header": "Partner Motif",
+                    "type": "string",
+                    "format": null,
+                    "id": "partner_motif",
+                    "description": "For motifs that are not self-palindromic, this is the complementary sequence."
+                },
+                {
+                    "header": "Mean IPD ratio",
+                    "type": "float",
+                    "format": "{:,.1f}",
+                    "id": "mean_ipd_ratio",
+                    "description": "The mean inter-pulse duration. An IPD ratio greater than 1 means that the sequencing polymerase slowed down at this base position, relative to the control. An IPD ratio less than 1 indicates speeding up."
+                },
+                {
+                    "header": "Group Tag",
+                    "type": "string",
+                    "format": null,
+                    "id": "group_tag",
+                    "description": "The motif group of which the motif is a member. Motifs are grouped if they are mutually or self reverse-complementary. If the motif isn't complementary to itself or another motif, the motif is given its own group."
+                },
+                {
+                    "header": "Objective Score",
+                    "type": "float",
+                    "format": "{:,.1f}",
+                    "id": "objective_score",
+                    "description": "For a given motif, the objective score is computed as (fraction methylated)*(sum of log-p values of matches)."
+                }
+            ],
+            "description": null
+        }
+    ],
+    "plotGroups": [
+        {
+            "plots": [
+                {
+                    "xlabel": "Per-Strand Coverage",
+                    "description": null,
+                    "caption": "Kinetic Detections",
+                    "ylabel": "Modification QV",
+                    "title": "Kinetic Detections",
+                    "id": "mod_qv_coverage"
+                },
+                {
+                    "xlabel": "Modification QV",
+                    "description": null,
+                    "caption": "Kinetic Detections",
+                    "ylabel": "Bases",
+                    "title": "Kinetic Detections",
+                    "id": "qmod_hist"
+                }
+            ],
+            "description": null,
+            "legend": null,
+            "id": "modifications",
+            "title": "Kinetic Detections"
+        },
+        {
+            "plots": [
+                {
+                    "xlabel": "Modification QV",
+                    "description": null,
+                    "caption": "Modification QVs",
+                    "ylabel": "Motif Sites",
+                    "title": "Modification QVs",
+                    "id": "motifs"
+                }
+            ],
+            "description": null,
+            "legend": null,
+            "id": "modification_qvs",
+            "title": "Modification QVs"
+        }
+    ]
+}

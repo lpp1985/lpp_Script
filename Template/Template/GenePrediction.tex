@@ -1,0 +1,24 @@
+\section{基因预测和注释分析}
+使用Prodigal\cite{Prodigal}对cds进行预测，使用SignalP对信号肽进行预测，使用infernal\cite{Infernal}$+$Rnammer\cite{RNAmmer}对tRNA、rRNA和ncRNA进行预测。使用Phage Finder\cite{Phage_Finder}对可能的噬菌体前体区域进行预测，使用PILE-CR\cite{PILER-CR}预测可能存在的CRISPR序列。使用RFam\cite{Rfam}、Nr\cite{Nr}、KEGG\cite{KEGG}、Swissprot\cite{SWISS}库对所有基因进行功能注释。使用GIHunter（http://www5.esu.edu/cpsc/bioinfo/software/GIHunter/）预测可能存在的基因岛。
+
+根据基因组序列绘出其 GC 图，使用$（ G–C） /（ G+ C）$ 的计算方法来进行 GC skew 分析，同时根据 COG \cite{eggNOG}的注释结果和基因的位置信息绘出 COG注释的基因在基因组上的分布情况。
+结果如下所示：
+{% for eachgraph in CircularGraph %}
+\input{"{{eachgraph}}"}
+{% endfor %}
+
+
+
+
+由外至内分别是：tRNA相关基因；正向基因的COG注释——以不同的颜色区分（可参见右上角说明）；正向基因的位置；rRNA基因；反向基因坐标；反向基因COG注释； GC 含量，以平均 GC 为基准线，向外突出的表示高于均值，向内突出的表示低于均值；最内圈为 GC skew值，紫色表示小于 0，绿色表示大于 0。
+
+
+基因预测统计信息如下表所示：
+\input{"{{status_table}}"}
+
+\input{"{{length_png}}"}
+
+
+
+
+

@@ -1,0 +1,16 @@
+<!-- Workflow HTML Summary Report -->
+{% extends "base.html" %}
+
+{% block title %} MyTitle {% endblock %}
+
+{% block body %}
+    <h1> Job Summary</h1>
+
+    ntasks:{{ ntasks }} nfailures:{{nfailures}}
+
+    <h1> Workflow </h1>
+    <!-- Workflow SVG image -->
+    <img src="workflow/workflow.png" />
+
+
+{% endblock %}

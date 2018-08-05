@@ -1,0 +1,161 @@
+#!/bin/bash
+
+# ---- error handling
+set -o errexit;
+set -o posix;
+set -o pipefail;
+set -o errtrace;
+set -o nounset
+unexpected_error() {
+    local errstat=$?
+    echo "${g_prog:-$(basename $0)}: Error! Encountered unexpected error at 'line $(caller)', bailing out..." 1>&2
+    exit $errstat;
+}
+trap unexpected_error ERR;
+
+# Force the path to only what we need, saving off the original path
+# PATH_ORIG=$PATH;
+# PATH=/usr/bin:/bin
+
+g_prog=$(basename "$0");
+g_progdir=$(dirname "$0");
+g_progdir_abs=$(dirname $(readlink -f "$0"));
+
+# ---- error functions
+
+merror() {
+    echo "${g_prog:=$0}: Error! ""$@" 1>&2;
+    exit 1;
+}
+minterror() {
+    echo "${g_prog:=$0}: Internal Error! ""$@" 1>&2;
+    exit 1;
+}
+mwarn() {
+    echo "${g_prog:=$0}: Warning! ""$@" 1>&2;
+}
+
+# NOTE: keep this detect_custom_pipeline() subroutine in sync in
+#       private/pacbio/pythonpkgs/pbsmrtpipe/binwrap/pbsmrtpipe and
+#       admin/bin/services-start.
+detect_custom_pipeline() {
+    if [[ ! -z "${SMRT_IGNORE_CUSTOM_PIPELINES:-}" ]] ; then
+	return 0
+    fi
+
+    local custpipeline_cfglist="";
+    if  [[ -z "${SMRT_IGNORE_CUSTOM_PIPELINES_SMRTLINK:-}" ]] &&
+	[[ -d "$g_smrtlink_topdir" ]] &&
+	[[ -d "$g_smrtlink_topdir/admin" ]] &&
+	[[ -d "$g_smrtlink_topdir/private" ]] &&
+	[[ -d "$g_smrtlink_topdir/addons/pipelines" ]] ; then
+	custpipeline_cfglist+=":"$(find "$g_smrtlink_topdir/addons/pipelines" -mindepth 2 -maxdepth 2 -name "smrtlink-bundle-resources.json" | LC_ALL=C sort | tr '\n' ':')
+	custpipeline_cfglist=${custpipeline_cfglist#:}
+	custpipeline_cfglist=${custpipeline_cfglist%:}
+    fi
+    if  [[ -z "${SMRT_IGNORE_CUSTOM_PIPELINES_SMRTROOT:-}" ]] &&
+	[[ -d "$g_smrtroot_dir" ]] &&
+	[[ -d "$g_smrtroot_dir/install" ]] &&
+	[[ -d "$g_smrtroot_dir/userdata" ]] &&
+	[[ -d "$g_smrtroot_dir/addons/pipelines" ]] ; then
+	custpipeline_cfglist+=":"$(find "$g_smrtroot_dir/addons/pipelines" -mindepth 2 -maxdepth 2 -name "smrtlink-bundle-resources.json" | LC_ALL=C sort | tr '\n' ':')
+	custpipeline_cfglist=${custpipeline_cfglist#:}
+	custpipeline_cfglist=${custpipeline_cfglist%:}
+    fi
+
+    if [[ -z "$custpipeline_cfglist" ]] ; then
+	# We did not find any custom pipeline directories
+	return 0;
+    fi
+
+    local envvars=();
+    envvars=( PB_CUSTOM_PIPELINE_PATH="$custpipeline_cfglist" );
+
+    # NOTE: This can be deleted once we support multple custom pipeline 
+    #       directories in the PB_CUSTOM_PIPELINE_PATH variable (the
+    #       other variables will not need to be set).
+    local support_multiple_pipeline_dirs=false;
+    if ! $support_multiple_pipeline_dirs; then
+	# We currently only support a single custom pipeline directory
+	# So just pick the first custom pipeline directory and determine
+	# the proper environment variables to set from the json config
+	# file.  Note, that we can basically just create the env variables
+	# directly from the json values (no need to create absolute paths)
+	# since the underlying code will asssume relative paths are relative
+	# to the json config file.
+	local cfgfile;
+	local cfgdir;
+	cfgfile=${custpipeline_cfglist%%:*};
+	cfgdir=$(dirname "$cfgfile");
+
+	local envvar_str;
+	envvar_str=$(cat "$cfgfile" | tr -d '\n' | sed -e 's/,/ /g; s/[{}]//g; s/"\([^"]\+\)"[[:space:]]*:[[:space:]]*"/\1="'"${cfgdir//\//\\/}"'\//g')
+	eval envvars+=( ${envvar_str} );
+
+	# Add some special cases:
+	#   1) remove PB_BUNDLE_ID, as it is not needed in the environment
+	#   2) separate out PB_PIPELINE_BIN_DIR, we need to jam it into PATH
+	# Do these in to separate loops so that the delete of PB_BUNDLE_ID
+	# doesn't screw up the count.  Do not use 'unset' to delete an array
+	# element, since the index is still there and screws up the array
+	# processing.  So use a tmp array to remove the values.
+	local tmparr=();
+	local i;
+	for ((i=0; i < ${#envvars[@]} ; i++)); do
+	    if [[ ! ${envvars[$i]} =~ ^PB_BUNDLE_ID= ]] ; then
+		tmparr+=( "${envvars[$i]}" );
+	    fi
+	done
+	envvars=( "${tmparr[@]}" );
+
+	for ((i=0; i < ${#envvars[@]} ; i++)); do
+	    if [[ ${envvars[$i]} =~ ^PB_PIPELINE_BIN_DIR=(.*) ]] ; then
+		local bindir="${BASH_REMATCH[1]}";
+		if [[ ! $bindir =~ ^/ ]]; then
+		    bindir="$(dirname "$cfgfile")/$bindir"
+		fi
+		g_custpipeline_bindir=$bindir;
+	    fi
+	done
+    fi
+
+    g_custpipeline_envvars=( "${envvars[@]}" );
+}
+
+# ---- globals
+
+# Needed for detect_custom_pipeline():
+g_smrtlink_topdir=$(readlink -f "$g_progdir_abs/../../../../../../../../..")
+g_smrtroot_dir=$(readlink -f "$g_smrtlink_topdir/../..")
+g_custpipeline_envvars=();
+g_custpipeline_bindir=""
+
+# ---- main
+
+# Hack to make sure tmp_dir exists when running in a production environment.
+# The tmp_dir may not exist and may need to be created if it gets removed
+# (on reboot for instance)
+prod_tmpdir_link="$g_progdir_abs/../../../../../../../../../../../userdata/tmp_dir"
+if [[ -h "$prod_tmpdir_link" ]] ; then
+    if [[ -e "$prod_tmpdir_link" ]] ; then
+	if [[ ! -d "$prod_tmpdir_link" ]] ; then
+	    merror "tmp_dir '$prod_tmpdir_link' exists, but is not a directory."
+	fi
+    else
+	# Directory doesn't exist, make the directory pointed to by the 
+	# real path (resolving any symlinks):
+	mkdir -p $(readlink -m "$prod_tmpdir_link")
+    fi
+fi
+
+# Detect any custom pipelines and set env vars accordingly
+detect_custom_pipeline;
+
+if [[ ! -z "$g_custpipeline_bindir" ]] ; then
+    g_custpipeline_envvars+=( PATH="$g_custpipeline_bindir:$PATH" );    
+fi
+
+# Invoke pbsmrtpipe, potentially setting custom pipeline env vars
+exec env "${g_custpipeline_envvars[@]+${g_custpipeline_envvars[@]}}" \
+__SMRTPRIVATE_DOT_EXEPATH="$g_progdir_abs/../../../../../private/thirdparty/graphviz/graphviz_2.38.0/binwrap/dot" \
+    "${g_progdir_abs}/../../../../../private/thirdparty/python/python_2.7.9/binwrap/python" "${g_progdir_abs}/../../../../../private/pacbio/pythonpkgs/pbsmrtpipe/bin/pbsmrtpipe" ${1+"$@"}

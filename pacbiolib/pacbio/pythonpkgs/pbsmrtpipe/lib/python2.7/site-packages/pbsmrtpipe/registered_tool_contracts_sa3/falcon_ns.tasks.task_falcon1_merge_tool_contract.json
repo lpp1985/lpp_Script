@@ -1,0 +1,37 @@
+{
+    "driver": {
+        "env": {},
+        "exe": "python -m pbfalcon.tasks.basic  run-rtc  ",
+        "serialization": "json"
+    },
+    "tool_contract": {
+        "_comment": "Created by v0.4.14",
+        "description": "Quick tool task_falcon1_merge falcon_ns.tasks.task_falcon1_merge",
+        "input_types": [
+            {
+                "description": "description for PacBio.FileTypes.json_0",
+                "file_type_id": "PacBio.FileTypes.json",
+                "id": "Label PacBio.FileTypes.json_0",
+                "title": "<OutputFileType PacBio.FileTypes.json json_id >"
+            }
+        ],
+        "is_distributed": true,
+        "name": "Tool task_falcon1_merge",
+        "nproc": 6,
+        "output_types": [
+            {
+                "default_name": "merge_done",
+                "description": "txt of LAmerge scripts done",
+                "file_type_id": "PacBio.FileTypes.txt",
+                "id": "txt_id",
+                "title": "txt showing LAmerge scripts done, stage-1"
+            }
+        ],
+        "resource_types": [],
+        "schema_options": [],
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "tool_contract_id": "falcon_ns.tasks.task_falcon1_merge"
+    },
+    "tool_contract_id": "falcon_ns.tasks.task_falcon1_merge",
+    "version": "0.0.0"
+}

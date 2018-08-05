@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from '_analysis_utils.html' import file_link_table  %}
+
+{% block title %} Analysis Reports {% endblock %}
+
+{% block body %}
+
+<h1>Analysis Reports</h1>
+
+{{ file_link_table(file_links) }}
+
+{% endblock %}
+

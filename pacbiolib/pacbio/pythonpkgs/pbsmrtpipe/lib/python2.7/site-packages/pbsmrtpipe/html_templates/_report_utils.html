@@ -1,0 +1,77 @@
+{# Convert a Pbreport table. The data is preprocessed for easier templating #}
+{% macro to_report_table(rtable) -%}
+
+    {%- if rtable -%}
+        <h3>Table {{ rtable.table_id }}</h3>
+        <div class="panel panel-default">
+
+            <table class="table table-striped">
+                <thead>
+                {% for h in rtable.headers %}
+                    <th>{{ h }}</th>
+                {% endfor %}
+                </thead>
+                {% for r in rtable.rows %}
+                    <tr>
+                        {% for d in r %}
+                            <td>{{ d }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
+
+{%- endmacro %}
+
+{% macro to_report_attrs(rattrs) -%}
+
+    {%- if rattrs -%}
+        <h3>Attributes</h3>
+        <div class="panel panel-default">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <td>Attribute Id</td>
+                    <td>Name</td>
+                    <td>Value</td>
+                </tr>
+                </thead>
+                {% for a in rattrs %}
+                    <tr>
+                        <td>{{ a.id }}</td>
+                        <td> {{ a.name }}</td>
+                        <td>{{ a.value }}</td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    {% endif %}
+
+{%- endmacro %}
+
+
+{% macro to_report_plot(report_plot) -%}
+
+    {%- if report_plot -%}
+        <h3>Plot {{ report_plot.id }} </h3>
+        <div class="well">
+            <img src="{{ report_plot.image }}" >
+        </div>
+    {% endif %}
+{% endmacro -%}
+
+{% macro to_report_plot_group(plot_group) -%}
+
+    {%- if plot_group -%}
+        <h3>Plot Groups</h3>
+        <div class="panel panel-default">
+
+            {% for plot in plot_group.plots %}
+                <p>{{ plot.title }}</p>
+                {{ to_report_plot(plot) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endmacro -%}

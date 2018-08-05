@@ -1,0 +1,98 @@
+#!/usr/bin/env python
+
+# TODO This should disappear as soon as a Scala implementation of the tool
+# contract interface is available.
+
+"""
+Python wrapper for tool contract support in MotifMaker ('reprocess' mode).
+"""
+
+import logging
+import os
+import sys
+
+from pbcommand.models import FileTypes, get_pbparser
+from pbcommand.cli import pbparser_runner
+from pbcommand.utils import setup_log
+from pbcore.io import ReferenceSet
+import pbcore.util.Process
+
+__version__ = "0.1"
+log = logging.getLogger(__name__)
+
+class Constants(object):
+    TOOL_ID = "motif_maker.tasks.reprocess"
+    # XXX for testing purposes we want to run everything in-place, without
+    # installing
+    DIST_PATH = os.path.dirname(os.path.dirname(__file__))
+    DRIVER_EXE = "task_motifmaker_reprocess --resolved-tool-contract "
+    MIN_FRACTION_DEFAULT = 0.30
+    MIN_FRACTION_ID = "motif_maker.task_options.min_fraction"
+
+def get_parser():
+    p = get_pbparser(
+        tool_id=Constants.TOOL_ID,
+        version=__version__,
+        name=Constants.TOOL_ID,
+        description=__doc__,
+        driver_exe=Constants.DRIVER_EXE)
+    p.add_input_file_type(FileTypes.GFF, "gff", "GFF file",
+        "GFF file containing modified bases")
+    p.add_input_file_type(FileTypes.CSV, "motifs_csv", "CSV file",
+        "CSV file of motifs")
+    p.add_input_file_type(FileTypes.DS_REF, "reference", "ReferenceSet",
+        "Reference DataSet or Fasta sequence")
+    p.add_output_file_type(FileTypes.GFF, "gff_out", "Motifs and Modifications",
+        "Summary of analysis results for each kinModCall with motif information", default_name="motifs")
+    p.add_float(Constants.MIN_FRACTION_ID, "minFraction",
+        Constants.MIN_FRACTION_DEFAULT,
+        "Minimum methylated fraction",
+        "Minimum methylated fraction")
+    return p
+
+def _run(reference_file, motifs_file, gff_file, minFraction,
+         output_file): #, bases_file):
+    fasta_file = ReferenceSet(reference_file).toExternalFiles()[0]
+    args2 = [
+        "motifMaker",
+        "reprocess",
+        "--gff", gff_file,
+        "--motifs", motifs_file,
+        "--fasta", fasta_file,
+        "--output", output_file,
+        "--minFraction", str(minFraction),
+    ]
+    cmd = " ".join(args2)
+    log.info(cmd)
+    output, errCode, errorMessage = pbcore.util.Process.backticks(cmd)
+    if errCode:
+        raise RuntimeError("MotifMaker failed with error %s" % errorMessage)
+    return 0
+
+def args_runner(args):
+    return _run(
+        reference_file=args.reference,
+        gff_file=args.gff,
+        motifs_file=args.motifs_csv,
+        output_file=args.gff_out,
+        minFraction=args.minFraction)
+
+def resolved_tool_contract_runner(rtc):
+    return _run(
+        gff_file=rtc.task.input_files[0],
+        motifs_file=rtc.task.input_files[1],
+        reference_file=rtc.task.input_files[2],
+        output_file=rtc.task.output_files[0],
+        minFraction=rtc.task.options[Constants.MIN_FRACTION_ID])
+
+def main(argv=sys.argv):
+    return pbparser_runner(
+        argv[1:],
+        get_parser(),
+        args_runner,
+        resolved_tool_contract_runner,
+        log,
+        setup_log)
+
+if __name__ == "__main__":
+    sys.exit(main())

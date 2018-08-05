@@ -1,0 +1,113 @@
+{
+    "version": "0.1.0", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.gather_polished_isoforms_in_each_bin --resolved-tool-contract ", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.gather_polished_isoforms_in_each_bin", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard", 
+        "resource_types": [], 
+        "description": "\nGiven a ChunkTasksPickle of a list of PolishChunkTask objects,\ngather polished HQ|LQ isoforms in each bin.\n", 
+        "schema_options": [
+            {
+                "pb_option": {
+                    "default": 0.99, 
+                    "type": "number", 
+                    "option_id": "pbtranscript.task_options.hq_quiver_min_accuracy", 
+                    "name": "Minimum Accuracy of polished isoforms", 
+                    "description": "Minimum Acuuracy of polished isoforms"
+                }, 
+                "title": "JSON Schema for pbtranscript.task_options.hq_quiver_min_accuracy", 
+                "required": [
+                    "pbtranscript.task_options.hq_quiver_min_accuracy"
+                ], 
+                "$schema": "http://json-schema.org/draft-04/schema#", 
+                "type": "object", 
+                "properties": {
+                    "pbtranscript.task_options.hq_quiver_min_accuracy": {
+                        "default": 0.99, 
+                        "type": "number", 
+                        "description": "Minimum Acuuracy of polished isoforms", 
+                        "title": "Minimum Accuracy of polished isoforms"
+                    }
+                }
+            }, 
+            {
+                "pb_option": {
+                    "default": 100, 
+                    "type": "integer", 
+                    "option_id": "pbtranscript.task_options.qv_trim_5p", 
+                    "name": "Trim QVs 5'", 
+                    "description": "Ignore QV of n bases in the 5' end."
+                }, 
+                "title": "JSON Schema for pbtranscript.task_options.qv_trim_5p", 
+                "required": [
+                    "pbtranscript.task_options.qv_trim_5p"
+                ], 
+                "$schema": "http://json-schema.org/draft-04/schema#", 
+                "type": "object", 
+                "properties": {
+                    "pbtranscript.task_options.qv_trim_5p": {
+                        "default": 100, 
+                        "type": "integer", 
+                        "description": "Ignore QV of n bases in the 5' end.", 
+                        "title": "Trim QVs 5'"
+                    }
+                }
+            }, 
+            {
+                "pb_option": {
+                    "default": 30, 
+                    "type": "integer", 
+                    "option_id": "pbtranscript.task_options.qv_trim_3p", 
+                    "name": "Trim QVs 3'", 
+                    "description": "Ignore QV of n bases in the 3' end."
+                }, 
+                "title": "JSON Schema for pbtranscript.task_options.qv_trim_3p", 
+                "required": [
+                    "pbtranscript.task_options.qv_trim_3p"
+                ], 
+                "$schema": "http://json-schema.org/draft-04/schema#", 
+                "type": "object", 
+                "properties": {
+                    "pbtranscript.task_options.qv_trim_3p": {
+                        "default": 30, 
+                        "type": "integer", 
+                        "description": "Ignore QV of n bases in the 3' end.", 
+                        "title": "Trim QVs 3'"
+                    }
+                }
+            }
+        ], 
+        "output_types": [
+            {
+                "title": "Gather polished isoforms in each bin Done Txt file", 
+                "description": "Gather Done Txt file.", 
+                "default_name": "gather_polished_isoforms_in_each_bin_done", 
+                "id": "gather polished isoforms in each bin done txt", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ], 
+        "_comment": "Created by v0.3.25", 
+        "name": "pbtranscript.tasks.gather_polished_isoforms_in_each_bin", 
+        "input_types": [
+            {
+                "description": "Polish chunks pickle file", 
+                "title": "Pickle In", 
+                "id": "polish_chunks_pickle", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "description": "Setinel file", 
+                "title": "Sentinel In", 
+                "id": "polish_sentinel_in", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ], 
+        "nproc": 1, 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.gather_polished_isoforms_in_each_bin"
+    }
+}

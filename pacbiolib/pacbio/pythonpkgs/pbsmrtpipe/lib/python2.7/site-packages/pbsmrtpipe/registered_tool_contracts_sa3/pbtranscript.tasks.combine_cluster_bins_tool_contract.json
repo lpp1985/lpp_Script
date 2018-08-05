@@ -1,0 +1,187 @@
+{
+    "version": "1.0.0.177900",
+    "driver": {
+        "serialization": "json",
+        "exe": "python -m pbtranscript.tasks.combine_cluster_bins --resolved-tool-contract ",
+        "env": {}
+    },
+    "tool_contract_id": "pbtranscript.tasks.combine_cluster_bins",
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "resource_types": [
+            "$tmpdir"
+        ],
+        "description": "\nCombine results from all cluster bins, including consensus isoforms,\npolished HQ|LQ isoforms, cluster_summary.csv and cluster_report.json\n",
+        "schema_options": [
+            {
+                "pb_option": {
+                    "default": 0.99,
+                    "type": "number",
+                    "option_id": "pbtranscript.task_options.hq_quiver_min_accuracy",
+                    "name": "Minimum Quiver|Arrow Accuracy",
+                    "description": "Minimum allowed quiver accuracy to classify an isoform as hiqh-quality (default: 0.99)"
+                },
+                "title": "JSON Schema for pbtranscript.task_options.hq_quiver_min_accuracy",
+                "required": [
+                    "pbtranscript.task_options.hq_quiver_min_accuracy"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbtranscript.task_options.hq_quiver_min_accuracy": {
+                        "default": 0.99,
+                        "type": "number",
+                        "description": "Minimum allowed quiver accuracy to classify an isoform as hiqh-quality (default: 0.99)",
+                        "title": "Minimum Quiver|Arrow Accuracy"
+                    }
+                }
+            },
+            {
+                "pb_option": {
+                    "default": 100,
+                    "type": "integer",
+                    "option_id": "pbtranscript.task_options.qv_trim_5p",
+                    "name": "Trim QVs 5'",
+                    "description": "Ignore QV of n bases in the 5' end (default 100)."
+                },
+                "title": "JSON Schema for pbtranscript.task_options.qv_trim_5p",
+                "required": [
+                    "pbtranscript.task_options.qv_trim_5p"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbtranscript.task_options.qv_trim_5p": {
+                        "default": 100,
+                        "type": "integer",
+                        "description": "Ignore QV of n bases in the 5' end (default 100).",
+                        "title": "Trim QVs 5'"
+                    }
+                }
+            },
+            {
+                "pb_option": {
+                    "default": 30,
+                    "type": "integer",
+                    "option_id": "pbtranscript.task_options.qv_trim_3p",
+                    "name": "Trim QVs 3'",
+                    "description": "Ignore QV of n bases in the 3' end (default 30)."
+                },
+                "title": "JSON Schema for pbtranscript.task_options.qv_trim_3p",
+                "required": [
+                    "pbtranscript.task_options.qv_trim_3p"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbtranscript.task_options.qv_trim_3p": {
+                        "default": 30,
+                        "type": "integer",
+                        "description": "Ignore QV of n bases in the 3' end (default 30).",
+                        "title": "Trim QVs 3'"
+                    }
+                }
+            },
+            {
+                "pb_option": {
+                    "default": "",
+                    "type": "string",
+                    "option_id": "pbtranscript.task_options.sample_name",
+                    "name": "sample Name",
+                    "description": "Sample Name"
+                },
+                "title": "JSON Schema for pbtranscript.task_options.sample_name",
+                "required": [
+                    "pbtranscript.task_options.sample_name"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbtranscript.task_options.sample_name": {
+                        "default": "",
+                        "type": "string",
+                        "description": "Sample Name",
+                        "title": "sample Name"
+                    }
+                }
+            }
+        ],
+        "output_types": [
+            {
+                "title": "Unpolished Consensus Isoforms",
+                "description": "Output unpolished consensus isoforms",
+                "default_name": "consensus_isoforms",
+                "id": "consensus_isoforms",
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            },
+            {
+                "title": "Transcript Clustering Report",
+                "description": "JSON summary",
+                "default_name": "summary",
+                "id": "json_summary",
+                "file_type_id": "PacBio.FileTypes.json"
+            },
+            {
+                "title": "Clustering Results",
+                "description": "Clustering results for each CCS read",
+                "default_name": "cluster_report",
+                "id": "cluster_report",
+                "file_type_id": "PacBio.FileTypes.csv"
+            },
+            {
+                "title": "High-Quality Isoforms",
+                "description": "Isoforms with high consensus accuracy",
+                "default_name": "hq_isoforms",
+                "id": "hq_isoforms_fa",
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            },
+            {
+                "title": "High-Quality Isoforms",
+                "description": "Isoforms with high consensus accuracy",
+                "default_name": "hq_isoforms",
+                "id": "hq_isoforms_fq",
+                "file_type_id": "PacBio.FileTypes.Fastq"
+            },
+            {
+                "title": "Low-Quality Isoforms",
+                "description": "Isoforms with low consensus accuracy",
+                "default_name": "lq_isoforms",
+                "id": "lq_isoforms_fa",
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            },
+            {
+                "title": "Low-Quality Isoforms",
+                "description": "Isoforms with low consensus accuracy",
+                "default_name": "lq_isoforms",
+                "id": "lq_isoforms_fq",
+                "file_type_id": "PacBio.FileTypes.Fastq"
+            },
+            {
+                "title": "HQ LQ Sample Prefix Dict",
+                "description": "Pickle mapping HQ (LQ) sample prefixes to ICE dir",
+                "default_name": "hq_lq_prefix_dict",
+                "id": "hq_lq_prefix_dict",
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }
+        ],
+        "_comment": "Created by v0.4.14",
+        "name": "pbtranscript.tasks.combine_cluster_bins",
+        "input_types": [
+            {
+                "description": "Cluster chunks pickle file",
+                "title": "Pickle In",
+                "id": "cluster_chunks_pickle",
+                "file_type_id": "PacBio.FileTypes.pickle"
+            },
+            {
+                "description": "Setinel file",
+                "title": "Sentinel In",
+                "id": "cluster_sentinel_in",
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ],
+        "nproc": "$max_nproc",
+        "is_distributed": true,
+        "tool_contract_id": "pbtranscript.tasks.combine_cluster_bins"
+    }
+}

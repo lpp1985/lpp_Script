@@ -1,0 +1,13 @@
+nohup: ignoring input and appending output to `nohup.out'
+sh: source: not found
+gicl (/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/1/1) finished on machine 
+                 in /data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/1, without a detectable error.
+                 gicl (/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/2/2) finished on machine 
+                 in /data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/2, without a detectable error.
+                 gicl (/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/3/3) finished on machine 
+                 in /data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/3, without a detectable error.
+                 gicl (/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/4/4) finished on machine 
+                 in /data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/4, without a detectable error.
+                 Cannot remove /home/lipp/SOFTWARE/tmp/tmpfile.75634: No such file or directory
+482860.31user 12252.34system 5:26:47elapsed 2525%CPU (0avgtext+0avgdata 28500656maxresident)k
+0inputs+267538096outputs (0major+994787913minor)pagefaults 0swaps

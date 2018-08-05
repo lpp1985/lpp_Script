@@ -1,0 +1,168 @@
+{
+    "version": "1.0.0.177900",
+    "driver": {
+        "serialization": "json",
+        "exe": "python -m pbtranscript.tasks.ice_quiver_postprocess --resolved-tool-contract",
+        "env": {}
+    },
+    "tool_contract_id": "pbtranscript.tasks.ice_quiver_postprocess",
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "resource_types": [
+            "$tmpdir"
+        ],
+        "description": "\nCalls the ICE algorithm, which stands for 'Iteratively Clustering and Error\ncorrection', to identify de novo consensus isoforms.\n",
+        "schema_options": [
+            {
+                "pb_option": {
+                    "default": 0.99,
+                    "type": "number",
+                    "option_id": "pbtranscript.task_options.hq_quiver_min_accuracy",
+                    "name": "Minimum Quiver Accuracy",
+                    "description": "Minimum allowed quiver accuracy to classify an isoform as hiqh-quality (default: 0.99)"
+                },
+                "title": "JSON Schema for pbtranscript.task_options.hq_quiver_min_accuracy",
+                "required": [
+                    "pbtranscript.task_options.hq_quiver_min_accuracy"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbtranscript.task_options.hq_quiver_min_accuracy": {
+                        "default": 0.99,
+                        "type": "number",
+                        "description": "Minimum allowed quiver accuracy to classify an isoform as hiqh-quality (default: 0.99)",
+                        "title": "Minimum Quiver Accuracy"
+                    }
+                }
+            },
+            {
+                "pb_option": {
+                    "default": 100,
+                    "type": "integer",
+                    "option_id": "pbtranscript.task_options.qv_trim_5p",
+                    "name": "Trim QVs 5'",
+                    "description": "Ignore QV of n bases in the 5' end (default 100)."
+                },
+                "title": "JSON Schema for pbtranscript.task_options.qv_trim_5p",
+                "required": [
+                    "pbtranscript.task_options.qv_trim_5p"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbtranscript.task_options.qv_trim_5p": {
+                        "default": 100,
+                        "type": "integer",
+                        "description": "Ignore QV of n bases in the 5' end (default 100).",
+                        "title": "Trim QVs 5'"
+                    }
+                }
+            },
+            {
+                "pb_option": {
+                    "default": 30,
+                    "type": "integer",
+                    "option_id": "pbtranscript.task_options.qv_trim_3p",
+                    "name": "Trim QVs 3'",
+                    "description": "Ignore QV of n bases in the 3' end (default 30)."
+                },
+                "title": "JSON Schema for pbtranscript.task_options.qv_trim_3p",
+                "required": [
+                    "pbtranscript.task_options.qv_trim_3p"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbtranscript.task_options.qv_trim_3p": {
+                        "default": 30,
+                        "type": "integer",
+                        "description": "Ignore QV of n bases in the 3' end (default 30).",
+                        "title": "Trim QVs 3'"
+                    }
+                }
+            }
+        ],
+        "output_types": [
+            {
+                "title": "Transcript Clustering Report",
+                "description": "JSON summary",
+                "default_name": "summary",
+                "id": "json_summary",
+                "file_type_id": "PacBio.FileTypes.json"
+            },
+            {
+                "title": "Clustering Results",
+                "description": "Clustering results for each CCS read",
+                "default_name": "cluster_report",
+                "id": "cluster_report",
+                "file_type_id": "PacBio.FileTypes.csv"
+            },
+            {
+                "title": "High-Quality Isoforms",
+                "description": "Isoforms with high consensus accuracy",
+                "default_name": "hq_isoforms",
+                "id": "hq_isoforms_fa",
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            },
+            {
+                "title": "High-Quality Isoforms",
+                "description": "Isoforms with high consensus accuracy",
+                "default_name": "hq_isoforms",
+                "id": "hq_isoforms_fq",
+                "file_type_id": "PacBio.FileTypes.Fastq"
+            },
+            {
+                "title": "Low-Quality Isoforms",
+                "description": "Isoforms with low consensus accuracy",
+                "default_name": "lq_isoforms",
+                "id": "lq_isoforms_fa",
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            },
+            {
+                "title": "Low-Quality Isoforms",
+                "description": "Isoforms with low consensus accuracy",
+                "default_name": "lq_isoforms",
+                "id": "lq_isoforms_fq",
+                "file_type_id": "PacBio.FileTypes.Fastq"
+            }
+        ],
+        "_comment": "Created by v0.4.13",
+        "name": "pbtranscript.tasks.ice_quiver_postprocess",
+        "input_types": [
+            {
+                "description": "A FOFN of bam or dataset xml (e.g., input.fofn|bam|subreadset.xml), which contain quality values of raw reads and subreads",
+                "title": "SubreadSet",
+                "id": "subreads_fofn",
+                "file_type_id": "PacBio.DataSet.SubreadSet"
+            },
+            {
+                "description": "ContigSet of consensus isoforms",
+                "title": "Consensus isoforms",
+                "id": "consensus_fa",
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            },
+            {
+                "description": "Cluster pickle file",
+                "title": "Clusters",
+                "id": "cluster_pickle",
+                "file_type_id": "PacBio.FileTypes.pickle"
+            },
+            {
+                "description": "Pickle file for non-full-length read mapping",
+                "title": "Pickle file",
+                "id": "map_nofl_pickle",
+                "file_type_id": "PacBio.FileTypes.pickle"
+            },
+            {
+                "description": "Sentinel file from ice_quiver task",
+                "title": "JSON file",
+                "id": "json_in",
+                "file_type_id": "PacBio.FileTypes.json"
+            }
+        ],
+        "nproc": "$max_nproc",
+        "is_distributed": true,
+        "tool_contract_id": "pbtranscript.tasks.ice_quiver_postprocess"
+    }
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<pacbioAnalysisInputs>
+  <dataReferences>
+    <url ref="run:0000000-0000"><location>/mnt/secondary-siv/testdata/LIMS/2450129/0036/Analysis_Results/m120119_234846_42161_c100170402555500000315046401171360_s1_p0.bas.h5</location></url>
+  </dataReferences>
+</pacbioAnalysisInputs>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_pbtranscript_ice_quiver">
+
+    <task-id>pbtranscript.tasks.ice_quiver</task-id>
+
+    <scatter>
+        <scatter-task-id>pbtranscript.tasks.scatter_clusters</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.subreadset_id" in="pbtranscript.tasks.ice_quiver:0"/>
+            <chunk out="$chunk.contigset_id" in="pbtranscript.tasks.ice_quiver:1"/>
+            <chunk out="$chunk.pickle_id" in="pbtranscript.tasks.ice_quiver:2"/>
+            <chunk out="$chunk.nfl_pickle_id" in="pbtranscript.tasks.ice_quiver:3"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_json</gather-task-id>
+                <chunk-key>$chunk.report_id</chunk-key>
+                <task-output>pbtranscript.tasks.ice_quiver:0</task-output>
+            </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

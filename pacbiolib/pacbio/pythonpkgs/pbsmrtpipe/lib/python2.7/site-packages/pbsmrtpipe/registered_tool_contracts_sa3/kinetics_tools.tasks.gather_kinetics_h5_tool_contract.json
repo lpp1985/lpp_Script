@@ -1,0 +1,37 @@
+{
+    "version": "0.1.0",
+    "driver": {
+        "serialization": "json",
+        "exe": "python -m kineticsTools.tasks.gather_kinetics_h5 --resolved-tool-contract ",
+        "env": {}
+    },
+    "tool_contract_id": "kinetics_tools.tasks.gather_kinetics_h5",
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.gathered",
+        "resource_types": [],
+        "description": "General Chunk Kinetics HDF5 Gather",
+        "schema_options": [],
+        "output_types": [
+            {
+                "title": "Kinetics HDF5 file",
+                "description": "Gathered HDF5 file",
+                "default_name": "gathered",
+                "id": "h5_out",
+                "file_type_id": "PacBio.FileTypes.h5"
+            }
+        ],
+        "_comment": "Created by v0.3.30",
+        "name": "Dev Kinetics HDF5 Gather",
+        "input_types": [
+            {
+                "description": "Gathered CHUNK Json with BigWig chunk key",
+                "title": "GCHUNK Json",
+                "id": "cjson_in",
+                "file_type_id": "PacBio.FileTypes.CHUNK"
+            }
+        ],
+        "nproc": 1,
+        "is_distributed": true,
+        "tool_contract_id": "kinetics_tools.tasks.gather_kinetics_h5"
+    }
+}

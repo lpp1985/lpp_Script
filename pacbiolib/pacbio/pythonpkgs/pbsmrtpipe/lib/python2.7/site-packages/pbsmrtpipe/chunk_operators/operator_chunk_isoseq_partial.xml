@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_pbtranscript_ice_partial">
+
+    <task-id>pbtranscript.tasks.ice_partial</task-id>
+
+    <scatter>
+        <scatter-task-id>pbtranscript.tasks.scatter_contigset</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.contigset_id" in="pbtranscript.tasks.ice_partial:0"/>
+            <chunk out="$chunk.ref_contigset_id" in="pbtranscript.tasks.ice_partial:1"/>
+            <chunk out="$chunk.ccsset_id" in="pbtranscript.tasks.ice_partial:2"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+            <chunk>
+                <gather-task-id>pbtranscript.tasks.gather_nfl_pickle</gather-task-id>
+                <chunk-key>$chunk.pickle_id</chunk-key>
+                <task-output>pbtranscript.tasks.ice_partial:0</task-output>
+            </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

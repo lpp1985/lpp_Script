@@ -1,0 +1,172 @@
+{'LvZao': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/LvZao.read1.fastq', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/LvZao.read2.fastq'], 'YP': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YP.read1.fastq', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/YP.read2.fastq'], 'YS': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YS.noN.fastq'], 'YSTL': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YSTL.noN.fastq'], 'YT': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YT.noN.fastq'], 'YL': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YL.noN.fastq']}
+Process Process-1:1:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 114, in run
+    self._target(*self._args, **self._kwargs)
+  File "./Total_Run.py", line 308, in QC
+Process Process-2:1:
+Traceback (most recent call last):
+    qc_instance = fastq_quality_pair( **data )
+  File "/data/lipp/Project/Y_series/New_Run/Pair-end/Script/quality_stats_Pairend_Distri.py", line 43, in __init__
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 258, in _bootstrap
+    self.read1 = fastq_quality_class(  **read1_kword  )
+  File "/data/lipp/Project/Y_series/New_Run/Pair-end/Script/quality_stats_singleEnd_Distri.py", line 49, in __init__
+    self.run()
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 114, in run
+    self._target(*self._args, **self._kwargs)
+  File "./Total_Run.py", line 308, in QC
+    self.RAWHANDLE  = open( os.path.abspath( kword['input_data'] ), 'rU' )
+  File "/usr/lib/python2.7/codecs.py", line 881, in open
+    qc_instance = fastq_quality_pair( **data )
+  File "/data/lipp/Project/Y_series/New_Run/Pair-end/Script/quality_stats_Pairend_Distri.py", line 43, in __init__
+    self.read1 = fastq_quality_class(  **read1_kword  )
+  File "/data/lipp/Project/Y_series/New_Run/Pair-end/Script/quality_stats_singleEnd_Distri.py", line 49, in __init__
+    self.RAWHANDLE  = open( os.path.abspath( kword['input_data'] ), 'rU' )
+  File "/usr/lib/python2.7/codecs.py", line 881, in open
+    file = __builtin__.open(filename, mode, buffering)
+    file = __builtin__.open(filename, mode, buffering)
+IOError: [Errno 2] No such file or directory: '/data/lipp/Project/Y_series/New_Run/Pair-end/data/YP.read1.fastq'
+IOError: [Errno 2] No such file or directory: '/data/lipp/Project/Y_series/New_Run/Pair-end/data/LvZao.read1.fastq'
+YP start to QC
+LvZao start to QC
+Process Process-2:
+Traceback (most recent call last):
+Process Process-1:
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 258, in _bootstrap
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 114, in run
+    self._target(*self._args, **self._kwargs)
+  File "./Total_Run.py", line 324, in Total_Run
+    self.run()
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 114, in run
+    self._target(*self._args, **self._kwargs)
+  File "./Total_Run.py", line 324, in Total_Run
+    raise IOError ,'  %s Qc process has error!! Please Check!! '
+IOError:   %s Qc process has error!! Please Check!! 
+    raise IOError ,'  %s Qc process has error!! Please Check!! '
+IOError:   %s Qc process has error!! Please Check!! 
+0
+0
+Error: cannot find input file '/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/1/1'
+Traceback (most recent call last):
+  File "/home/lipp/Script/get_seq.py", line 37, in <module>
+    all_name = File_Ddict(  open( options.list,'rU'   )   ).read( options.number , options.number   )
+  File "/usr/lib/python2.7/codecs.py", line 881, in open
+    file = __builtin__.open(filename, mode, buffering)
+IOError: [Errno 2] No such file or directory: '/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/1/1_self.singletons'
+Cannot open "/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/1/1_self.ace": No such file or directory
+Traceback (most recent call last):
+  File "/home/lipp/Script/gicl_combine.py", line 42, in <module>
+    CACHE = re.split(    '\#\#.+\n',open(  'ace.cache'  ).read()  )
+  File "/usr/lib/python2.7/codecs.py", line 881, in open
+    file = __builtin__.open(filename, mode, buffering)
+IOError: [Errno 2] No such file or directory: 'ace.cache'
+######################################################
+######################################################
+######################################################
+	
+All the Multiple Ker Assembly is Finished ,Start to cluster and Assembly
+Traceback (most recent call last):
+  File "./Total_Run.py", line 502, in <module>
+    ace_size, needgiclfile  = gicl_assembly(  inputdata   )
+  File "./Total_Run.py", line 137, in gicl_assembly
+    return os.path.getsize( ace_file), assemblyend
+  File "/usr/lib/python2.7/genericpath.py", line 49, in getsize
+    return os.stat(filename).st_size
+OSError: [Errno 2] No such file or directory: '/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/1/1_self.ace'
+{'LvZao': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/LvZao.read1.fastq', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/LvZao.read2.fastq'], 'YP': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YP.read1.fastq', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/YP.read2.fastq'], 'YS': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YS.noN.fastq'], 'YSTL': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YSTL.noN.fastq'], 'YT': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YT.noN.fastq'], 'YL': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YL.noN.fastq']}
+YP start to QC
+LvZao start to QC
+4000000
+1
+0
+YP QC ok! Start to Soap test
+42900000
+1
+0
+LvZao QC ok! Start to Soap test
+{'LvZao': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/LvZao.read1.fastq', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/LvZao.read2.fastq'], 'YP': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YP.read1.fastq', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/YP.read2.fastq'], 'YS': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YS.noN.fastq', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/YSTL.noN.fastq'], 'YSTL': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YSTL.noN.fastq'], 'YT': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YT.noN.fastq'], 'YL': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/YL.noN.fastq']}
+{'YP': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/Filter/YP/YP.Filter.pair1', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/Filter/YP/YP.Filter.pair2'], 'LvZao': ['/data/lipp/Project/Y_series/New_Run/Pair-end/data/Filter/LvZao/LvZao.Filter.pair1', '/data/lipp/Project/Y_series/New_Run/Pair-end/data/Filter/LvZao/LvZao.Filter.pair2']}
+YP Soap test ok! try to BWA
+BWA_Mapping.py -r /data/lipp/Project/Y_series/New_Run/Pair-end/Step2_pre/YP/K21/soap_k_21.contig -t 20 -p 3 -o /data/lipp/Project/Y_series/New_Run/Pair-end/Step3_BWAInfer/YP/ -i /data/lipp/Project/Y_series/New_Run/Pair-end/data/Filter/YP
+YP bwa ok! insertsize = 48316 , Try to Multi Soap!!!
+LvZao Soap test ok! try to BWA
+YP Soap ok!! Finish!!
+BWA_Mapping.py -r /data/lipp/Project/Y_series/New_Run/Pair-end/Step2_pre/LvZao/K21/soap_k_21.contig -t 20 -p 3 -o /data/lipp/Project/Y_series/New_Run/Pair-end/Step3_BWAInfer/LvZao/ -i /data/lipp/Project/Y_series/New_Run/Pair-end/data/Filter/LvZao
+LvZao bwa ok! insertsize = 105 , Try to Multi Soap!!!
+LvZao Soap ok!! Finish!!
+gicl (/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/1/1) finished on machine 
+                 in /data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/1, without a detectable error.
+                 gicl (/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/2/2) finished on machine 
+                 in /data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/2, without a detectable error.
+                 gicl (/data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/3/3) finished on machine 
+                 in /data/lipp/Project/Y_series/New_Run/Pair-end/Step5_GICL/3, without a detectable error.
+                 Cannot remove /home/lipp/SOFTWARE/tmp/tmpfile.26935: No such file or directory
+######################################################
+######################################################
+######################################################
+	
+All the Multiple Ker Assembly is Finished ,Start to cluster and Assembly
+Assembly finished!!!
+Start to bowtie and analysis expression profile
+Process Process-5:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 258, in _bootstrap
+    self.run()
+  File "/usr/lib/python2.7/multiprocessing/process.py", line 114, in run
+    self._target(*self._args, **self._kwargs)
+  File "./Total_Run_no_Qc.py", line 27, in bowtie_check
+    key = lambda x:
+  File "./Total_Run_no_Qc.py", line 29, in <lambda>
+    re.search( 'read(\d+)' ,x ).group(1)
+AttributeError: 'NoneType' object has no attribute 'group'
+-------------YP 's mapping status-----------------------
+# reads processed: 4293104
+# reads with at least one reported alignment: 807 (0.02%)
+# reads that failed to align: 4292238 (99.98%)
+# reads with alignments sampled due to -M: 59 (0.00%)
+Reported 807 paired-end alignments to 1 output stream(s)
+
+
+--------------------------------------------------------------------
+-------------YT 's mapping status-----------------------
+# reads processed: 49688881
+# reads with at least one reported alignment: 32897439 (66.21%)
+# reads that failed to align: 1214810 (2.44%)
+# reads with alignments sampled due to -M: 15576632 (31.35%)
+Reported 32897439 alignments to 1 output stream(s)
+
+
+--------------------------------------------------------------------
+-------------YL 's mapping status-----------------------
+# reads processed: 54034379
+# reads with at least one reported alignment: 34111492 (63.13%)
+# reads that failed to align: 1538103 (2.85%)
+# reads with alignments sampled due to -M: 18384784 (34.02%)
+Reported 34111492 alignments to 1 output stream(s)
+
+
+--------------------------------------------------------------------
+-------------YSTL 's mapping status-----------------------
+# reads processed: 51230203
+# reads with at least one reported alignment: 31020376 (60.55%)
+# reads that failed to align: 1764335 (3.44%)
+# reads with alignments sampled due to -M: 18445492 (36.01%)
+Reported 31020376 alignments to 1 output stream(s)
+
+
+--------------------------------------------------------------------
+-------------LvZao 's mapping status-----------------------
+# reads processed: 45595272
+# reads with at least one reported alignment: 20091072 (44.06%)
+# reads that failed to align: 23141046 (50.75%)
+# reads with alignments sampled due to -M: 2363154 (5.18%)
+Reported 20091072 paired-end alignments to 1 output stream(s)
+
+
+--------------------------------------------------------------------
+

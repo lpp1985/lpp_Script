@@ -1,0 +1,57 @@
+{
+    "version": "1.0.0.174838", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.ice_quiver --resolved-tool-contract", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.ice_quiver", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard", 
+        "resource_types": [
+            "$tmpdir"
+        ], 
+        "description": "\nCalls the ICE algorithm, which stands for 'Iteratively Clustering and Error\ncorrection', to identify de novo consensus isoforms.\n", 
+        "schema_options": [], 
+        "output_types": [
+            {
+                "title": "JSON file", 
+                "description": "JSON sentinel file", 
+                "default_name": "quiver_out", 
+                "id": "json_out", 
+                "file_type_id": "PacBio.FileTypes.json"
+            }
+        ], 
+        "_comment": "Created by v0.3.20", 
+        "name": "pbtranscript.tasks.ice_quiver", 
+        "input_types": [
+            {
+                "description": "A FOFN of bax/bas.h5 or bam files (e.g., input.fofn), which contain quality values of raw reads and subreads", 
+                "title": "SubreadSet", 
+                "id": "subreads_fofn", 
+                "file_type_id": "PacBio.DataSet.SubreadSet"
+            }, 
+            {
+                "description": "Consensus isoforms", 
+                "title": "ContigSet", 
+                "id": "consensus_fa", 
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            }, 
+            {
+                "description": "Cluster pickle file", 
+                "title": "Clusters", 
+                "id": "cluster_pickle", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "description": "Pickle file for non-full-length read mapping", 
+                "title": "Pickle file", 
+                "id": "map_nofl_pickle", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }
+        ], 
+        "nproc": "$max_nproc", 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.ice_quiver"
+    }
+}

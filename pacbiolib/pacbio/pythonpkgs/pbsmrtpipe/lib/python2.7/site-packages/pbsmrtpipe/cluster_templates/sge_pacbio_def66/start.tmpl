@@ -1,0 +1,5 @@
+qsub -S /bin/bash -sync y -V -q def66 -N ${JOB_ID} \
+    -o "${STDOUT_FILE}" \
+    -e "${STDERR_FILE}" \
+    -pe smp ${NPROC} \
+    "${CMD}"

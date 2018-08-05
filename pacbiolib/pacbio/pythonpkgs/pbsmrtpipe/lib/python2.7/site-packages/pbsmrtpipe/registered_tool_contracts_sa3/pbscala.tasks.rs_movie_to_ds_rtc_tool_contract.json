@@ -1,0 +1,37 @@
+{
+    "driver": {
+        "env": {},
+        "exe": "movie-metadata-to-dataset-rtc ",
+        "serialization": "avro"
+    },
+    "tool_contract": {
+        "_comment": "Created by v0.2.3",
+        "description": "Conversion of a RS-era MovieMetadata XML to HdfSubreadSet DataSet XML file",
+        "input_types": [
+            {
+                "description": "RS Movie XML",
+                "file_type_id": "PacBio.FileTypes.rs_movie_metadata",
+                "id": "movie_xml",
+                "title": "Movie XML"
+            }
+        ],
+        "is_distributed": false,
+        "name": "Movie XML to HdfSubread Set",
+        "nproc": 1,
+        "output_types": [
+            {
+                "default_name": "hdfsubreadsset.xml",
+                "description": "HdfSubread DataSet XML",
+                "file_type_id": "PacBio.DataSet.HdfSubreadSet",
+                "id": "hdf_subreads_xml",
+                "title": "HdfSubreadSet"
+            }
+        ],
+        "resource_types": [],
+        "schema_options": [],
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "tool_contract_id": "pbscala.tasks.rs_movie_to_ds_rtc"
+    },
+    "tool_contract_id": "pbscala.tasks.rs_movie_to_ds_rtc",
+    "version": "0.1.0"
+}

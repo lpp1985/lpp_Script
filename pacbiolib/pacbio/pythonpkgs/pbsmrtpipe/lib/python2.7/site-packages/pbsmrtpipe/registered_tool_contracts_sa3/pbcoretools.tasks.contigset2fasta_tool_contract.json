@@ -1,0 +1,37 @@
+{
+    "driver": {
+        "env": {},
+        "exe": "python -m pbcoretools.tasks.converters  run-rtc  ",
+        "serialization": "json"
+    },
+    "tool_contract": {
+        "_comment": "Created by v0.4.13",
+        "description": "Quick tool contigset2fasta pbcoretools.tasks.contigset2fasta",
+        "input_types": [
+            {
+                "description": "description for PacBio.DataSet.ContigSet_0",
+                "file_type_id": "PacBio.DataSet.ContigSet",
+                "id": "Label PacBio.DataSet.ContigSet_0",
+                "title": "<DataSetFileType id=PacBio.DataSet.ContigSet name=file >"
+            }
+        ],
+        "is_distributed": true,
+        "name": "Tool contigset2fasta",
+        "nproc": 1,
+        "output_types": [
+            {
+                "default_name": "file",
+                "description": "description for <FileType id=PacBio.FileTypes.Fasta name=file >",
+                "file_type_id": "PacBio.FileTypes.Fasta",
+                "id": "Label PacBio.FileTypes.Fasta_0",
+                "title": "<FileType id=PacBio.FileTypes.Fasta name=file >"
+            }
+        ],
+        "resource_types": [],
+        "schema_options": [],
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "tool_contract_id": "pbcoretools.tasks.contigset2fasta"
+    },
+    "tool_contract_id": "pbcoretools.tasks.contigset2fasta",
+    "version": "0.1.0"
+}

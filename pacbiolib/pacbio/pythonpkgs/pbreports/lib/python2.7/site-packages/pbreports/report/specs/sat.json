@@ -1,0 +1,45 @@
+{
+    "id": "sat",
+    "version": "3.2",
+    "title": "Site Acceptance Test Report",
+    "description": "Generates the SAT metric performance attributes",
+    "attributes": [
+        {
+            "type": "string",
+            "format": null,
+            "description": "ID of the Sequel or RSII instrument on which the data were collected",
+            "name": "Instrument ID",
+            "id": "instrument"
+        },
+        {
+            "type": "float",
+            "format": "{p:.2f} %",
+            "description": "Percentage of the genome for which consensus bases were called",
+            "name": "Genome Coverage",
+            "id": "coverage"
+        },
+        {
+            "type": "float",
+            "format": "{p:.2f} %",
+            "description": "Percent concordance of the consensus sequence versus the reference",
+            "name": "Consensus Concordance",
+            "id": "concordance"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The approximate mean length of polymerase reads that mapped to the reference sequence (including adapters and other unmapped regions)",
+            "name": "Polymerase Read Length Mean (mapped)",
+            "id": "mapped_readlength_mean"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "Number of polymerase reads that could be mapped to the reference genome",
+            "name": "Number of Polymerase Reads (mapped)",
+            "id": "reads_in_cell"
+        }
+    ],
+    "tables": [],
+    "plotGroups": []
+}

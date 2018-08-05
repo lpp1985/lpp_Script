@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+
+{% from '_report_utils.html' import to_report_table  %}
+{% from '_report_utils.html' import to_report_attrs  %}
+{% from '_report_utils.html' import to_report_plot_group  %}
+
+
+{% block title %} MyReport {% endblock %}
+
+{% block body %}
+
+    <h1>Report {{ report_id }}</h1>
+
+    <!-- Report Attributes -->
+    {{ to_report_attrs(rattrs) }}
+
+    <!-- Report Tables -->
+    {% for table in tables %}
+        {{ to_report_table(table) }}
+
+    {% endfor %}
+
+    <!-- Report PlotGroups -->
+    {% for plot_group in plot_groups %}
+        {{ to_report_plot_group(plot_group) }}
+    {% endfor %}
+
+    <!-- End -->
+{% endblock %}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_pbtranscript_map_isoforms_to_genome">
+
+    <task-id>pbtranscript.tasks.map_isoforms_to_genome</task-id>
+
+    <scatter>
+        <scatter-task-id>pbtranscript.tasks.scatter_map_isoforms_to_genome</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.fastq_id" in="pbtranscript.tasks.map_isoforms_to_genome:0"/>
+            <chunk out="$chunk.gmap_ref_id" in="pbtranscript.tasks.map_isoforms_to_genome:1"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+            <chunk>
+                <gather-task-id>pbtranscript.tasks.gather_gmap_sam</gather-task-id>
+                <chunk-key>$chunk.sam_id</chunk-key>
+                <task-output>pbtranscript.tasks.map_isoforms_to_genome:0</task-output>
+            </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

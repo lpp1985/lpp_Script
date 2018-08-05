@@ -1,0 +1,121 @@
+{
+    "version": "1.0.0",
+    "driver": {
+        "serialization": "json",
+        "exe": "python -m pbfalcon.cli.task_hgap_run --resolved-tool-contract ",
+        "env": {}
+    },
+    "tool_contract_id": "falcon_ns.tasks.task_hgap_run",
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "resource_types": [
+            "$tmpdir"
+        ],
+        "description": "pbcommand wrapper for falcon_ns.tasks.task_hgap_run",
+        "schema_options": [],
+        "output_types": [
+            {
+                "title": "preads.fasta",
+                "description": "Tarball of FASTA for preassembly reads",
+                "default_name": "preads",
+                "id": "preads_id",
+                "file_type_id": "PacBio.FileTypes.Fasta"
+            },
+            {
+                "title": "polished.fasta",
+                "description": "FASTA of polished assembly",
+                "default_name": "polished",
+                "id": "polished_fasta_id",
+                "file_type_id": "PacBio.FileTypes.Fasta"
+            },
+            {
+                "title": "polished.fastq",
+                "description": "FASTQ of polished assembly",
+                "default_name": "polished",
+                "id": "polished_fastq_id",
+                "file_type_id": "PacBio.FileTypes.Fastq"
+            },
+            {
+                "title": "polished.csv",
+                "description": "CSV from report of polished assembly",
+                "default_name": "polished",
+                "id": "polished_csv_id",
+                "file_type_id": "PacBio.FileTypes.csv"
+            },
+            {
+                "title": "aligned.subreads.alignmentset.xml",
+                "description": "Dataset of BAM files of aligned subreads",
+                "default_name": "aligned.subreads",
+                "id": "alignmentset_id",
+                "file_type_id": "PacBio.DataSet.AlignmentSet"
+            },
+            {
+                "title": "alignment.summary.gff",
+                "description": "General Feature Format file for alignment coverage",
+                "default_name": "alignment.summary",
+                "id": "gff_id",
+                "file_type_id": "PacBio.FileTypes.gff"
+            },
+            {
+                "title": "unmapped.subreads.txt",
+                "description": "Names of unmapped subreads from pbalign",
+                "default_name": "unmapped.subreads",
+                "id": "unmapped_id",
+                "file_type_id": "PacBio.FileTypes.txt"
+            },
+            {
+                "title": "polished.contigset.xml",
+                "description": "Contigset of polished FASTA sequences (redundant with polished.fasta)",
+                "default_name": "polished.contigset",
+                "id": "contig_id",
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            },
+            {
+                "title": "Preassembly report",
+                "description": "description for <FileType id=PacBio.FileTypes.JsonReport name=report >",
+                "default_name": "preassembly_rpt",
+                "id": "preassembly_rpt_id",
+                "file_type_id": "PacBio.FileTypes.JsonReport"
+            },
+            {
+                "title": "Polished assembly report",
+                "description": "description for <FileType id=PacBio.FileTypes.JsonReport name=report >",
+                "default_name": "polished_assembly_rpt",
+                "id": "polished_assembly_rpt_id",
+                "file_type_id": "PacBio.FileTypes.JsonReport"
+            },
+            {
+                "title": "Another log output, experimentally",
+                "description": "description for <FileType id=PacBio.FileTypes.log name=file >",
+                "default_name": "out2",
+                "id": "out2_id",
+                "file_type_id": "PacBio.FileTypes.log"
+            }
+        ],
+        "_comment": "Created by v0.4.14",
+        "name": "Tool task_hgap_run",
+        "input_types": [
+            {
+                "description": "description for PacBio.FileTypes.json_0",
+                "title": "<FileType id=PacBio.FileTypes.json name=file >",
+                "id": "Label PacBio.FileTypes.json_0",
+                "file_type_id": "PacBio.FileTypes.json"
+            },
+            {
+                "description": "description for PacBio.FileTypes.json_1",
+                "title": "<FileType id=PacBio.FileTypes.json name=file >",
+                "id": "Label PacBio.FileTypes.json_1",
+                "file_type_id": "PacBio.FileTypes.json"
+            },
+            {
+                "description": "description for PacBio.DataSet.SubreadSet_2",
+                "title": "<DataSetFileType id=PacBio.DataSet.SubreadSet name=file >",
+                "id": "Label PacBio.DataSet.SubreadSet_2",
+                "file_type_id": "PacBio.DataSet.SubreadSet"
+            }
+        ],
+        "nproc": "$max_nproc",
+        "is_distributed": false,
+        "tool_contract_id": "falcon_ns.tasks.task_hgap_run"
+    }
+}

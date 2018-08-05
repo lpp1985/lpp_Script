@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# ---- error handling
+set -o errexit;
+set -o posix;
+set -o pipefail;
+set -o errtrace;
+unexpected_error() {
+    local errstat=$?
+    echo "${g_prog:-$(basename $0)}: Error! Encountered unexpected error at 'line $(caller)', bailing out..." 1>&2
+    exit $errstat;
+}
+trap unexpected_error ERR;
+
+# Force the path to only what we need, saving off the original path
+# PATH_ORIG=$PATH;
+# PATH=/usr/bin:/bin
+
+g_prog=$(basename "$0");
+g_progdir=$(dirname "$0");
+g_progdir_abs=$(dirname $(readlink -f "$0"));
+
+exec "${g_progdir_abs}/../../../../../private/thirdparty/python/python_2.7.9/binwrap/python" "${g_progdir_abs}/../../../../../private/pacbio/pythonpkgs/pbreports/bin/barcode_report" ${1+"$@"}

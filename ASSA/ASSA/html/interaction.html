@@ -1,0 +1,42 @@
+<!-- $Id: interaction.html 2542 2016-02-16 08:22:22Z antonov $ -->
+
+
+<img src="<TMPL_VAR NAME='img_legend_1'>">
+<img src="<TMPL_VAR NAME='img_legend_2'>">
+<br>
+<br><br>
+<b style="font-family:'Courier New';">5' -&gt; <TMPL_VAR NAME='q_gene_id'> (<TMPL_VAR NAME='q_trx_id'>) -&gt; 3'</b><br>
+<img src="<TMPL_VAR NAME='img_query'>"><br>
+<br><br><br><br>
+<b style="font-family:'Courier New';">3' &lt;- <TMPL_VAR NAME='h_gene_id'> (<TMPL_VAR NAME='h_trx_id'>)	&lt;- 5'</b><br>
+<img src="<TMPL_VAR NAME='img_hit'>"><br>
+<br><br>
+
+<h2>Antisense Diplexes predicted by bifold</h2>
+
+<TMPL_LOOP NAME="bifold_sites">
+
+<h3>Region <TMPL_VAR NAME="__counter__"></h3>
+<table>
+	<tr>
+		<th>Query Coordinates
+		<td><TMPL_VAR NAME="Q_TRX_ID">:<TMPL_VAR NAME="Q_START">-<TMPL_VAR NAME="Q_END">
+	</tr>
+	<tr>
+		<th>Hit Coordinates
+		<td><TMPL_VAR NAME="H_TRX_ID">:<TMPL_VAR NAME="H_START">-<TMPL_VAR NAME="H_END">
+	</tr>
+	<tr>
+		<th>Total Duplex Length (p-value)
+		<td><TMPL_VAR NAME="DPL_LEN"> bp (<TMPL_VAR NAME="DPL_LEN_PVALUE">)
+	</tr>
+	<tr>
+		<th>Interaction Energy (p-value)
+		<td><TMPL_VAR NAME="DDG"> kcal/mole (<TMPL_VAR NAME="DDG_PVALUE">)
+	</tr>
+</table>
+<br>
+<pre><TMPL_VAR NAME='DPL_TXT'></pre>
+
+</TMPL_LOOP>
+

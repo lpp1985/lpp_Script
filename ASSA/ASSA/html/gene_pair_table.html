@@ -1,0 +1,33 @@
+<!-- $Id: gene_pair_table.html 2558 2016-05-24 22:09:43Z antonov $ -->
+
+<ul>
+	<li><b>Query/Hit</b> -- query/hit gene ID (transcript ID)
+	<li><b>NR</b> -- number of regions analyzed by bifold that passed the p-value threshold
+	<li><b>Length</b> -- total length of all antisense duplexes in the best bifold region
+	<li><b>Energy</b> -- free energy of the best bifold region
+	<li><b>P-value</b> -- p-value of the best bifold region
+</ul>
+<br>
+<table>
+	<tr align="center">
+		<th>#
+		<th>Query
+		<th>Hit
+		<th>NR
+		<th>Length
+		<th>Score
+		<th>E-value
+	</tr>
+	<TMPL_LOOP NAME="all_gpairs">
+	<tr align="center">
+		<td><TMPL_VAR NAME="__counter__">
+		<td><TMPL_VAR NAME="Q_GENE_ID"> (<TMPL_VAR NAME="Q_TRX_ID">)
+		<td><TMPL_VAR NAME="H_GENE_ID"> (<TMPL_VAR NAME="H_TRX_ID">)
+		<td <TMPL_IF NAME="NR_CLASS">class='<TMPL_VAR NAME="NR_CLASS">'</TMPL_IF>><TMPL_VAR NAME="NUM_REGS">
+		<td><TMPL_VAR NAME="BIFOLD_LEN"> bp
+		<td><TMPL_VAR NAME="SCORE">
+		<td><a href='<TMPL_VAR NAME="HTML_FN">'><TMPL_VAR NAME="DDG_EVALUE"></a>
+	</tr>
+	</TMPL_LOOP>
+</table>
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<pipeline-template-preset id="MyPreset">
+
+
+    <!-- Reference Workflow template by id -->
+    <import-template id="RS_Fetch" />
+
+    <!-- Default Workflow level Options -->
+    <options>
+    <!-- workflow level options. Same as with the Protocol -->
+        <option id="pbsmrtpipe.options.max_total_nproc" >
+            <value>1000</value>
+        </option>
+
+        <!-- MAX Number of Processors -->
+        <option id="pbsmrtpipe.options.max_nproc">
+            <value>24</value>
+        </option>
+
+        <!-- MAX Number of NPROC -->
+        <option id="pbsmrtpipe.options.max_nchunks">
+            <value>48</value>
+        </option>
+
+        <!-- stuff -->
+        <option id="pbsmrtpipe.options.nchunks">
+            <value>24</value>
+        </option>
+
+
+    </options>
+
+    <!-- Default Task specific Options -->
+
+    <task-options>
+        <option id="pbsmrtpipe.task_option.option_id1">
+            <value>1234</value>
+        </option>
+        <option id="pbsmrtpipe.task_option.option_id2">
+        <value>abcd</value>
+        </option>
+    </task-options>
+
+</pipeline-template-preset>

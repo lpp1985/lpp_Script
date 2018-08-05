@@ -1,0 +1,37 @@
+﻿
+
+\subsection{重复序列预测}
+通过组装结果与已知的转座子序列库进行比对来查找转座子序列。具体方法是，通过RepeatMasker软件\cite{RepeatMasker}（使用 Repbase 数据库\cite{Repbase}）和 RepeatProteinMasker 软件（使用 RepeatMasker自带的转座子蛋白库）两种方法来预测转座子；通过 TRF（ Tandem Repeat Finder）\cite{TRF}软件预测串联重复序列。
+\begin{table}[h]
+    \caption{重复序列分析结果}
+        \begin{center}
+            \begin{threeparttable}
+                \begin{tabularx}{\textwidth}{|X|X|}
+                    \hline
+                    total.fna.masked&\bfseries{重复序列mask后的序列}\\
+                    \hline
+                    total.fna.out&\bfseries{重复序列比对后的初始结果}\\
+                    \hline
+                    total.fna.out.gff&\bfseries{重复序列比对结果的 gff文件}\\
+                    \hline
+
+
+
+                \end{tabularx}
+
+            \end{threeparttable}
+        \end{center}
+\end{table}
+
+\begin{figure}[H]
+
+    \raggedleft
+    \includegraphics[width=0.8\textwidth]{% raw %}{{% endraw %}{{Graph}}{% raw %}}{% endraw %}
+    \captionsetup{labelsep=period}
+    \caption{重复序列注释结果}
+\end{figure}
+
+
+
+
+

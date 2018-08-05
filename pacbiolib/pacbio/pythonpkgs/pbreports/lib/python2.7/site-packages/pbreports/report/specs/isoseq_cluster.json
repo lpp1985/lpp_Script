@@ -1,0 +1,122 @@
+{
+    "id": "isoseq_cluster",
+    "version": "3.2",
+    "title": "Transcript Clustering",
+    "description": null,
+    "tables": [
+        {
+            "title": "Transcript Clustering",
+            "id": "isoseq_classify_table",
+            "columns": [
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "Total number of consensus isoforms, both high- and low-quality",
+                    "header": "Number of unpolished consensus isoforms",
+                    "id": "num_consensus_isoforms"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of consensus isoforms that have an estimated accuracy above the specified cutoff (0.99 default)",
+                    "header": "Number of polished high-quality isoforms",
+                    "id": "num_polished_hq_isoforms"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of consensus isoforms that have an estimated accuracy below the specified cutoff",
+                    "header": "Number of polished low-quality isoforms",
+                    "id": "num_polished_lq_isoforms"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The average length of all consensus isoforms, both high- and low-quality",
+                    "header": "Mean unpolished consensus isoforms read length",
+                    "id": "avg_consensus_isoform_length"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "Total number of bases in unpolished consensus isoforms",
+                    "header": "Total number of bases in unpolished consensus isoforms",
+                    "id": "num_total_bases"
+                }
+            ],
+            "description": "THIS JUST CREATES A TABLE FROM THE ATTRIBUTES. Code exists to implement this table but it is currently not being put in reports"
+        }
+    ],
+    "attributes": [
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "Total number of consensus isoforms, both high- and low-quality",
+            "name": "Number of unpolished consensus isoforms",
+            "id": "num_consensus_isoforms"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of consensus isoforms that have an estimated accuracy above the specified cutoff",
+            "name": "Number of polished high-quality isoforms",
+            "id": "num_polished_hq_isoforms"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of consensus isoforms that have an estimated accuracy below the specified cutoff",
+            "name": "Number of polished low-quality isoforms",
+            "id": "num_polished_lq_isoforms"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The average length of all consensus isoforms, both high- and low-quality",
+            "name": "Mean unpolished consensus isoforms read length",
+            "id": "avg_consensus_isoform_length"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "Total number of bases in unpolished consensus isoforms",
+            "name": "Total number of bases in unpolished consensus isoforms",
+            "id": "num_total_bases"
+        }
+    ],
+    "plotGroups": [
+        {
+            "id": "consensus_isoforms_readlength_group",
+            "plots": [
+                {
+                    "xlabel": "Read Length",
+                    "description": null,
+                    "caption": "Read Length of Consensus Isoforms Reads",
+                    "ylabel": null,
+                    "title": "Read Length of Consensus Isoforms Reads",
+                    "id": "consensus_isoforms_readlength_hist"
+                }
+            ],
+            "title": "Read Length of Consensus Isoforms Reads",
+            "description": null,
+            "legend": null
+        },
+        {
+            "id": "hq_lq_isoforms_avgqv_group",
+            "plots": [
+                {
+                    "xlabel": "Average Quality Value of HQ and LQ isoforms",
+                    "description": null,
+                    "caption": "Average Quality Value of HQ and LQ Isoforms",
+                    "ylabel": null,
+                    "title": "Average Quality Value of HQ and LQ Isoforms",
+                    "id": "hq_lq_isoforms_avgqv_hist"
+                }
+            ],
+            "title": "Average Quality Value of HQ and LQ Isoforms",
+            "description": null,
+            "legend": null
+        }
+
+    ]
+}

@@ -1,0 +1,37 @@
+{
+    "driver": {
+        "env": {},
+        "exe": "mh_toy.py run-rtc  ",
+        "serialization": "json"
+    },
+    "tool_contract": {
+        "_comment": "Created by v0.4.2",
+        "description": "Quick tool dev_mh_toy pbinternal2.tasks.dev_mh_toy",
+        "input_types": [
+            {
+                "description": "description for PacBio.FileTypes.COND_RESEQ_0",
+                "file_type_id": "PacBio.FileTypes.COND_RESEQ",
+                "id": "Label PacBio.FileTypes.COND_RESEQ_0",
+                "title": "<FileType id=PacBio.FileTypes.COND_RESEQ name=file >"
+            }
+        ],
+        "is_distributed": true,
+        "name": "Tool dev_mh_toy",
+        "nproc": 1,
+        "output_types": [
+            {
+                "default_name": "report",
+                "description": "description for <FileType id=PacBio.FileTypes.JsonReport name=report >",
+                "file_type_id": "PacBio.FileTypes.JsonReport",
+                "id": "Label PacBio.FileTypes.JsonReport_0",
+                "title": "<FileType id=PacBio.FileTypes.JsonReport name=report >"
+            }
+        ],
+        "resource_types": [],
+        "schema_options": [],
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "tool_contract_id": "pbinternal2.tasks.dev_mh_toy"
+    },
+    "tool_contract_id": "pbinternal2.tasks.dev_mh_toy",
+    "version": "0.3.3"
+}

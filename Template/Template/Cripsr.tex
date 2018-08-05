@@ -1,0 +1,11 @@
+\subsection{CRISPR分析}
+
+{% if CRISPR|length >0 %}共发现 多个 Crispr功能单元。
+{% for table in CRISPR  %}
+
+    \input{ "{{table}}" }
+
+{% endfor %}
+{% else %}共寻找到0个CRISPR单元。
+
+{% endif %} 

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<pacbioAnalysisInputs>
+  <dataReferences>
+    <url ref="run:0000000-0000"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0001/Analysis_Results/m130522_092457_42208_c100497142550000001823078008081323_s1_p0.3.bax.h5</location></url>
+    <url ref="run:0000000-0001"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0001/Analysis_Results/m130522_092457_42208_c100497142550000001823078008081323_s1_p0.2.bax.h5</location></url>
+    <url ref="run:0000000-0002"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0001/Analysis_Results/m130522_092457_42208_c100497142550000001823078008081323_s1_p0.1.bax.h5</location></url>
+    <url ref="run:0000000-0003"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0003/Analysis_Results/m130522_162831_42208_c100497142550000001823078008081326_s1_p0.1.bax.h5</location></url>
+    <url ref="run:0000000-0004"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0003/Analysis_Results/m130522_162831_42208_c100497142550000001823078008081326_s1_p0.3.bax.h5</location></url>
+    <url ref="run:0000000-0005"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0003/Analysis_Results/m130522_162831_42208_c100497142550000001823078008081326_s1_p0.2.bax.h5</location></url>
+    <url ref="run:0000000-0006"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0002/Analysis_Results/m130522_114657_42208_c100497142550000001823078008081324_s1_p0.2.bax.h5</location></url>
+    <url ref="run:0000000-0007"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0002/Analysis_Results/m130522_114657_42208_c100497142550000001823078008081324_s1_p0.3.bax.h5</location></url>
+    <url ref="run:0000000-0008"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0002/Analysis_Results/m130522_114657_42208_c100497142550000001823078008081324_s1_p0.1.bax.h5</location></url>
+    <url ref="run:0000000-0009"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0004/Analysis_Results/m130522_140701_42208_c100497142550000001823078008081325_s1_p0.1.bax.h5</location></url>
+    <url ref="run:0000000-0010"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0004/Analysis_Results/m130522_140701_42208_c100497142550000001823078008081325_s1_p0.2.bax.h5</location></url>
+    <url ref="run:0000000-0011"><location>/mnt/secondary/Share/mkocher/pysiv_bas_files/short_ecoli/0004/Analysis_Results/m130522_140701_42208_c100497142550000001823078008081325_s1_p0.3.bax.h5</location></url>
+  </dataReferences>
+</pacbioAnalysisInputs>

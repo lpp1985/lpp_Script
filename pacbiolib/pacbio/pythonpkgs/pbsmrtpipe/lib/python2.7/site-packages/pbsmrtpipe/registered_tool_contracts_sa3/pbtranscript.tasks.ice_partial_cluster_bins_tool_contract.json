@@ -1,0 +1,51 @@
+{
+    "version": "1.0.0.177015", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.ice_partial_cluster_bins --resolved-tool-contract ", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.ice_partial_cluster_bins", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard", 
+        "resource_types": [
+            "$tmpdir"
+        ], 
+        "description": "Constants used in pbtranscript.tasks.ice_partial_cluster_bins", 
+        "schema_options": [], 
+        "output_types": [
+            {
+                "title": "Partial Done Txt file", 
+                "description": "Partial Done Txt file.", 
+                "default_name": "partial_chunks_done", 
+                "id": "partial done txt", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ], 
+        "_comment": "Created by v0.3.25", 
+        "name": "pbtranscript.tasks.ice_partial_cluster_bins", 
+        "input_types": [
+            {
+                "description": "Partial chunks pickle file", 
+                "title": "Pickle In", 
+                "id": "partial_chunks_pickle", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "description": "Setinel file", 
+                "title": "Sentinel In", 
+                "id": "partial_sentinel_in", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }, 
+            {
+                "description": "PacBio ConsensusReadSet", 
+                "title": "ConsensusReadSet In", 
+                "id": "ccs_in", 
+                "file_type_id": "PacBio.DataSet.ConsensusReadSet"
+            }
+        ], 
+        "nproc": "$max_nproc", 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.ice_partial_cluster_bins"
+    }
+}

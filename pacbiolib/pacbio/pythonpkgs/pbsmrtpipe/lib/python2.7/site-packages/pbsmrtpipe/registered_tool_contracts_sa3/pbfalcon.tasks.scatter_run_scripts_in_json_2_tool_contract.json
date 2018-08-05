@@ -1,0 +1,72 @@
+{
+    "version": "0.1.0",
+    "driver": {
+        "serialization": "json",
+        "exe": "python -m pbfalcon.tasks.scatter_run_scripts_in_json_2 --resolved-tool-contract ",
+        "env": {}
+    },
+    "tool_contract_id": "pbfalcon.tasks.scatter_run_scripts_in_json_2",
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.scattered",
+        "resource_types": [],
+        "description": "\nSpecialized scatter task which spawns an input json file\ncontaining scripts into at most max_nchunk scattered json files.\n\nInput json file is dict{p_id: dict{'script_fn': script_fn, 'script_dir': script_dir}}.\n\nInput txt file is a sentinel file.\n\nEach scattered json file has the same data type, but likely\ncontains less items.\n",
+        "schema_options": [
+            {
+                "pb_option": {
+                    "default": 24,
+                    "type": "integer",
+                    "option_id": "pbsmrtpipe.task_options.dev_scatter_max_nchunks",
+                    "name": "Max NChunks",
+                    "description": "Maximum number of Chunks"
+                },
+                "title": "JSON Schema for pbsmrtpipe.task_options.dev_scatter_max_nchunks",
+                "required": [
+                    "pbsmrtpipe.task_options.dev_scatter_max_nchunks"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbsmrtpipe.task_options.dev_scatter_max_nchunks": {
+                        "default": 24,
+                        "type": "integer",
+                        "description": "Maximum number of Chunks",
+                        "title": "Max NChunks"
+                    }
+                }
+            }
+        ],
+        "output_types": [
+            {
+                "title": "Chunk JSON",
+                "description": "Chunked JSON",
+                "default_name": "json_with_scripts.chunked",
+                "id": "cjson_out",
+                "file_type_id": "PacBio.FileTypes.CHUNK"
+            }
+        ],
+        "_comment": "Created by v0.4.14",
+        "nchunks": "$max_nchunks",
+        "name": "Scatter json with Scripts into Chunks",
+        "input_types": [
+            {
+                "description": "Json containing scripts",
+                "title": "JSON",
+                "id": "json_with_scripts",
+                "file_type_id": "PacBio.FileTypes.json"
+            },
+            {
+                "description": "Sentinel txt",
+                "title": "TXT",
+                "id": "sentinel_txt",
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ],
+        "chunk_keys": [
+            "$chunk.json_id",
+            "$chunk.txt_id"
+        ],
+        "nproc": 1,
+        "is_distributed": true,
+        "tool_contract_id": "pbfalcon.tasks.scatter_run_scripts_in_json_2"
+    }
+}

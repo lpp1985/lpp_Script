@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_pbtranscript_cluster_bins">
+
+    <task-id>pbtranscript.tasks.cluster_bins</task-id>
+
+    <scatter>
+        <scatter-task-id>pbtranscript.tasks.scatter_cluster_bins</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.cluster_chunk_pickle_id" in="pbtranscript.tasks.cluster_bins:0"/>
+            <chunk out="$chunk.ccs_id" in="pbtranscript.tasks.cluster_bins:1"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_txt</gather-task-id>
+                <chunk-key>$chunk.report_id</chunk-key>
+                <task-output>pbtranscript.tasks.cluster_bins:0</task-output>
+            </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

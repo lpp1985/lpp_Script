@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pacbioAnalysisInputs>
+
+    <dataReferences>
+        <data ref="/opt/testdata/LIMS/2311663/0002">
+            <location>/mnt/secondary-siv/testdata/LIMS/2311663/0002/Analysis_Results/m130226_012234_ethan_c100471672550000001823071906131361_s1_p0.3.bax.h5</location>
+            <location>/mnt/secondary-siv/testdata/LIMS/2311663/0002/Analysis_Results/m130226_012234_ethan_c100471672550000001823071906131361_s1_p0.2.bax.h5</location>
+            <location>/mnt/secondary-siv/testdata/LIMS/2311663/0002/Analysis_Results/m130226_012234_ethan_c100471672550000001823071906131361_s1_p0.1.bax.h5</location>
+        </data>
+        <data ref="/opt/testdata/LIMS/2311663/0003">
+            <location>/mnt/secondary-siv/testdata/LIMS/2311663/0003/Analysis_Results/m130226_022844_ethan_c100471672550000001823071906131362_s1_p0.1.bax.h5</location>
+            <location>/mnt/secondary-siv/testdata/LIMS/2311663/0003/Analysis_Results/m130226_022844_ethan_c100471672550000001823071906131362_s1_p0.3.bax.h5</location>
+            <location>/mnt/secondary-siv/testdata/LIMS/2311663/0003/Analysis_Results/m130226_022844_ethan_c100471672550000001823071906131362_s1_p0.2.bax.h5</location>
+        </data>
+        <tag type="primaryAnalysisProtocol">Analysis_Results</tag>
+    </dataReferences>
+</pacbioAnalysisInputs>

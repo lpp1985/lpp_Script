@@ -1,0 +1,17 @@
+{
+  "_comment": "Resolved Pipeline Template Preset JSON format",
+  "pipelineId": "pbsmrtpipe.pipelines.hello_world",
+  "presetId": "pbsmrtpipe.pipeline_preset.hello_world",
+  "name": "MyHelloWorldPreset",
+  "description": "Description of preset is required",
+  "options": {
+    "pbsmrtpipe.options.max_total_nproc": 1000,
+    "pbsmrtpipe.options.max_nproc": 24,
+    "pbsmrtpipe.options.max_nchunks": 48,
+    "pbsmrtpipe.options.nchunks": 24
+  },
+  "taskOptions": {
+    "pbsmrtpipe.task_option.option_id1": 1234,
+    "pbsmrtpipe.task_option.option_id2": "abcd"
+  }
+}

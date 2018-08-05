@@ -1,0 +1,37 @@
+<smrtpipeSettings>
+
+    <protocol name="resequencing">
+        <option name="reference">
+            <value>/mnt/secondary-siv/references/ecoli_k12_MG1655</value>
+        </option>
+        <option name="noise.data">
+            <value>-77.27,0.08654,0.00121</value>
+        </option>
+        <option name="use_subreads">
+            <value>True</value>
+        </option>
+    </protocol>
+
+
+    <module id="P_Fetch"/>
+
+
+    <module id="P_Filter">
+        <option name="trim">
+            <value>True</value>
+        </option>
+        <option name="filters">
+            <value>MinRL=50,MinReadScore=0.65</value>
+        </option>
+        <option name="minSubReadLength">
+            <value>50</value>
+        </option>
+        <option name="minLength">
+            <value>50</value>
+        </option>
+        <option name="readScore">
+            <value>0.75</value>
+        </option>
+    </module>
+
+</smrtpipeSettings>

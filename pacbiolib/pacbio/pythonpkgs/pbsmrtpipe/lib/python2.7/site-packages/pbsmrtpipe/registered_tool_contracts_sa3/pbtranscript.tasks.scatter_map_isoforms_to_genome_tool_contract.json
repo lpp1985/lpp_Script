@@ -1,0 +1,72 @@
+{
+    "version": "0.1.0",
+    "driver": {
+        "serialization": "json",
+        "exe": "python -m pbtranscript.tasks.scatter_map_isoforms_to_genome --resolved-tool-contract ",
+        "env": {}
+    },
+    "tool_contract_id": "pbtranscript.tasks.scatter_map_isoforms_to_genome",
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.scattered",
+        "resource_types": [],
+        "description": "\nScatter inputs of map_isoforms_to_genome.\n\nmap_isoforms_to_genome takes two inputs:\n    idx-0 HQ isoforms FASTQ\n    idx-1 GMAP reference dataset\nscatter_map_isoforms_to_genome chunks HQ isoforms and copies GMAP\nreference dataset to chunk.json.\n",
+        "schema_options": [
+            {
+                "pb_option": {
+                    "default": 24,
+                    "type": "integer",
+                    "option_id": "pbsmrtpipe.task_options.dev_scatter_max_nchunks",
+                    "name": "Max NChunks",
+                    "description": "Maximum number of Chunks"
+                },
+                "title": "JSON Schema for pbsmrtpipe.task_options.dev_scatter_max_nchunks",
+                "required": [
+                    "pbsmrtpipe.task_options.dev_scatter_max_nchunks"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbsmrtpipe.task_options.dev_scatter_max_nchunks": {
+                        "default": 24,
+                        "type": "integer",
+                        "description": "Maximum number of Chunks",
+                        "title": "Max NChunks"
+                    }
+                }
+            }
+        ],
+        "output_types": [
+            {
+                "title": "Chunk JSON Map Isoforms Tasks",
+                "description": "Chunked JSON Map Isoforms Tasks",
+                "default_name": "map_isoforms_to_genome.chunked",
+                "id": "cjson_out",
+                "file_type_id": "PacBio.FileTypes.CHUNK"
+            }
+        ],
+        "_comment": "Created by v0.3.30",
+        "nchunks": "$max_nchunks",
+        "name": "Scatter Map Isoforms Chunks",
+        "input_types": [
+            {
+                "description": "HQ isoforms FASTQ file",
+                "title": "FASTQ In",
+                "id": "fastq_in",
+                "file_type_id": "PacBio.FileTypes.Fastq"
+            },
+            {
+                "description": "Gmap reference set file",
+                "title": "GmapReferenceSet In",
+                "id": "gmap_referenceset",
+                "file_type_id": "PacBio.DataSet.GmapReferenceSet"
+            }
+        ],
+        "chunk_keys": [
+            "$chunk.fastq_id",
+            "$chunk.gmap_ref_id"
+        ],
+        "nproc": 1,
+        "is_distributed": true,
+        "tool_contract_id": "pbtranscript.tasks.scatter_map_isoforms_to_genome"
+    }
+}

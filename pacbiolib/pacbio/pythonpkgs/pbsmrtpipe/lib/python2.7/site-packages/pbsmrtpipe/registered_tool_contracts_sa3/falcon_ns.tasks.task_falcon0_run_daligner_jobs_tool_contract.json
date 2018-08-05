@@ -1,0 +1,43 @@
+{
+    "driver": {
+        "env": {},
+        "exe": "python -m pbfalcon.tasks.basic  run-rtc  ",
+        "serialization": "json"
+    },
+    "tool_contract": {
+        "_comment": "Created by v0.4.14",
+        "description": "Quick tool task_falcon0_run_daligner_jobs falcon_ns.tasks.task_falcon0_run_daligner_jobs",
+        "input_types": [
+            {
+                "description": "description for PacBio.FileTypes.json_0",
+                "file_type_id": "PacBio.FileTypes.json",
+                "id": "Label PacBio.FileTypes.json_0",
+                "title": "<FileType id=PacBio.FileTypes.json name=file >"
+            },
+            {
+                "description": "description for PacBio.FileTypes.txt_1",
+                "file_type_id": "PacBio.FileTypes.txt",
+                "id": "Label PacBio.FileTypes.txt_1",
+                "title": "<OutputFileType PacBio.FileTypes.txt run_daligner_jobs0_id >"
+            }
+        ],
+        "is_distributed": true,
+        "name": "Tool task_falcon0_run_daligner_jobs",
+        "nproc": 4,
+        "output_types": [
+            {
+                "default_name": "file",
+                "description": "file of file names of local-alignment output",
+                "file_type_id": "PacBio.FileTypes.generic_fofn",
+                "id": "fofn_id",
+                "title": "FOFN of daligner output (unmerged .las, stage-0)"
+            }
+        ],
+        "resource_types": [],
+        "schema_options": [],
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "tool_contract_id": "falcon_ns.tasks.task_falcon0_run_daligner_jobs"
+    },
+    "tool_contract_id": "falcon_ns.tasks.task_falcon0_run_daligner_jobs",
+    "version": "0.0.0"
+}

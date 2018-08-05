@@ -1,0 +1,14 @@
+{
+    "_changelist": 127707, 
+    "_version": "2.1", 
+    "attributes": [
+        {
+            "id": "di_example_report.di_example_attr_x", 
+            "name": "Example DI Value", 
+            "value": 2
+        }
+    ], 
+    "id": "di_example_report", 
+    "plotGroups": [], 
+    "tables": []
+}

@@ -1,0 +1,203 @@
+{
+    "id": "isoseq_classify",
+    "version": "3.2",
+    "title": "Transcript Classification",
+    "description": null,
+    "tables": [
+        {
+            "title": "Iso-Seq Transcript Classification",
+            "id": "isoseq_classify_table",
+            "columns": [
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "Total number of CCS reads in the input file; this will be identical to the value in the CCS report",
+                    "header": "Number of consensus reads",
+                    "id": "num_reads"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of CCS reads with a 5-prime signal detected",
+                    "header": "Number of five prime reads",
+                    "id": "num_5_seen"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of CCS reads with a 3-prime signal detected",
+                    "header": "Number of three prime reads",
+                    "id": "num_3_seen"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of CCS reads with poly-A and 3-prime signals detected",
+                    "header": "Number of poly-A reads",
+                    "id": "num_polya_seen"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of CCS reads whose read length is less than the specified minimum sequence length",
+                    "header": "Number of filtered short reads",
+                    "id": "num_filtered_short_reads"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of non-full-length CCS reads; these are missing the poly-A tail and/or a terminal signal",
+                    "header": "Number of non-full-length reads",
+                    "id": "num_nfl"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of full-length CCS reads (Full-length reads are reads which have both prime signals and poly-A detected)",
+                    "header": "Number of full-length reads",
+                    "id": "num_fl"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of full-length CCS reads that are not artificial concatemers",
+                    "header": "Number of full-length non-chimeric reads",
+                    "id": "num_flnc"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "Mean length of full-length, non-artificial-concatemer CCS reads",
+                    "header": "Mean full-length non-chimeric read length",
+                    "id": "avg_flnc_len"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of non-full-length non-artificial-concatemer CCS reads",
+                    "header": "Number of non-full-length non-chimeric reads",
+                    "id": "num_nflnc"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "The number of non-full-length reads that are artificial concatemers",
+                    "header": "Number of non-full-length chimeric reads",
+                    "id": "num_nflc"
+                },
+                {
+                    "type": "int",
+                    "format": "{:,d}",
+                    "description": "Total number of bases in full-length non-artificial-concatemer CCS reads",
+                    "header": "Number of full-length non-chimeric bases",
+                    "id": "num_flnc_bases"
+                }
+            ],
+            "description": "THIS JUST CREATES A TABLE FROM THE ATTRIBUTES"
+        }
+    ],
+    "attributes": [
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "Total number of CCS reads in the input file; this will be identical to the value in the CCS report",
+            "name": "Number of consensus reads",
+            "id": "num_reads"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of CCS reads with a 5-prime signal detected",
+            "name": "Number of five prime reads",
+            "id": "num_5_seen"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of CCS reads with a 3-prime signal detected",
+            "name": "Number of three prime reads",
+            "id": "num_3_seen"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of CCS reads with poly-A and 3-prime signals detected",
+            "name": "Number of poly-A reads",
+            "id": "num_polya_seen"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of CCS reads whose read length is less than the specified minimum sequence length",
+            "name": "Number of filtered short reads",
+            "id": "num_filtered_short_reads"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of non-full-length CCS reads; these are missing the poly-A tail and/or a terminal signal",
+            "name": "Number of non-full-length reads",
+            "id": "num_nfl"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of full-length CCS reads. (Full-length reads are reads which have both prime signals and poly-A detected.)",
+            "name": "Number of full-length reads",
+            "id": "num_fl"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of full-length CCS reads that are not artificial concatemers",
+            "name": "Number of full-length non-chimeric reads",
+            "id": "num_flnc"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "Mean length of full-length, non-artificial-concatemer CCS reads",
+            "name": "Mean full-length non-chimeric read length",
+            "id": "avg_flnc_len"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of non-full-length non-artificial-concatemer CCS reads",
+            "name": "Number of non-full-length non-chimeric reads",
+            "id": "num_nflnc"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "The number of non-full-length reads that are artificial concatemers",
+            "name": "Number of non-full-length chimeric reads",
+            "id": "num_nflc"
+        },
+        {
+            "type": "int",
+            "format": "{:,d}",
+            "description": "Total number of bases in full-length non-artificial-concatemer CCS reads",
+            "name": "Number of full-length non-chimeric bases",
+            "id": "num_flnc_bases"
+        }
+    ],
+    "plotGroups": [
+        {
+            "id": "fulllength_nonchimeric_readlength_group",
+            "title": "Read Length of Full-length Non-Chimeric Reads",
+            "plots": [
+                {
+                    "xlabel": "Read Length",
+                    "description": null,
+                    "caption": "Read Length of Full-length Non-Chimeric Reads",
+                    "ylabel": null,
+                    "title": "Read Length of Full-length Non-Chimeric Reads",
+                    "id": "fulllength_nonchimeric_readlength_hist"
+                }
+            ],
+            "description": null,
+            "legend": null
+        }
+    ]
+}

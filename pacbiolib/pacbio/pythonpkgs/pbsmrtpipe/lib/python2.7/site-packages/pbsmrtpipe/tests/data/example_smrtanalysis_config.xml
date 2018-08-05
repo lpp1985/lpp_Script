@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smrtSecondaryConfig>
+  <system>
+    <host httpport="@httpport" httpsport="@httpsport" name="@hostname" />
+    <path dir="@protocoldir" name="protocol.dir" />
+    <path dir="@jobrootdir" name="job.root.dir" />
+    <path dir="@referencedir" name="reference.dir" />
+    <path dir="@logdir" name="log.dir" />
+  </system>
+  <components build="143162+" prior="2.2.0" version="2.4.0">
+    <component build="139492" dir="kodos" displayName="Auto-Analysis Daemon" name="Daemon" version="2.4.0" />
+    <component build="143146" dir="analysis" displayName="SMRT Pipe" name="SMRTpipe" version="2.4.0" />
+    <component build="141149" dir="redist/tomcat/webapps/smrtportal" displayName="SMRT Portal" name="SMRT Portal" version="2.4.0" />
+    <component build="141097" dir="redist/tomcat/webapps/smrtview" displayName="SMRT View" name="SMRT View" version="2.4.0" />
+  </components>
+</smrtSecondaryConfig>

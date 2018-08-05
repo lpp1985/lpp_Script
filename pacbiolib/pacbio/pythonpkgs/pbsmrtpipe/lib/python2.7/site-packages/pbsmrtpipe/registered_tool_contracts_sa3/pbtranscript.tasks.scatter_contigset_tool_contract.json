@@ -1,0 +1,79 @@
+{
+    "version": "0.1.0", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.scatter_contigset --resolved-tool-contract ", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.scatter_contigset", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.scattered", 
+        "resource_types": [], 
+        "description": "\nSpecialized ContigSet scatter, incorporating unchunked files required by\nice_partial\n", 
+        "schema_options": [
+            {
+                "pb_option": {
+                    "default": 24, 
+                    "type": "integer", 
+                    "option_id": "pbsmrtpipe.task_options.dev_scatter_max_nchunks", 
+                    "name": "Max NChunks", 
+                    "description": "Maximum number of Chunks"
+                }, 
+                "title": "JSON Schema for pbsmrtpipe.task_options.dev_scatter_max_nchunks", 
+                "required": [
+                    "pbsmrtpipe.task_options.dev_scatter_max_nchunks"
+                ], 
+                "$schema": "http://json-schema.org/draft-04/schema#", 
+                "type": "object", 
+                "properties": {
+                    "pbsmrtpipe.task_options.dev_scatter_max_nchunks": {
+                        "default": 24, 
+                        "type": "integer", 
+                        "description": "Maximum number of Chunks", 
+                        "title": "Max NChunks"
+                    }
+                }
+            }
+        ], 
+        "output_types": [
+            {
+                "title": "Chunk JSON Filtered Fasta", 
+                "description": "Chunked JSON ContigSet", 
+                "default_name": "fasta.chunked", 
+                "id": "cjson_out", 
+                "file_type_id": "PacBio.FileTypes.CHUNK"
+            }
+        ], 
+        "_comment": "Created by v0.3.20", 
+        "nchunks": "$max_nchunks", 
+        "name": "Scatter ContigSet", 
+        "input_types": [
+            {
+                "description": "PacBio ContigSet", 
+                "title": "ContigSet In", 
+                "id": "dataset_in", 
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            }, 
+            {
+                "description": "PacBio ContigSet", 
+                "title": "Reference ContigSet", 
+                "id": "ref_in", 
+                "file_type_id": "PacBio.DataSet.ContigSet"
+            }, 
+            {
+                "description": "PacBio ConsensusRead DataSet", 
+                "title": "ConsensusReadSet", 
+                "id": "ccs_in", 
+                "file_type_id": "PacBio.DataSet.ConsensusReadSet"
+            }
+        ], 
+        "chunk_keys": [
+            "$chunk.contigset_id", 
+            "$chunk.ref_contigset_id", 
+            "$chunk.ccsset_id"
+        ], 
+        "nproc": 1, 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.scatter_contigset"
+    }
+}

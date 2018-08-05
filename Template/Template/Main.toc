@@ -1,0 +1,48 @@
+\contentsline {section}{\numberline {1}数据质量统计}{1}{section.1}
+\contentsline {subsection}{\numberline {1.1}质量统计方法}{1}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}测序数据质量统计结果}{1}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}所有测序结果统计表}{2}{subsection.1.3}
+\contentsline {section}{\numberline {2}基础分析}{3}{section.2}
+\contentsline {subsection}{\numberline {2.1}序列组装}{3}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}组装方法}{3}{subsubsection.2.1.1}
+\contentsline {subsubsection}{\numberline {2.1.2}重复序列预测}{3}{subsubsection.2.1.2}
+\contentsline {section}{\numberline {3}基因预测和注释分析}{4}{section.3}
+\contentsline {subsection}{\numberline {3.1}COG分析}{4}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}KEGG通路分析}{4}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3} CDS序列多数据库比对注释}{5}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}IS序列分析}{5}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}CRISPR分析}{5}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}噬菌体前体分析}{6}{subsection.3.6}
+\contentsline {section}{\numberline {4}Introduction2}{8}{section.4}
+\contentsline {section}{\numberline {5}Introduction2}{9}{section.5}
+\contentsline {section}{\numberline {6}附录和说明}{10}{section.6}
+\contentsline {subsection}{\numberline {6.1}名词解释}{10}{subsection.6.1}
+\contentsline {subsubsection}{\numberline {6.1.1}Polymerase Reads}{10}{subsubsection.6.1.1}
+\contentsline {subsubsection}{\numberline {6.1.2}Subreads}{10}{subsubsection.6.1.2}
+\contentsline {subsubsection}{\numberline {6.1.3}Observe Insert length}{10}{subsubsection.6.1.3}
+\contentsline {subsubsection}{\numberline {6.1.4}Overlap Graph}{10}{subsubsection.6.1.4}
+\contentsline {section}{\numberline {7}结果说明}{11}{section.7}
+\contentsline {subsection}{\numberline {7.1}总体结果展示}{11}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}reference文件夹}{11}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}01-1. Circyled\_contig/文件夹}{12}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}01-2.Adjusted\_contig/文件夹}{12}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.5}Assembly\_END/文件夹}{12}{subsection.7.5}
+\contentsline {subsection}{\numberline {7.6}02.RepeatMasker文件夹}{12}{subsection.7.6}
+\contentsline {subsection}{\numberline {7.7}03.Annotation/文件夹}{13}{subsection.7.7}
+\contentsline {subsection}{\numberline {7.8}04.OtherDatabase文件夹}{13}{subsection.7.8}
+\contentsline {subsubsection}{\numberline {7.8.1}Detail文件夹}{13}{subsubsection.7.8.1}
+\contentsline {paragraph}{\numberline {7.8.1.1}Swiss文件夹}{13}{paragraph.7.8.1.1}
+\contentsline {paragraph}{\numberline {7.8.1.2}eggNOG文件夹}{14}{paragraph.7.8.1.2}
+\contentsline {paragraph}{\numberline {7.8.1.3}KEGG文件夹}{15}{paragraph.7.8.1.3}
+\contentsline {paragraph}{\numberline {7.8.1.4}Nr文件夹}{16}{paragraph.7.8.1.4}
+\contentsline {paragraph}{\numberline {7.8.1.5}Nt文件夹}{16}{paragraph.7.8.1.5}
+\contentsline {subsubsection}{\numberline {7.8.2}Table文件夹}{17}{subsubsection.7.8.2}
+\contentsline {subsection}{\numberline {7.9}05.InsertionSequence文件夹}{17}{subsection.7.9}
+\contentsline {subsection}{\numberline {7.10}06.ProPhage文件夹}{17}{subsection.7.10}
+\contentsline {subsection}{\numberline {7.11}07.Crispr文件夹}{18}{subsection.7.11}
+\contentsline {subsection}{\numberline {7.12}08.Genomic\_Island文件夹}{18}{subsection.7.12}
+\contentsline {subsection}{\numberline {7.13}09.AllResult文件夹}{19}{subsection.7.13}
+\contentsline {section}{\numberline {8}分析用软件版本和数据库版本}{20}{section.8}
+\contentsline {section}{\numberline {9}ok1}{21}{section.9}
+\contentsline {subsection}{\numberline {9.1}ok2}{21}{subsection.9.1}
+\contentsline {section}{\numberline {10} Conclusion }{22}{section.10}

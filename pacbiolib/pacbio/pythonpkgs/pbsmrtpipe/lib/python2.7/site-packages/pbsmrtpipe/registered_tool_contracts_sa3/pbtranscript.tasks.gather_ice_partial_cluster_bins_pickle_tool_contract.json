@@ -1,0 +1,43 @@
+{
+    "version": "0.1.0", 
+    "driver": {
+        "serialization": "json", 
+        "exe": "python -m pbtranscript.tasks.gather_ice_partial_cluster_bins_pickle --resolved-tool-contract ", 
+        "env": {}
+    }, 
+    "tool_contract_id": "pbtranscript.tasks.gather_ice_partial_cluster_bins_pickle", 
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard", 
+        "resource_types": [], 
+        "description": "\nGiven ChunkTasksPickle of PartialChunkTask objects,\nthis task merges ice_partial chunked output nfl pickles.\n", 
+        "schema_options": [], 
+        "output_types": [
+            {
+                "title": "Gather nfl pickles Done Txt file", 
+                "description": "Gather nfl pickles Done Txt file.", 
+                "default_name": "gather_ice_partial_pickles_done", 
+                "id": "gather nfl pickles done txt", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ], 
+        "_comment": "Created by v0.3.25", 
+        "name": "pbtranscript.tasks.gather_ice_partial_cluster_bins_pickle", 
+        "input_types": [
+            {
+                "description": "Partial chunks pickle file", 
+                "title": "Pickle In", 
+                "id": "partial_chunks_pickle", 
+                "file_type_id": "PacBio.FileTypes.pickle"
+            }, 
+            {
+                "description": "Setinel file", 
+                "title": "Sentinel In", 
+                "id": "partial_sentinel_in", 
+                "file_type_id": "PacBio.FileTypes.txt"
+            }
+        ], 
+        "nproc": 1, 
+        "is_distributed": true, 
+        "tool_contract_id": "pbtranscript.tasks.gather_ice_partial_cluster_bins_pickle"
+    }
+}

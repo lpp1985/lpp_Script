@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_isoseq_ice_partial_cluster_bins">
+
+    <task-id>pbtranscript.tasks.ice_partial_cluster_bins</task-id>
+
+    <scatter>
+        <scatter-task-id>pbtranscript.tasks.scatter_ice_partial_cluster_bins</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.partial_chunk_pickle_id" in="pbtranscript.tasks.ice_partial_cluster_bins:0"/>
+            <chunk out="$chunk.sentinel_id" in="pbtranscript.tasks.ice_partial_cluster_bins:1"/>
+            <chunk out="$chunk.ccs_id" in="pbtranscript.tasks.ice_partial_cluster_bins:2"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+           <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_txt</gather-task-id>
+                <chunk-key>$chunk.report_id</chunk-key>
+                <task-output>pbtranscript.tasks.ice_partial_cluster_bins:0</task-output>
+           </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

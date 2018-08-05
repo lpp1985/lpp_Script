@@ -1,0 +1,55 @@
+{
+    "id": "filter_subread",
+    "version": "3.2",
+    "title": "Subread filtering",
+    "description": null,
+    "attributes": [
+        {
+            "type": "int",
+            "format": null,
+            "description": null,
+            "name": "Total Number of Bases",
+            "id": "filter_subread_nbases"
+        },
+        {
+            "type": "int",
+            "format": null,
+            "description": null,
+            "name": "Number of Reads",
+            "id": "filter_subread_nreads"
+        },
+        {
+            "type": "int",
+            "format": null,
+            "description": null,
+            "name": "Mean Subread Length",
+            "id": "filter_subread_mean"
+        },
+        {
+            "type": "int",
+            "format": null,
+            "description": null,
+            "name": "N50",
+            "id": "filter_subread_n50"
+        }
+    ],
+    "tables": [],
+    "plotGroups": [
+        {
+            "plots": [
+                {
+                    "xlabel": "Subread Length",
+                    "description": null,
+                    "caption": "Subread Filtering",
+                    "ylabel": null,
+                    "title": "Subread Filtering",
+                    "id": "post_filter"
+                }
+            ],
+            "description": null,
+            "legend": null,
+            "id": "subread",
+            "title": "Subread Filtering"
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+  "namespace": "com.pacbio.common.models.pipelines.viewrules",
+  "type": "record",
+  "name": "PipelineTemplateViewRule",
+  "fields": [
+    {
+      "name": "id",
+      "doc": "Pipeline Template Id to apply rules to.",
+      "type": "string"
+    },
+    {
+      "name": "description",
+      "doc": "Override pipeline template description",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "doc": "Override pipeline template name",
+      "type": "string"
+    },
+    {
+      "name": "taskOptions",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "PipelineOptionView",
+          "fields": [
+            {
+              "doc": "Tool Contract option id (e.g., pbcommand.task_options.my_option)",
+              "name": "id",
+              "type": "string"
+            },
+            {
+              "doc": "Should option be hidden",
+              "name": "hidden",
+              "type": "boolean"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

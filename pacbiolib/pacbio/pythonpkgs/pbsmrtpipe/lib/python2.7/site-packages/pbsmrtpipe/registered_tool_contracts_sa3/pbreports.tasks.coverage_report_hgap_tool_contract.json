@@ -1,0 +1,67 @@
+{
+    "version": "0.1",
+    "driver": {
+        "serialization": "json",
+        "exe": "python -m pbreports.report.coverage_hgap --resolved-tool-contract ",
+        "env": {}
+    },
+    "tool_contract_id": "pbreports.tasks.coverage_report_hgap",
+    "tool_contract": {
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "resource_types": [],
+        "description": "\nGenerates a report showing coverage plots for the top 25 contigs of the\nsupplied reference.\n",
+        "schema_options": [
+            {
+                "pb_option": {
+                    "default": 25,
+                    "type": "integer",
+                    "option_id": "pbreports.task_options.max_contigs",
+                    "name": "Maximum number of contigs to plot",
+                    "description": "Maximum number of contigs to plot in coverage report"
+                },
+                "title": "JSON Schema for pbreports.task_options.max_contigs",
+                "required": [
+                    "pbreports.task_options.max_contigs"
+                ],
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "pbreports.task_options.max_contigs": {
+                        "default": 25,
+                        "type": "integer",
+                        "description": "Maximum number of contigs to plot in coverage report",
+                        "title": "Maximum number of contigs to plot"
+                    }
+                }
+            }
+        ],
+        "output_types": [
+            {
+                "title": "Coverage Report",
+                "description": "Basic coverage metrics",
+                "default_name": "coverage_report",
+                "id": "report_json",
+                "file_type_id": "PacBio.FileTypes.JsonReport"
+            }
+        ],
+        "_comment": "Created by v0.4.13",
+        "name": "Coverage",
+        "input_types": [
+            {
+                "description": "Reference DataSet XML or FASTA file",
+                "title": "Reference DataSet",
+                "id": "reference",
+                "file_type_id": "PacBio.DataSet.ReferenceSet"
+            },
+            {
+                "description": "Alignment Summary GFF",
+                "title": "Alignment Summary GFF",
+                "id": "gff",
+                "file_type_id": "PacBio.FileTypes.gff"
+            }
+        ],
+        "nproc": 1,
+        "is_distributed": true,
+        "tool_contract_id": "pbreports.tasks.coverage_report_hgap"
+    }
+}

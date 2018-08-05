@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow>
+    <options>
+    <!-- workflow level options. -->
+        <option id="pbsmrtpipe.option.option_id1" >
+            <value>MyValue</value>
+        </option>
+        <option id="pbsmrtpipe.option.max_nproc" >
+            <value>24</value>
+        </option>
+    </options>
+    <entry-points>
+      <entry-point id="$entry:e_01" in="pbsmrtpipe.tasks.dev_hello_world:0"/>
+    </entry-points>
+    <bindings>
+        <!-- Use attributes vs elements here because tasks are always referenced using ids -->
+        <binding out="pbsmrtpipe.tasks.dev_hello_world:0" in="pbsmrtpipe.tasks.dev_hello_worlder:0" />
+        <binding out="pbsmrtpipe.tasks.dev_hello_world:0" in="pbsmrtpipe.tasks.dev_hello_garfield:0" />
+        <binding out="pbsmrtpipe.tasks.dev_hello_world:0" in="pbsmrtpipe.tasks.dev_hello_distributed:0" />
+        <binding out="pbsmrtpipe.tasks.dev_hello_worlder:0" in="pbsmrtpipe.tasks.dev_hello_distributed:1" />
+    </bindings>
+    <task-options>
+        <option id="pbsmrtpipe.task_option.dev.hello_message">
+            <value>Custom Hello Message</value>
+        </option>
+    </task-options>
+</workflow>

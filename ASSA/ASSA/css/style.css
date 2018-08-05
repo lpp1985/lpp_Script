@@ -1,0 +1,80 @@
+body { background: #fff; color: #000; font-family: Arial, sans-serif; font-size: 67.5%; text-align: center; }
+
+* { padding: 0; margin: 0; }
+
+/*---:[ global elements ]:---*/
+
+a, a:visited, a:hover { color: #0000FF; text-decoration: underline; }
+	a img { border: none; }
+
+p { margin: 5px 0px 5px 0px; }
+code, pre { font-size: 12px; font-family: Monaco, "Courier New", Courier, monospace; }
+textarea, select { margin-top: 5px; margin-bottom: 5px; border: 1px solid #000; }
+
+table { border-collapse: collapse; border: 0; margin: 0; padding: 0; }
+tr { border: 0; margin: 0; padding: 0; }
+td, th { border: 1px solid #000; padding: 3px; }
+	th { background: #CCCCCC; }
+	td.green2, span.green2 { background-color: #04B404; }
+	td.green,  span.green  { background-color: #B0F8B0; }
+	td.yellow, span.yellow { background-color: #EEE354; }
+	td.red,    span.red    { background-color: #EA9C9C; }
+
+table.fake { border-collapse: collapse; border: 0; margin: 0; padding: 0; }
+	table.fake tr { border: 0; margin: 0; padding: 0; }
+	table.fake td, table.fake th { border: 0; }
+/*---:[ headlines ]:---*/
+
+h1, h2, h3, h4 { font-weight: bold; font-family: Helvetica, Arial, sans-serif; color: #000; }
+
+h1 { padding: 0.2em 0 0.8em 0; font-variant: small-caps; text-align: left; clear: both; }
+h2 { font-size: 1.4em; margin: 15px 0px 10px 0px; font-variant: small-caps; }
+h3 { font-size: 1.2em; margin: 10px 0px 5px 0px; }
+
+ul { margin: 10px 0px 10px 0px; }
+li { margin: 10px 0px 0px 30px; }
+
+.bold { font-weight: bold; }
+
+/*---:[ header styles ]:---*/
+
+ul.nav { width: 100%; list-style: none; margin-top: 0.5em; padding: 0; background: #1D1D1D; float: left; clear: both; }
+	ul.nav li { text-align: left; float: left; font: 1.4em Helvetica, Arial, sans-serif; font-variant: small-caps; width: 135px; border-right: 2px solid #FFF; display: block; margin: 0;}
+		ul.nav li a, ul.nav li a:visited { display: block; padding: 0.4em 1.5em 1.5em 0.5em; color: #FFF; text-decoration: none; }
+		ul.nav li a:hover { color: #FFF; background-color: #C3C3C3; text-decoration: none; }
+		ul.nav li a.current, ul.nav li a.current:visited, ul.nav li a.current:hover { color: #FFF; text-decoration: none; }
+		ul.nav li a.red:hover { background-color: #FF0000; }
+		ul.nav li a.orange:hover { background-color: #EB9F03; }
+		ul.nav li a.green:hover { background-color: #008000; }
+		ul.nav li a.blue:hover { background-color: #0000FF; }
+		ul.nav li a.purple:hover { background-color: #8000FF; }
+
+/*---:[ core layout elements ]:---*/
+div.content_box { width: 960px; text-align: left; float: left; clear: both; font-size: 140%; padding: 5px 20px 0px 20px; }
+
+/*---:[ footer styles ]:---*/
+div.footer { width: 100%; margin-top: 3.0em; padding-top: 1.0em; border-top: 2px solid #ccc; font: normal 1.1em/1.3em Helvetica, Arial, sans-serif; float: left; clear: both; }
+	div.footer p { margin: 0 0 10px 0; font-size: 1.3em; color: #888; text-align: right; }
+		div.footer a, div.footer a:visited { color: #888; text-decoration: none; }
+		div.footer a:hover { text-decoration: underline; }
+
+/*---:[ GeneTack page ]:---*/
+/* div.gt_section { width: 100%; border: 1px solid #ccc; padding: 10px; }  */
+
+.warning {color: red; }
+.success {color: green; }
+
+/*---:[ buttons ]:---*/
+a.button, a.button:visited, a.button_g, a.button_g:visited, a.button_r, a.button_r:visited { font-size: 110%; border: 1px solid #001C3A; color: #001C3A; padding: 2px 5px 2px 5px; text-decoration: none; }
+	a.button, a.button:visited { background: #EEE354 none repeat scroll 0 0; }
+		a.button:hover { background-color: #D5BB00; }
+	a.button_g, a.button_g:visited { background: #B0F8B0 none repeat scroll 0 0; }
+		a.button_g:hover { background-color: #5FD55F; }
+	a.button_r, a.button_r:visited { background: #EA9C9C none repeat scroll 0 0; }
+		a.button_r:hover { background-color: #E18181; }
+
+table.contact_us_tbl { width: 100%; border: 0px; }
+	table.contact_us_tbl td { padding: 10px; border: 0px; }
+	table.contact_us_tbl td.info { vertical-align: top; }
+	table.contact_us_tbl td.img  { width: 10%; }
+	table.contact_us_tbl img { border: 1px solid #000; }

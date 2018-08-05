@@ -1,0 +1,19 @@
+{
+  "testId": "sample_config",
+  "workflowXml": null,
+  "pipelineId": "pbsmrtpipe.pipelines.sa3_ds_resequencing_fat",
+  "entryPoints": [{
+    "entryId": "eid_subread",
+    "path": "/path/to/subreadset.xml"
+  }, {
+    "entryId": "eid_ref_dataset",
+    "path": "/path/to/referenceset.xml"
+  }],
+  "description": "Run resequencing pipeline",
+  "jobType": "pbsmrtpipe",
+  "outputDir": "job_output",
+  "presetXml": "preset.xml",
+  "pythonTests": {
+    "pbsmrtpipe.testkit.core": ["test_zero", "test_resources"]
+  }
+}

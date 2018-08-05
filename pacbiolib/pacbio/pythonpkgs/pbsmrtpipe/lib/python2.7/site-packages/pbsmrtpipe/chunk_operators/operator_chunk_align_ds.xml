@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_align_ds">
+
+    <task-id>pbalign.tasks.pbalign</task-id>
+
+    <scatter>
+        <scatter-task-id>pbcoretools.tasks.subreadset_align_scatter</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.subreadset_id" in="pbalign.tasks.pbalign:0"/>
+            <chunk out="$chunk.reference_id" in="pbalign.tasks.pbalign:1"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+            <chunk>
+                <gather-task-id>pbcoretools.tasks.gather_alignmentset</gather-task-id>
+                <chunk-key>$chunk.alignmentset_id</chunk-key>
+                <task-output>pbalign.tasks.pbalign:0</task-output>
+            </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>

@@ -1,0 +1,73 @@
+\documentclass[UTF8,a4paper,sub3section]{ctexart}
+\usepackage{amsmath,longtable,fancyhdr}
+\usepackage{indentfirst,adjustbox}
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{lastpage,caption,graphics}
+\usepackage{titlesec}
+\usepackage{hyperref,ltxtable,tabularx,booktabs,threeparttable,graphicx }
+\usepackage{titlesec,float,rotating}
+\setcounter{secnumdepth}{4}
+%\titleformat{\chapter}[display]{\centering\Huge\bfseries}{第\,\thechapter,章}{1em}{}
+
+%\renewcommand\chaptername{\arabic{chapter}}
+\let\stdsection\section
+\let\stdtableofcontents\tableofcontents
+%\let\stdchapter\chapter
+%\renewcommand\thechapter{\arabic{chapter}}
+%\renewcommand\chapter{\newpage \pagestyle{fancy} \stdchapter}
+%\renewcommand\tableofcontents{\pagestyle{empty}  \stdtableofcontents}
+\renewcommand\section{\newpage\stdsection}
+%\renewcommand{\cleardoublepage}{}
+%\renewcommand{\clearpage}{}
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+
+
+
+\CTEXsetup[name={,}]{chapter}
+\CTEXsetup[number=\arabic{chapter}]{chapter}
+%\CTEXsetup[number=\arabic{section}]{section}
+%\CTEXsetup[format=\raggedright\bfseries\zihao{1}]{chapter}
+\CTEXsetup[beforeskip=0pt,afterskip=0pt]{chapter}
+\CTEXsetup[format=\raggedright\bfseries\zihao{-4}]{section}
+
+%\CTEXsetup[number=\arabic{section}.\arabic{subsection}]{subsection}
+\captionsetup{labelsep=period}
+
+
+\setlength{\parindent}{2em}
+%\rhead{   \textcolor{blue}{北京赛默百合生物科技有限公司}  }
+%\lhead{\rightmark}
+
+
+
+\fancyhead[OR]{ \zihao{5}\textcolor{blue}{北京赛默百合生物科技有限公司}}
+
+\fancyhead[OL]{ the page  \thepage   of  \pageref{LastPage} }
+
+
+
+\title{Lpp Book}
+
+\author{Lpp}
+\date{}
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\pagestyle{plain}
+\setcounter{page}{1}
+\pagenumbering{Roman}
+\tableofcontents
+\newpage
+
+\setcounter{page}{1}
+\pagenumbering{arabic}
+\pagestyle{fancy}
+\input{"QC.tex"}
+
+
+
+\end{document}

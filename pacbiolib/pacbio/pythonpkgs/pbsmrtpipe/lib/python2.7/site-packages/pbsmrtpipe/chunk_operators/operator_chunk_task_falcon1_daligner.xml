@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<chunk-operator id="pbsmrtpipe.operators.chunk_task_falcon1_run_daligner_jobs">
+
+    <task-id>falcon_ns.tasks.task_falcon1_run_daligner_jobs</task-id>
+
+    <scatter>
+        <scatter-task-id>pbfalcon.tasks.scatter1_run_daligner_jobs</scatter-task-id>
+        <chunks>
+            <chunk out="$chunk.json_id" in="falcon_ns.tasks.task_falcon1_run_daligner_jobs:0"/>
+            <chunk out="$chunk.bash_id" in="falcon_ns.tasks.task_falcon1_run_daligner_jobs:1"/>
+        </chunks>
+    </scatter>
+    <!-- Define the Gather Mechanism -->
+    <gather>
+        <chunks>
+            <chunk>
+                <!-- This is actually a txt -->
+                <gather-task-id>pbfalcon.tasks.gather1_run_daligner_jobs</gather-task-id>
+                <chunk-key>$chunk.fofn_id</chunk-key>
+                <task-output>falcon_ns.tasks.task_falcon1_run_daligner_jobs:0</task-output>
+            </chunk>
+        </chunks>
+    </gather>
+</chunk-operator>
