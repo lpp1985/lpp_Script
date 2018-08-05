@@ -1,1 +1,8 @@
-../Script/sshconfig
+Host ROOMNAS
+	Hostname gass.f3322.net
+	Port 9022
+	User lpp
+Host USA
+	Hostname	gass.f3322.net
+	Port	29453
+	User	root

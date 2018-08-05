@@ -1,1 +1,92 @@
-../Script/see
+
+SOAP.coverage
+    Version: 2.7.7
+Complied at: Dec 31 2009 14:58:44
+     Author: RuiBang Luo
+     E-mail: luoruibang@genomics.org.cn
+
+This utility can calculate sequencing coverage or physical coverage as well as duplication rate
+and details of specific block for each segments and whole genome by using SOAP, Blat, Blast, BlastZ,
+mummer and MAQ aligement results with multi-thread. Gzip file supported.
+
+Parameters:
+  -cvg or -phy or -tag    Selector for sequencing coverage mode, physical coverage mode or reads tag mode
+                          At least and only one should be selected!
+  -refsingle [filename]   Input reference fasta file used in SOAP
+  -i [soap-file1 soap-file2 ...]
+                          Input several soap or soap gziped results by filenames.
+  -il [soap-list]         Input several soap or soap gziped results (absolute path!) with a soap-list file
+		Caution: Only PE aligned results can be used in physical coverage!
+  -il_single [SE aligned results list]
+  -il_soap [PE aligned results list]
+  -o [file-name]          Results output with details
+  -depth [directory]      Output coverage of each bp in seperate files, a directory should be given
+  -depthsingle [filename] Output coverage of each bp in a single file (text, fasta like)
+  -depthsinglebin [fn]    Output coverage of each bp in a single file (Binary mode)
+  -addn [filename]        Input N block data for exclusion (marked as 65535 in depthsingle output)
+		Input format: <segment_name> <start (numbering from 1)> <end (exclude the last)>
+  -depthinput [filename]  Input previous coverage data (Both Text or Binary) for faster accumulation
+  -cdsinput [filename]    Input specific block range for calculating coverage
+		Input format: <segment_name> <start (numbering from 1)> <end (exclude the last)>
+  -plot [filename] [x-axis lower] [x-axis upper]
+                          Output overall distribution of coverage of all segments
+  -cdsplot [filename] [x-axis lower] [x-axis upper]
+                          Output distribution of coverage of specific blocks
+  -cdsdetail [filename]
+                          Output coverage of each bp of each specific blocks in a single file
+  -window [filename] [length]
+                          Output coverage averaged in a [length] long window to [filename]
+  -p [num]                Number of processors [Default:4]
+  -trim [num]             Exclude [num] bp(s) from head & tail of each segments
+
+Input format seletors:
+  -plain                  Input is a three column list
+  -sam                    Input is a standard SAM input file
+  -pslquery               Input is Blat for alculating query coverage.
+  -pslsub                 Input is Blat for calculating subject coverage.
+  -maq                    Input is MAQ output file.
+  -m8subject              Input is Blast m8 file for calculating subject coverage (reference should be subject).
+  -m8query                Input is Blast m8 file for calculating query coverage (reference should be query).
+  -mummerquery [limit]    Input mummer result file for calculating query coverage.
+  -axtoitg                Input Blastz axt file for calculating target coverage.
+  -axtoiq                 Input Blastz axt file for calculating query coverage.
+
+Special functions:
+  -sp [filename_in] [filename_out]
+                          Output S/P ratio data for post processing.
+       Column:
+           ref    start    end    name
+  -pesupport [filename_in] [filename_out]
+                          Output pair-end reads on specific areas.
+       Column:
+           ref    start    end    name
+  -onlyuniq               Use reads those are uniquely mapped (column 4 in soap == 1).
+  -precise                Omit mismatched bp in soap results.
+  -nowarning              Cancel all possible warning.
+  -nocalc                 Do not perform depth calculation.
+  -onlycover              Only output 0 or 1 for coverage calculation.
+
+Physical Coverage Specified Parameters:
+  -duplicate [num]        Exclude duplications, and gives the percentage of duplication. [num]=readlength
+  -insertupper [num]      Insert larger than num will be abandon [Default: 15000]
+  -insertlower [num]      Insert shorter thab num will be abandon [Default: 0]
+
+Example:
+	1. Calculate several files of SOAP results.
+	   soap.coverage -cvg -i *.soap *.single -refsingle human.fa -o result.txt 
+
+	2. Calculate a list of SOAP results, exclude Ns blocks, output depth to
+	   a file and plot coverage form depth 0 to 1000.
+	   soap.coverage -cvg -il soap.list -refsingle human.fa -o result.txt -depthsingle all.coverage -addn n.gap -plot distribution.txt 0 1000
+
+	3. Calculate a list of SOAP results, use only uniquely mapped reads, exclude Ns blocks
+	   , output depth to a file and plot coverage form depth 0 to 1000.
+	   soap.coverage -cvg -il soap.list -onlyuniq -refsingle human.fa -o result.txt -depthsingle all.coverage -addn n.gap -plot distribution.txt 0 1000
+
+	4. Add new SOAP results to depth(-depthsingle) already calculated &
+	   plot all data and specific blocks from depth 0 to 150, with 6 processors.
+	   soap.coverage -cvg -depthinput all.coverage -refsingle human.fa -il soap.list -p 6 -o result.txt -cdsinput cds.list -plot distribution.txt 0 150 -cdsplot distribution_cds.txt 0 150
+
+	5. Calculate physical coverage and duplication rate(read length=44) with
+	   insert between (avg-3SD, avg+SD)[avg=197, SD=9], with 8 processors
+	   soap.coverage -phy -il soap_without_single.list -refsingle human.fa -p 8 -o result.txt -duplicate 44 -insertlower 170 -insertupper 224

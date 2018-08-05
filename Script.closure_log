@@ -1,1 +1,15 @@
-../Script/Script.closure_log
+Error:
+	can not open input library info file
+
+Version:
+	1.10
+
+Usage:
+	GapCloser [options]
+	-o	<string>	Output file
+	-b	<string>	Input configure file
+	-a	<string>	Input scaffold file
+	-p	<int>	Overlap length/K value(default 25, max 31)
+	-t	<int>	Thread number
+	-h	-?	Help
+

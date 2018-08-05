@@ -1,1 +1,27 @@
-../Script/Soap_cat_all
+﻿#!/usr/bin/python
+#Author=LPP
+from lpp import *
+import os,sys
+END = open(sys.argv[1],'w')
+seq_all = {}
+for a,b,c in os.walk(os.getcwd()):
+	for f in c:
+		if f.endswith( '.contig' ):
+			RAW = fasta_check( open(a+'/'+f ,'rU'))
+			try:
+				for t,s in RAW:
+					if len(s) <=50:
+						continue
+					seq_all[s] = t
+			except:
+				continue
+			break
+		elif  f.startswith('contigs-'):
+			RAW = fasta_check( open(a+'/'+f ,'rU'))
+			try:
+				for t,s in RAW:
+					seq_all[s] = t
+			except:
+				continue
+for each_seq,title in seq_all.items():
+	END.write( title+each_seq )

@@ -1,1 +1,103 @@
-../Script/gbk_to_gff.xml
+<tool id="fml_gbk2gff" name="GBK-to-GFF" version="2.1.0">
+    <description>converter</description>
+    <requirements>
+        <requirement type="package" version="1.65">biopython</requirement>
+    </requirements>
+  	<command interpreter="python">gbk_to_gff.py $inf_gbk &gt; $gff_format
+  	</command>
+  	<inputs>
+		<param format="gb,gbk,genbank" name="inf_gbk" type="data" label="Convert this query" help="GenBank flat file format consists of an annotation section and a sequence section."/>
+  	</inputs>
+	<outputs>
+		<data format="gff" name="gff_format" label="${tool.name} on ${on_string}: Converted"/>
+  	</outputs>
+	<tests>
+        <test>
+            <param name="inf_gbk" value="s_cerevisiae_SCU49845.gbk" />
+            <output name="gff_format" file="s_cerevisiae_SCU49845.gff" />
+        </test>
+	</tests>
+  	<help>
+    
+**What it does**
+
+This tool converts data from a GenBank_ flat file format to GFF (scroll down for format description).
+
+.. _GenBank: http://www.ncbi.nlm.nih.gov/genbank/ 
+
+------
+
+**Example**
+
+- The following data in GenBank format::
+	
+    LOCUS       NM_001202705            2406 bp    mRNA    linear   PLN 28-MAY-2011
+    DEFINITION  Arabidopsis thaliana thiamine biosynthesis protein ThiC (THIC)
+                mRNA, complete cds.
+    ACCESSION   NM_001202705
+    VERSION     NM_001202705.1  GI:334184566.........
+    FEATURES             Location/Qualifiers
+         source          1..2406
+                         /organism="Arabidopsis thaliana"
+                         /mol_type="mRNA"
+                         /db_xref="taxon:3702"........
+         gene            1..2406
+                         /gene="THIC"
+                         /locus_tag="AT2G29630"
+                         /gene_synonym="PY; PYRIMIDINE REQUIRING; T27A16.27;........
+    ORIGIN
+        1 aagcctttcg ctttaggctg cattgggccg tgacaatatt cagacgattc aggaggttcg
+        61 ttcctttttt aaaggaccct aatcactctg agtaccactg actcactcag tgtgcgcgat
+        121 tcatttcaaa aacgagccag cctcttcttc cttcgtctac tagatcagat ccaaagcttc
+        181 ctcttccagc tatggctgct tcagtacact gtaccttgat gtccgtcgta tgcaacaaca
+    //
+
+
+- Will be converted to GFF3::
+
+    NM_001202705    gbk2gff chromosome      1       2406    .       +       1       ID=NM_001202705;Alias=2;Dbxref=taxon:3702;Name=NM_001202705
+    NM_001202705    gbk2gff gene    1       2406    .       +       1       ID=AT2G29630;Dbxref=GeneID:817513,TAIR:AT2G29630;Name=THIC
+    NM_001202705    gbk2gff mRNA    192     2126    .       +       1       ID=AT2G29630.t01;Parent=AT2G29630
+    NM_001202705    gbk2gff CDS     192     2126    .       +       1       ID=AT2G29630.p01;Parent=AT2G29630.t01
+    NM_001202705    gbk2gff exon    192     2126    .       +       1       Parent=AT2G29630.t01
+
+------
+
+**Reference**
+
+**GBK-to-GFF** is part of oqtans package and cited as [1]_.
+
+.. [1] Sreedharan VT, Schultheiss SJ, Jean G et.al., Oqtans: the RNA-seq workbench in the cloud for complete and reproducible quantitative transcriptome analysis. Bioinformatics (2014). `10.1093/bioinformatics/btt731`_
+
+.. _10.1093/bioinformatics/btt731: http://goo.gl/I75poH
+
+------
+
+**About file formats** 
+
+**GenBank format** An example of a GenBank record may be viewed here_
+
+.. _here: http://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html 
+
+**GFF** Generic Feature Format is a format for describing genes and other features associated with DNA, RNA and Protein sequences. GFF lines have nine tab-separated fields::
+
+    1. seqid - Must be a chromosome or scaffold or contig.
+    2. source - The program that generated this feature.
+    3. type - The name of this type of feature. Some examples of standard feature types are "gene", "CDS", "protein", "mRNA", and "exon".
+    4. start - The starting position of the feature in the sequence. The first base is numbered 1.
+    5. stop - The ending position of the feature (inclusive).
+    6. score - A score between 0 and 1000. If there is no score value, enter ".".
+    7. strand - Valid entries include '+', '-', or '.' (for don't know/care).
+    8. phase - If the feature is a coding exon, frame should be a number between 0-2 that represents the reading frame of the first base. If the feature is not a coding exon, the value should be '.'.
+    9. attributes - All lines with the same group are linked together into a single item.
+
+--------
+
+**Copyright**
+
+GBK-to-GFF Wrapper Version 0.6 (Apr 2015)
+
+2009-2015 Max Planck Society, University of Tübingen &amp; Memorial Sloan Kettering Cancer Center
+
+	</help>
+</tool>
