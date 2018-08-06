@@ -12,7 +12,7 @@ from networkx import DiGraph
 
 if __name__ == '__main__':
     RAW = open(sys.argv[1],'rU')
-    END = open("ScaffoldEdges.tsv",'w')
+    END = open(sys.argv[2],'w')
     has = {}
     seq = ""
     number = 1
