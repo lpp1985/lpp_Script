@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+#coding:utf-8
 from lpp import *
 RAW =open(sys.argv[1],'rU')
 data = Ddict()
