@@ -4,11 +4,11 @@ params.genome ="scaff.fa"
 Result_path = params.input+"/Result/"
 genomeFile = file(params.genome)
 
-Channel.fromFilePairs(params.input+'/*.R{1,2}*.gz').into { all_reads }
+Channel.fromFilePairs(params.input+'/*_R{1,2}*.gz').into { all_reads }
 process index {
     executor 'pbs'
     cpus 32 
-    clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
+    clusterOptions  "   -d $PWD "
     input:
 		file genomeFile
 
@@ -36,7 +36,7 @@ process mapping {
       executor 'pbs'
 	maxForks 40
   cpus 32
-  clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
+  clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -V"
   publishDir "$Result_path", mode: 'copy', overwrite: true
     input:
 		file STARgenome from STARgenomeIndex.first()
@@ -61,7 +61,7 @@ process mapping {
 
 
 process Combine{
-	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
+	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -V"
 	executor 'pbs'
 	input:
 		file all_bam from STAR_Bam.collect()
@@ -79,7 +79,7 @@ process Combine{
 }
 
 process StringTie{
-	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
+	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -V"
 	executor 'pbs'
 
 	publishDir "$Result_path", mode: 'copy', overwrite: true
@@ -97,7 +97,7 @@ process StringTie{
 
 process BamHints{
 	executor 'pbs'
-	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
+	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -V"
 
 	publishDir "$Result_path", mode: 'copy', overwrite: true
 	input :
