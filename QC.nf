@@ -1,12 +1,12 @@
 #!/usr/bin/nextflow
-params.adapter = "/pub/SOFTWARE/Other/scythe/adap.fa"
+params.adapter = "/home/nfs/SOFTWARE/Other/scythe/illumina_adapters.fa"
 params.quality = "20"
 params.input = "./"
 qc_path = params.input+"/Qc/"
 stats_path = params.input+"/STATS/"
 
 
-Channel.fromFilePairs(params.input+'/*.R{1,2}.*.gz').into {qc_plot_raw; all_file }
+Channel.fromFilePairs(params.input+'/*_R{1,2}.*.gz').into {qc_plot_raw; all_file }
 
 
 
