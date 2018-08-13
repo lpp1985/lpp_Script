@@ -4,11 +4,11 @@ import (
 	"bufio"
 	//	"bytes"
 	"flag"
-	"runtime"
-		"fmt"
+	"fmt"
 	"lpp"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 )
@@ -16,7 +16,7 @@ import (
 func Filter(f1 string, outputdir *string) {
 
 	seq_hash := make(map[string]string)
-	f2 := strings.Replace(f1, ".R1.", ".R2.", -1)
+	f2 := strings.Replace(f1, "_1.", "_2.", -1)
 	FQ1IO := lpp.GetBlockRead(f1, "\n", false, 10000000)
 
 	FQ2IO := lpp.GetBlockRead(f2, "\n", false, 10000000)
@@ -117,7 +117,7 @@ func main() {
 
 	flag.Parse()
 
-	matches, _ := filepath.Glob(*inputdir + "/*R1.*fastq")
+	matches, _ := filepath.Glob(*inputdir + "/*_1.clean.fq")
 
 	wg.Add(len(matches))
 	if _, err := os.Stat(*outputdir); os.IsNotExist(err) {
