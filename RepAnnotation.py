@@ -34,7 +34,7 @@ if __name__ == '__main__':
 	    type='string',
 	    help="RepeatMasker gff file")
 	(options, args) = parser.parse_args()
-	os.system("blastall -v 1 -b 1 -K 1  -p blastn -i %s  -d  %s  -a 64 -m 8 | cut -f 1,2|uniq  > db.list" % (options.fasta, options.Database) )
+	os.system("/home/nfs/SOFTWARE/bin/blastall -v 1 -b 1 -K 1  -p blastn -i %s  -d  %s  -a 64 -m 8 | cut -f 1,2|uniq  > db.list" % (options.fasta, options.Database) )
 	anno_hash = {}
 	for line in open("db.list"):
 		line_l = line.split("\t")

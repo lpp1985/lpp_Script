@@ -35,7 +35,7 @@ parser.add_option("-m", "--IndelResult", action="store",
 
 
 html = open( options.Index, 'rU').read().replace("&#8209;", "-")
-soup = BeautifulSoup(html)
+soup = BeautifulSoup(html,"html.parser")
 all_table = soup.find_all("table", attrs={"cellspacing": "1"})
 end_table = ""
 result_table = []

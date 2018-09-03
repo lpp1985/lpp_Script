@@ -18,16 +18,16 @@ func main() {
 	file := flag.String("i", "", "input Fasta!")
 	output := flag.String("o", "", "Output!")
 	flag.Parse()
-	if *file == "" {
-		os.Exit(1)
-	}
+	//if *file == "" {
+	//	os.Exit(1)
+	//}
 	fasta_handle := Fasta{File: *file}
 
 	length_slice := []int{}
 
 	for {
 		_, seq, err := fasta_handle.Next()
-
+		//fmt.Println(seq)
 		seq = bytes.Replace(seq, []byte("\n"), []byte(""), -1)
 		seq_length := len(seq)
 		length_slice = append(length_slice, seq_length)
