@@ -13,11 +13,11 @@ RAW = fasta_check( open(sys.argv[1],'rU') )
 TOP =open("Transpoase.tophit",'w')
 ALL = open("Transpoase.allhit",'w')
 
-TMP = os.path.abspath("./tmp/" )
+TMP = os.path.abspath("./tmp/" )+'/'
 def check_path(path):
 	if not os.path.exists(path):
 		os.makedirs(path)
-	return os.path.abspath(path)
+	return os.path.abspath(path)+'/'
 check_path(TMP)
 
 if __name__ == '__main__':
@@ -42,15 +42,15 @@ if __name__ == '__main__':
 		for e_f in all_bab:
 			RAW = open(e_f,'rU')
 			for line in RAW:
-				line_l = line.split("\t")
-				if len(object)<3:
+				line_l = line.strip().split("\t")
+				if len( line_l )<3:
 					continue
 				else:
 					all_data.append(line_l)
 		all_data = sorted(all_data,key=lambda x: float(x[-1]))
 		if len(all_data)>0:
-			TOP.write("\t".join(all_data[0]))
+			TOP.write("\t".join(all_data[0])+'\n')
 			for k in all_data:
-				ALL.write("\t".join(k))
+				ALL.write("\t".join(k)+"\n")
 		
 		
