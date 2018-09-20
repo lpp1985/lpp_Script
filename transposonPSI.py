@@ -8,12 +8,12 @@
 from lpp import *
 import os
 all_refseq = glob.glob("/home/nfs/SOFTWARE/Other/TransposonPSI_08222010/transposon_PSI_LIB/*refSeq")
-
+path = os.path.abspath(sys.argv[2])+'/'
 RAW = fasta_check( open(sys.argv[1],'rU') )
-TOP =open("Transpoase.tophit",'w')
-ALL = open("Transpoase.allhit",'w')
+TOP =open(path+"Transpoase.tophit",'w')
+ALL = open(path+"Transpoase.allhit",'w')
 
-TMP = os.path.abspath("./tmp/" )+'/'
+TMP = os.path.abspath(path+"tmp/" )+'/'
 def check_path(path):
 	if not os.path.exists(path):
 		os.makedirs(path)
@@ -52,5 +52,4 @@ if __name__ == '__main__':
 			TOP.write("\t".join(all_data[0])+'\n')
 			for k in all_data:
 				ALL.write("\t".join(k)+"\n")
-		
-		
+	os.system("rm %s -rf "%(TMP))

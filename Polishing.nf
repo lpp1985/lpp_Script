@@ -5,7 +5,7 @@ params.Result = "Result"
 Result_path = params.input+params.Result+"/"
 genomeFile = file(params.genome)
 
-Channel.fromFilePairs(params.input+'/*_R{1,2}*.fq').into { all_reads }
+Channel.fromFilePairs(params.input+'/*_R{1,2}*.fq.gz').into { all_reads }
 process index {
     executor 'pbs'
     scratch true
