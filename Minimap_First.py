@@ -19,4 +19,5 @@ if __name__ == '__main__':
     for seq in all_data:
         need = sorted(all_data[seq].keys())[-1]
         all_data[seq][need].append( "%.2f"%(100.0*need / int(all_data[seq][need][1]))  )
-        print(all_data[seq][need])
+	print("\t".join(all_data[seq][need]))
+
