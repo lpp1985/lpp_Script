@@ -42,7 +42,7 @@ process qc {
 	executor 'pbs'
 	cpus 1
 	maxForks 20
-	clusterOptions  "   -d $PWD -l nodes=1:ppn=2 -v PATH=$PATH "
+	clusterOptions  "   -d $PWD -l nodes=1:ppn=2 -V "
 	publishDir "$qc_path", mode: 'copy', overwrite: true
 	input: 
 		set val(sampleid),file(reads) from all_file
@@ -70,7 +70,7 @@ process QC_STAT_PROCESS{
 	executor 'pbs'
 	cpus 1
 	maxForks 20
-	clusterOptions  "  -d $PWD  -l nodes=1:ppn=2 -v PATH=$PATH "
+	clusterOptions  "  -d $PWD  -l nodes=1:ppn=2 -V "
 
 	input:
 	
@@ -100,7 +100,7 @@ process QC_STAT_PROCESS{
 	executor 'pbs'
 	cpus 1
 	maxForks 20
-	clusterOptions  "   -l nodes=1:ppn=2 -v PATH=$PATH  -d $PWD"
+	clusterOptions  "   -l nodes=1:ppn=2 -V  -d $PWD"
 
 
 	input:
@@ -136,7 +136,7 @@ process QC_Plot {
   executor 'pbs'
   cpus 1
    maxForks 200
-  clusterOptions  "   -l nodes=1:ppn=2 -v PATH=$PATH   -d $PWD"
+  clusterOptions  "   -l nodes=1:ppn=2 -V   -d $PWD"
 	
 	publishDir "$stats_path", mode: 'move', overwrite: true
 
@@ -160,7 +160,7 @@ process Qc_Report{
 	
   executor 'pbs'
   cpus 1
-  clusterOptions  "   -l nodes=1:ppn=2 -v PATH=$PATH  -d $PWD"
+  clusterOptions  "   -l nodes=1:ppn=2 -V  -d $PWD"
 	publishDir "$stats_path", mode: 'move', overwrite: true
 	input:
 		file all_statfile from total_stat
