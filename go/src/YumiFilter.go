@@ -16,20 +16,24 @@ import (
 func Filter(f1 string, outputdir *string) {
 
 	seq_hash := make(map[string]string)
+<<<<<<< HEAD
 	f2 := strings.Replace(f1, "_1.", "_2.", -1)
+=======
+	f2 := strings.Replace(f1, "_1.clean.fq", "_2.clean.fq", -1)
+>>>>>>> 4486e9ebd0d6577ee782f1cca62b0e383d0581d0
 	FQ1IO := lpp.GetBlockRead(f1, "\n", false, 10000000)
 
 	FQ2IO := lpp.GetBlockRead(f2, "\n", false, 10000000)
 	resultname := strings.Split(f1, "_")[0]
-	resultFile1, err1 := os.Create(*outputdir + "/" + resultname + ".R1.fastq")
+	resultFile1, err1 := os.Create(*outputdir + "/" + resultname + ".R1.fasta")
 	if err1 != nil {
-		panic("Fastq not Exist " + *outputdir + resultname + ".R1.fastq")
+		panic("Fastq not Exist " + *outputdir + resultname + ".R1.fasta")
 
 	}
 	OUTPUTBUF1 := bufio.NewWriterSize(resultFile1, 10000)
-	resultFile12, err2 := os.Create(*outputdir + "/" + resultname + ".R2.fastq")
+	resultFile12, err2 := os.Create(*outputdir + "/" + resultname + ".R2.fasta")
 	if err2 != nil {
-		panic("Fastq not Exist " + *outputdir + resultname + ".R2.fastq")
+		panic("Fastq not Exist " + *outputdir + resultname + ".R2.fasta")
 
 	}
 	OUTPUTBUF2 := bufio.NewWriterSize(resultFile12, 10000)
@@ -58,10 +62,24 @@ func Filter(f1 string, outputdir *string) {
 			_, has := seq_hash[seq_all]
 			if !has {
 
-				for _, cont := range fq1data {
+				for i, cont := range fq1data {
+					if i == 0 {
+						cont[0] = '>'
+					} else {
+						if i > 1 {
+							continue
+						}
+					}
 					ResultIOLIST[0].Write(cont)
 				}
-				for _, cont := range fq2data {
+				for k, cont := range fq2data {
+					if k == 0 {
+						cont[0] = '>'
+					} else {
+						if k > 1 {
+							continue
+						}
+					}
 					ResultIOLIST[1].Write(cont)
 				}
 				seq_hash[seq_all] = ""

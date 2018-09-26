@@ -71,7 +71,7 @@ process Combine{
 	script:
 		"""
 			samtools merge -@ 32  Total.bam $all_bam
-			samtools sort  Total.bam  -o Total.sort.bam
+			/home/nfs/SOFTWARE/bin/samtools sort -@ 32 -m 4G Total.bam  -o Total.sort.bam
 			mv Total.sort.bam Total.bam
 		"""
 

@@ -11,7 +11,7 @@ from optparse import  OptionParser
 class Seq_All(object):
     def __init__(self,name,nul_seq,pep_seq):
         self.name = name
-        self.source = self.name.split('_')[0]
+        self.source = self.name.rsplit('_',1)[0]
         self.nul_seq = nul_seq
         self.pep_seq = pep_seq
         self.i = 0
@@ -77,6 +77,7 @@ class Check_Seq(object):
                         cache_data = []
                         if sample in source_gene:
                             for gene in source_gene[sample]:
+				#print(gene)
                                 function = all_function[ gene ]
                                 if sublocation >0:
                                     cache_data.append( gene+':'+ gene_nul [  gene  ][sublocation-1]   +' --> ' + gene_aa [  gene  ] )
@@ -116,12 +117,11 @@ if __name__ == '__main__':
     all_sample = {}
     for e_f in glob.glob(options.input_path+"/*.function"):
         FUN = open(e_f)
-        sample_name = os.path.basename(e_f).split(".")[0]
+        sample_name = os.path.basename(e_f).rsplit(".",1)[0]
         all_sample[ sample_name  ] = ""
         for line in FUN:
             line_l = line[:-1].split("\t")
             all_function[  line_l[0] ] = line_l[-1]
-            
             
     OROTHO = open(options.output_path+"1.Orthologs_Cluster.txt",'rU')
     OROTHORESULT = open(options.output_path+"1.Orthologs_Cluster.txt1",'w')

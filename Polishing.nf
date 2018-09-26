@@ -5,9 +5,9 @@ params.Result = "Result"
 Result_path = params.input+params.Result+"/"
 genomeFile = file(params.genome)
 
-Channel.fromFilePairs(params.input+'/*.R{1,2}*.fastq').into { all_reads }
+Channel.fromFilePairs(params.input+'/*_R{1,2}*.fq.gz').into { all_reads }
 process index {
-    executor 'local'
+    executor 'pbs'
     scratch true
     cpus 1 
     clusterOptions  " -d $PWD  -l nodes=1:ppn=1 -V "
@@ -30,7 +30,7 @@ process index {
 
 
 process mapping {
-    	executor 'local'
+    	executor 'pbs'
 	cpus 32
 	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
 
@@ -58,7 +58,7 @@ process mapping {
 final_bam = total_bam.collect()
 process Combine{
 	publishDir "$Result_path", mode: 'move', overwrite: true
-	executor 'local'
+	executor 'pbs'
  	cpus 32
  	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
 
