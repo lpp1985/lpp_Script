@@ -6,6 +6,8 @@ import (
 	"flag"
 	"fmt"
 	"lpp"
+	"math/big"
+	"sort"
 )
 
 func Int_Byte(data int64, kmer int64) []byte {
@@ -61,21 +63,33 @@ func Byte_Int(str []byte) int64 {
 
 }
 
-var kmer_number map[string]int = make(map[string]int)
+var kmer_number map[int64]int = make(map[int64]int)
 var kmer_graph map[string]map[string]int = make(map[string]map[string]int)
+var total_mer int
+var kmer_spices int
+var repre_mer map[string]string = make(map[string]string)
 
-func Kmer_Count(file_handle string) {
-	F := lpp.Fasta{File: file_handle}
+func Kmer_Count(file_handle string, kmer int) {
+	F := lpp.Fastq{File: file_handle}
 	for {
 
-		_, seq, err := F.Next()
+		_, seq, _, _, err := F.Next()
 		seq = bytes.TrimSpace(seq)
-		is_n := bytes.Contains(seq, []byte("N"))
-		if is_n {
-			continue
-		}
+		seq = bytes.Replace(seq, []byte("N"), []byte(""), -1)
 
-		kmer_number[string(seq)] = 1
+		for j := 0; j <= len(seq)-kmer; j++ {
+
+			mer := Byte_Int(seq[j : j+kmer])
+
+			total_mer += 1
+			_, ok := kmer_number[mer]
+			if !ok {
+				kmer_spices += 1
+				kmer_number[mer] = 1
+			} else {
+				kmer_number[mer] += 1
+			}
+		}
 
 		if err != nil {
 			break
@@ -85,28 +99,47 @@ func Kmer_Count(file_handle string) {
 }
 
 func main() {
-	read1 := flag.String("f", "", "read1")
-	kmer := flag.Int("k", 41, "kmer")
+	read1 := flag.String("1", "", "read1")
+	read2 := flag.String("2", "", "read2")
 	output := flag.String("o", "", "Output")
-
+	kmer := flag.Int("k", 41, "kmer")
 	flag.Parse()
 	Output, _ := lpp.GetOuput(*output, 10000)
 	fmt.Println("read1 Start!!")
-	Kmer_Count(*read1)
-
+	Kmer_Count(*read1, *kmer)
+	fmt.Println("read2 Start!!")
+	Kmer_Count(*read2, *kmer)
+	average_mer_threshold := total_mer / kmer_spices / 2
+	fmt.Println(fmt.Sprintf("Threshold is %d!", average_mer_threshold))
 	fmt.Println(len(kmer_number))
-	for raw_mer, _ := range kmer_number {
+	for each_mer, number := range kmer_number {
+		if number < average_mer_threshold {
+			delete(kmer_number, each_mer)
+		}
+	}
+	fmt.Println(len(kmer_number))
+	for e_mer, _ := range kmer_number {
+		raw_mer := string(Int_Byte(e_mer, int64(*kmer)))
+		rev_mer := lpp.RevComplement([]byte(raw_mer))
+		_, ok_rev := kmer_number[Byte_Int(rev_mer)]
+		if !ok_rev {
+			repre_mer[raw_mer] = ""
+		} else {
+			all_mer := []string{raw_mer, string(rev_mer)}
+			sort.Strings(all_mer)
+			repre_mer[all_mer[0]] = ""
+		}
 
 		mer_suff := raw_mer[1:*kmer]
 		for _, i := range [4]string{"A", "T", "C", "G"} {
 			next_mer := mer_suff + i
-			_, ok := kmer_number[next_mer]
+			_, ok := kmer_number[Byte_Int([]byte(next_mer))]
 			if ok {
 				_, ok2 := kmer_graph[raw_mer]
 				if !ok2 {
 					kmer_graph[raw_mer] = make(map[string]int)
 				}
-				kmer_graph[raw_mer][next_mer] = 0
+				kmer_graph[raw_mer][next_mer] = kmer_number[Byte_Int([]byte(next_mer))]
 			}
 		}
 	}
@@ -116,5 +149,4 @@ func main() {
 			Output.WriteString(fmt.Sprintf("%s\t%s\t%d\n", mer1, mer2, number))
 		}
 	}
-
 }

@@ -94,6 +94,7 @@ func Md5_Check(wg *sync.WaitGroup, file string) {
 var session, err = mgo.Dial("192.168.0.106:27017")
 
 var db = session.DB("MD5").C("AV")
+
 var db_delete = session.DB("MD5").C("Delete")
 
 func main() {
