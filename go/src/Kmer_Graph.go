@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	//	"encoding/binary"
-	//	"fmt"
+	"fmt"
 	"lpp"
 	//	"math"
 	"os"
@@ -12,10 +12,13 @@ import (
 	//	"strconv"
 )
 
-var all_path [][]string
+var x int
+
 var path []string
 var kmer_graph map[string]map[string]string = make(map[string]map[string]string)
 var kmer_seq map[string]string = make(map[string]string)
+
+var OUTPUT *os.File
 
 func Contains(s_list []string, node string) bool {
 	res := false
@@ -27,24 +30,31 @@ func Contains(s_list []string, node string) bool {
 	return res
 }
 func Traverse_5(node string, step int, path []string) []string {
-
-	step += 1
-	_, ok := kmer_graph[node]
-	if !ok || step > 5 {
-		//		fmt.Println(path)
-		all_path = append(all_path, path)
+	if Contains(path, node) {
 		return path
+	}
+	path = append(path, node)
+	_, ok := kmer_graph[node]
+	fmt.Println(node, step)
+	if !ok || step == 5 {
+		if len(path) > 0 {
+			OUTPUT.WriteString(strings.Join(path, "\t"))
+		}
+
 	} else {
-		path = append(path, node)
+
+		//		length := len(path)
+		if len(kmer_graph[node]) > 1 {
+			x = len(path)
+			step += 1
+		}
+
 		for son, _ := range kmer_graph[node] {
-			if Contains(path, son) {
-
-				continue
+			if len(kmer_graph[node]) > 1 {
+				path = path[:x]
 			}
-			//			fmt.Println(son)
 
-			path = Traverse_5(son, step, path[:step])
-			//			fmt.Println(path)
+			path = Traverse_5(son, step, path)
 		}
 
 	}
@@ -54,9 +64,8 @@ func Traverse_5(node string, step int, path []string) []string {
 func main() {
 
 	RAW := lpp.Fasta{File: os.Args[1]}
-	OUTPUT, _ := lpp.GetOuput("Output_Path.tsv", 1000)
+	OUTPUT, _ = lpp.GetOuput("Output_Path.tsv", 1000)
 
-	22001471
 	reg := regexp.MustCompile(`L\:(\S)\:(\d+)\:(\S)`)
 
 	for {
@@ -112,10 +121,6 @@ func main() {
 	for _, node := range os.Args[2:] {
 		OUTPUT.WriteString(node + "\n")
 		Traverse_5(node, 0, path)
-		for _, road := range all_path {
-			OUTPUT.WriteString(strings.Join(road, "; ") + "\n")
-		}
-		all_path = [][]string{}
 
 	}
 }
