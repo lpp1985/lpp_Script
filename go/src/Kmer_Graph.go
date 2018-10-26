@@ -2,14 +2,13 @@ package main
 
 import (
 	"bytes"
-	//	"encoding/binary"
+	"flag"
 	"fmt"
 	"lpp"
-	//	"math"
+
 	"os"
 	"regexp"
 	"strings"
-	//	"strconv"
 )
 
 var x int
@@ -29,42 +28,59 @@ func Contains(s_list []string, node string) bool {
 	}
 	return res
 }
-func Traverse_5(node string, step int, path []string) []string {
+func Traverse_5(node string, step int, path []string, threshold int) []string {
 	if Contains(path, node) {
 		return path
 	}
 	path = append(path, node)
 	_, ok := kmer_graph[node]
-	fmt.Println(node, step)
-	if !ok || step == 5 {
+
+	if !ok || step == threshold {
 		if len(path) > 0 {
-			OUTPUT.WriteString(strings.Join(path, "\t"))
+			OUTPUT.WriteString(strings.Join(path, "; ") + "\n")
 		}
 
 	} else {
-
-		//		length := len(path)
-		if len(kmer_graph[node]) > 1 {
-			x = len(path)
-			step += 1
-		}
-
+		loc := Find(path, node)
 		for son, _ := range kmer_graph[node] {
 			if len(kmer_graph[node]) > 1 {
-				path = path[:x]
+				path = path[:loc]
 			}
 
-			path = Traverse_5(son, step, path)
+			path = Traverse_5(son, step, path, threshold)
 		}
 
 	}
 	return path
 }
-
+func Find(s_list []string, node string) int {
+	j := 0
+	for i, data := range s_list {
+		if data == node {
+			j = i
+			break
+		}
+	}
+	return j + 1
+}
 func main() {
 
-	RAW := lpp.Fasta{File: os.Args[1]}
-	OUTPUT, _ = lpp.GetOuput("Output_Path.tsv", 1000)
+	input := flag.String("i", "./", "Input File")
+	output := flag.String("o", "StringGraph.tsv", "Output File")
+	nodes_file := flag.String("l", "KmerList.tsv", "Kmer Id list")
+	//	kmer := flag.Int("k", 41, "kmer")
+	threshold := flag.Int("s", 10, "Step")
+	flag.Parse()
+	raw_file := lpp.GetBlockRead(*nodes_file, "\n", false, 10000)
+	All_list := new(lpp.File_dict)
+	All_list.File_IO = raw_file
+	All_list.Header = false
+	need_hash := All_list.Read(1, 1)
+	for node, _ := range need_hash {
+		fmt.Println(node)
+	}
+	RAW := lpp.Fasta{File: *input}
+	OUTPUT, _ = lpp.GetOuput(*output, 1000)
 
 	reg := regexp.MustCompile(`L\:(\S)\:(\d+)\:(\S)`)
 
@@ -118,9 +134,9 @@ func main() {
 			break
 		}
 	}
-	for _, node := range os.Args[2:] {
+	for node, _ := range need_hash {
 		OUTPUT.WriteString(node + "\n")
-		Traverse_5(node, 0, path)
+		Traverse_5(node, 0, path, *threshold)
 
 	}
 }
