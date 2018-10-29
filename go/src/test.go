@@ -33,19 +33,24 @@ func Traverse_5(node string, step int, path []string) []string {
 	if Contains(path, node) {
 		return path
 	}
+
 	path = append(path, node)
-	_, ok := kmer_graph[node]
+	//	_, ok := kmer_graph[node]
 	//	fmt.Println(node, step)
-	if !ok || step == 21 {
+	if step == 2 {
 		if len(path) > 0 {
-			fmt.Println(path)
+			fmt.Println(path, step)
+			return path
 		}
 
 	} else {
-
+		if len(kmer_graph[node]) > 1 {
+			step += 1
+		}
 		for son, _ := range kmer_graph[node] {
 			loc := Find(path, node)
 			if len(kmer_graph[node]) > 1 {
+
 				//				fmt.Println(path, loc, node, son)
 				path = path[:loc]
 			}
@@ -89,6 +94,7 @@ func main() {
 	AddNodes("13", "15")
 	AddNodes("14", "15")
 	AddNodes("15", "16")
+	AddNodes("16", "17")
 	AddNodes("15", "17")
 
 	//	fmt.Println(kmer_graph)
