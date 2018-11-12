@@ -1,4 +1,4 @@
-#!/usr/bin/nextflow
+#!/home/nfs/SOFTWARE/bin/nextflow
 params.input ="./"
 params.genome ="scaff.fa"
 params.Result = "Result"

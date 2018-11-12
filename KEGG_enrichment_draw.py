@@ -36,7 +36,7 @@ go_data$EnrichFactor <- go_data$Diff_In / go_data$All_In
 pdf("%(path)s/KEGGEnrich.pdf",width=15,height= height)
 
 p <- qplot(Situation, Name, data=go_data, size=EnrichFactor,color=Q_value)
-p +scale_colour_gradient(low="red", high="blue")+theme_few()
+p +scale_colour_gradient(low="red", high="blue")+theme_few()+theme(axis.text.y = element_text(angle = 350, vjust = .8), axis.text.x = element_text(angle = 270)  )
 
 dev.off()
 

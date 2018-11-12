@@ -36,7 +36,7 @@ if __name__ == '__main__':
 				RAW = open(a+'/'+f)
 				RAW.next()
 				for line in RAW:
-					line_l = line.split("\t")
+					line_l = line.strip().split("\t")
 					all_has[  line_l[0] ]= ""
 	END = open(options.output,'w')
 	RAW = open( options.rpkm,'rU' )

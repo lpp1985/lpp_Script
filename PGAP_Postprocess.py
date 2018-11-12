@@ -52,6 +52,7 @@ class Check_Seq(object):
             
 
     def check_data( self, all_data,all_function,all_sample):
+	function = ""
         if self.cluster not in all_data:
             return ""
         for each_data in self:
@@ -126,6 +127,7 @@ if __name__ == '__main__':
     OROTHO = open(options.output_path+"1.Orthologs_Cluster.txt",'rU')
     OROTHORESULT = open(options.output_path+"1.Orthologs_Cluster.txt1",'w')
     OROTHORESULT.write(OROTHO.next()[:-1]+'\tFunction\n')
+    function=""
     for line in OROTHO:
         line_l = line[:-1].split("\t")
         

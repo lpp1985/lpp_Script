@@ -22,7 +22,7 @@ PARALLEL   = mem
 ### patch raw reads
 
 q = marvel.queue.queue(DB, COVERAGE, PARALLEL)
-
+print(q)
 ### run daligner to create initial overlaps
 q.plan("{db}.dalign.plan")
 

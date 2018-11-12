@@ -36,7 +36,6 @@ var FilterLengthCmd = &cobra.Command{
 		OUTPUTHANDLE, err := os.Create(*output)
 		defer OUTPUTHANDLE.Close()
 		OUTPUTBUF := bufio.NewWriterSize(OUTPUTHANDLE, 10000)
-		OUTPUTBUF.WriteString("Name\tLength\n")
 		defer OUTPUTBUF.Flush()
 		if err != nil {
 			panic("Output not Exist!!")
@@ -51,8 +50,8 @@ var FilterLengthCmd = &cobra.Command{
 			length := len(seq)
 			if length >= *threshold {
 				output_byte := name
-				output_byte = append(output_byte, []byte("\t")...)
-				output_byte = append(output_byte, []byte(string(length))...)
+				
+				output_byte = append(output_byte, seq...)
 				output_byte = append(output_byte, []byte("\n")...)
 				OUTPUTBUF.Write(output_byte)
 			}

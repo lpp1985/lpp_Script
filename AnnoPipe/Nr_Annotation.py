@@ -30,6 +30,7 @@ if __name__=="__main__":
 
 
 	(options, args) = parser.parse_args() 
+	print(123)
 	FASTA = fasta_check(open(options.input,'rU'))
 	sequence = FASTA.next()[-1]
 	blast_type = Nul_or_Protein(sequence)
@@ -53,6 +54,7 @@ r"""
 	
 	
 	    )
+	print(123)
 	diamond_result = output_prefix+'_NrAlignment.tsv'
 	error = RunDiamond(options.input,options.evalue, blast_type,"Nr",diamond_result)
 	if error:
