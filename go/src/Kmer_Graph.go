@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"flag"
-	"fmt"
+	//"fmt"
 	"lpp"
 	"strconv"
 	"os"
@@ -92,12 +92,15 @@ func main() {
 	threshold := flag.Int("s", 10, "Step")
 	flag.Parse()
 	raw_file := lpp.GetBlockRead(*nodes_file, "\n", false, 10000)
-	All_list := new(lpp.File_dict)
-	All_list.File_IO = raw_file
-	All_list.Header = false
-	need_hash := All_list.Read(1, 1)
-	for node, _ := range need_hash {
-		fmt.Println(node)
+	var All_list  []string
+	for {
+		line,err := raw_file.Next()
+		line = bytes.TrimSpace(line)
+		All_list = append( All_list, string(line)  )
+		if err!=nil{
+			break
+		}
+
 	}
 	RAW := lpp.Fasta{File: *input}
 	OUTPUT, _ = lpp.GetOuput(*output, 1000)
@@ -181,11 +184,10 @@ func main() {
 			break
 		}
 	}
-	n := 0
-	for node, _ := range need_hash {
+	for n, node := range All_list {
 		OUTPUT.WriteString(node + "\n")
 		Traverse_5(n, node, 0, path, *threshold)
-		n += 1
+		
 
 	}
 }
