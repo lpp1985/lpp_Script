@@ -42,9 +42,12 @@ for line in RAW:
 	high_effect = filter( lambda x: 'MODIFIER' not in x,all_eff_list   )
 	for each_eff in high_effect:
 		print(each_eff)
-		category = re.search(  '(\S+)\(',each_eff ).group(1)
-		all_info = re.search( '\((.+)\)',each_eff  ).group(1)
-		all_info_list = all_info.split( '|' )
+		try:
+			category = re.search(  '(\S+)\(',each_eff ).group(1)
+			all_info = re.search( '\((.+)\)',each_eff  ).group(1)
+			all_info_list = all_info.split( '|' )
+		except:
+			continue
 		level = all_info_list[0]
 		nul_change = all_info_list[2]
 		aa_change = all_info_list[3]

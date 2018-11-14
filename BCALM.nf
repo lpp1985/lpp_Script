@@ -14,7 +14,7 @@ process BCALM {
 	publishDir "$Result_path", mode: 'copy', overwrite: true
     	executor 'pbs'
 	cpus 32
-	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
+	clusterOptions  " -d $PWD  -l nodes=1:ppn=32 -v PATH=$PATH"
 
     input:
 		
@@ -22,13 +22,13 @@ process BCALM {
 
 
     output:
-		file "list_reads*.fa" into Graph
+		set val(sampleid),file ("list_reads*.fa") into Graph
 
     script:
 
 		"""
 		ls  ${reads[0]}  ${reads[1]}  >list_reads
-		bcalm -kmer-size $kmer -nb-cores 64 -in list_reads -abundance-min 11 -max-memory 100000
+		bcalm -kmer-size $kmer -nb-cores 64 -in list_reads -abundance-min 11 -max-memory 2000
 		
 
 
@@ -44,16 +44,16 @@ process Creep{
  	clusterOptions  " -d $PWD  -l nodes=1:ppn=1 -v PATH=$PATH"
 
         input:
-                file all_graph from Graph
+                set val(sampleid) ,file(all_graph) from Graph
 				file genomeFile
 				val kmer from params.kmer
 				val step from params.step = "6"
         output:
-                file "Graph.fa" into result
+                file "*Graph.fa" into result
         script:
                 """
 					ContainRef   -i $all_graph  -l $genomeFile -o test.list 
-					Kmer_Graph -i $all_graph -k $kmer -l test.list -o Graph.fa -s $step
+					Kmer_Graph -i $all_graph -k $kmer -l test.list -o ${sampleid}_Graph.fa -s $step
                 """
 
 
