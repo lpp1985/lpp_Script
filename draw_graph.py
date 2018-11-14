@@ -55,7 +55,7 @@ library(GenomicAlignments)
             SCRIPT.write("""coverage%s <- autoplot(bamfile%s,stat="coverage",fill="blue") \n"""%(sample,sample))
             SCRIPT.write("""max%s <- as.integer( max(coverage(bamfile%s)) ) \n"""%(sample,sample))
             SCRIPT.write("""align%s <- autoplot(bamfile%s,aes(fill = strand)) \n"""%(sample,sample))
-            SCRIPT.write("""jpeg(file="%s.jpeg",height=1000,width=1000)\n"""%(a+'/'+sample))
+            SCRIPT.write("""pdf(file="%s.pdf")\n"""%(a+'/'+sample))
             SCRIPT.write("""ff%(sample)s<-tracks("Coverage of %(sample)s"=coverage%(sample)s  ,"Alignment of %(sample)s"=align%(sample)s)\n
 ff%(sample)s			
 			"""%(
@@ -79,8 +79,8 @@ ff%(sample)s
         for e_sample in all_sample:
             cov_cache.append(""""Coverage of %(sample)s"=coverage%(sample)s """%({"sample":e_sample}))
             aln_cache.append(""""Alignment of %(sample)s"=align%(sample)s"""%({"sample":e_sample}))
-        SCRIPT.write("""jpeg(file="%s.jpeg", height=%s,width=1920)\n"""%(
-            a+'/'+"total", 500*len(cov_cache)
+        SCRIPT.write("""pdf(file="%s.pdf")\n"""%(
+            a+'/'+"total"
         )
                     )
         
