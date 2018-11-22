@@ -7,7 +7,7 @@ params.kmer ="41"
 params.step = "6"
 kmer= params.kmer
 step = params.step
-Channel.fromFilePairs(params.input+'/*_{1,2}.fq.gz').into { all_reads }
+Channel.fromFilePairs(params.input+'/*_R{1,2}.fq.gz').into { all_reads }
 
 
 process BCALM {
@@ -22,13 +22,13 @@ process BCALM {
 
 
     output:
-		set val(sampleid),file ("list_reads*.fa") into Graph
+		set val(sampleid),file ("*.fa") into Graph
 
     script:
 
 		"""
-		ls  ${reads[0]}  ${reads[1]}  >list_reads
-		bcalm -kmer-size $kmer -nb-cores 64 -in list_reads -abundance-min 11 -max-memory 2000
+		ls  ${reads[0]}  ${reads[1]}  > ${sampleid}_list
+		bcalm -kmer-size $kmer -nb-cores 64 -in ${sampleid}_list -abundance-min 11 -max-memory 2000
 		
 
 
@@ -40,8 +40,8 @@ process BCALM {
 process Creep{
 	publishDir "$Result_path", mode: 'move', overwrite: true
 	executor 'pbs'
- 	cpus 1
- 	clusterOptions  " -d $PWD  -l nodes=1:ppn=1 -v PATH=$PATH"
+ 	cpus 32
+ 	clusterOptions  " -d $PWD  -l nodes=1:ppn=32 -v PATH=$PATH"
 
         input:
                 set val(sampleid) ,file(all_graph) from Graph
