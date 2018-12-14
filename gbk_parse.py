@@ -23,8 +23,10 @@ for each_data in RECORD:
     for each_feature in each_data.features:
         if each_feature.type == 'CDS':
             nul_seq = each_feature.location.extract( seq ) 
-#            print(each_feature)
-            name    = re.sub('\s+','',str(each_feature.qualifiers['locus_tag'][0]))
+            try:
+            	name    = re.sub('\s+','',str(each_feature.qualifiers['protein_id'][0]))
+	    except:
+		continue
 #	    if name =="AKL27_RS26305":
 #	    	print( each_feature )
 #		print(each_feature.location)

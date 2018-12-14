@@ -7,10 +7,16 @@ import (
 )
 
 func main() {
+
 	inputdata := flag.String("i", "", "Input")
 	start := flag.Int("s", 0, "Start Location")
+
 	end := flag.Int("e", 150, "Start Location")
 	outdata := flag.String("o", "output.fastq", "Start Location")
+
+	end := flag.Int("e", 150, "End Location")
+	outdata := flag.String("o", "output.fastq", "Output")
+
 	flag.Parse()
 	OUTPUT, _ := lpp.GetOuput(*outdata, 1000000)
 	FQ := lpp.Fastq{File: *inputdata}

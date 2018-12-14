@@ -136,8 +136,7 @@ func main() {
 		}
 
 	}
-	//	align, _, length := lpp.COORD_CHAIN(align_hash["NC_036627.1"]["tig00000009"], ref_hash["NC_036627.1"]["tig00000009"], 1)
-	//fmt.Println(align_hash["NC_036622.1"]["tig00000001"])
+
 	FINAL_Result := make(map[string]map[string]string)
 	for key, value := range ALN_Result {
 		perc := value.Perc
