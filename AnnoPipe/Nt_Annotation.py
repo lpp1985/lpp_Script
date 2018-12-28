@@ -41,7 +41,7 @@ if __name__=="__main__":
 	end_list  = glob.glob(base_path+'/*.xls')
 	for e_f in  end_list:
 
-		if "_" not in e_f:
+		if "_"  in e_f:
 			sys.exit()
 	tmp = base_path+temp_name
 	os.system(""" blastn -db %s -query %s  -num_threads 64 -max_target_seqs 1000 -evalue %s  -outfmt  5    >> %s"""% ( Database,options.input,options.evalue,tmp+'.xml'  )   )

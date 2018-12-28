@@ -22,7 +22,7 @@ process index {
     //
     """
         mkdir STARgenome
-        STAR --runThreadN 32 \
+        STAR --runThreadN 21 \
              --runMode genomeGenerate \
              --genomeDir STARgenome \
              --genomeFastaFiles ${genomeFile} \
@@ -34,7 +34,7 @@ process index {
 
 process mapping {
       executor 'pbs'
-	maxForks 40
+	maxForks 4
   cpus 32
   clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -V"
   publishDir "$Result_path", mode: 'copy', overwrite: true
@@ -50,7 +50,7 @@ process mapping {
 		// STAR Mapper
 		//
 		"""
-		STAR  -- --runThreadN 41 --readFilesCommand   zcat  --readFilesIn ${reads[0]} ${reads[1]}  --outSAMtype BAM SortedByCoordinate --outFilterType BySJout --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 20 --outFilterMismatchNoverLmax 0.04 --alignIntronMin 20 --alignIntronMax 10000 --alignMatesGapMax 10000 --chimSegmentMin 20 --twopassMode Basic --outFileNamePrefix ./Star_OUT \
+		STAR  --runThreadN 20 --readFilesCommand   zcat  --readFilesIn ${reads[0]} ${reads[1]}  --outSAMtype BAM SortedByCoordinate --outFilterType BySJout --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 --outFilterMismatchNmax 20 --outFilterMismatchNoverLmax 0.04 --alignIntronMin 20 --alignIntronMax 10000 --alignMatesGapMax 10000 --chimSegmentMin 20 --twopassMode Basic --outFileNamePrefix ./Star_OUT \
 		--genomeDir $STARgenome --outSAMstrandField intronMotif RemoveNoncanonical --alignTranscriptsPerReadNmax 10000  --limitBAMsortRAM 8921722571 --outSAMunmapped Within
 		mv *.bam  ${sampleid}.bam
 		"""

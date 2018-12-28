@@ -1,4 +1,4 @@
-#!/usr/bin/nextflow
+#!/home/nfs/SOFTWARE/bin/nextflow
 params.adapter = "/home/nfs/SOFTWARE/Other/scythe/illumina_adapters.fa"
 params.quality = "20"
 params.input = "./"
@@ -6,13 +6,13 @@ qc_path = params.input+"/Qc/"
 stats_path = params.input+"/STATS/"
 
 
-Channel.fromFilePairs(params.input+'/*_R{1,2}.*.gz').into {qc_plot_raw; all_file }
+Channel.fromFilePairs(params.input+'/*_{1,2}.*.gz').into {qc_plot_raw; all_file }
 
 
 
 process RAW_QualityStats{
 	
-	maxForks 16
+	maxForks 50
 	input:
 		set val(sampleid),file(reads) from qc_plot_raw
 		
@@ -36,7 +36,7 @@ process RAW_QualityStats{
 
 
 process qc {
-	maxForks 16
+	maxForks 50
 	publishDir "$qc_path", mode: 'copy', overwrite: true
 	input: 
 		set val(sampleid),file(reads) from all_file
@@ -61,7 +61,7 @@ process qc {
 
 process QC_STAT_PROCESS{
 	
-	maxForks 16
+	maxForks 50
 
 	input:
 	
@@ -88,7 +88,7 @@ process QC_STAT_PROCESS{
 
 process QC_STAT_PROCESS{
 
-	maxForks 16
+	maxForks 50
 
 
 	input:
@@ -120,7 +120,7 @@ filter_stat_graph = raw_graph_stat.mix(qc_graph_stat).flatten()
 
 
 process QC_Plot {
-	maxForks 16
+	maxForks 50
 	publishDir "$stats_path", mode: 'move', overwrite: true
 
 	input:
@@ -140,7 +140,7 @@ process QC_Plot {
 }
 total_stat = raw_stat.mix( qc_result_stat ).collect()
 process Qc_Report{
-	maxForks 16
+	maxForks 50
 	publishDir "$stats_path", mode: 'move', overwrite: true
 	input:
 		file all_statfile from total_stat

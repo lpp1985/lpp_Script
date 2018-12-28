@@ -16,7 +16,7 @@ if __name__ == '__main__':
 			
 			
 			sample = f.split(".")[0]
-			if f.endswith( "align.tsv" ):
+			if f.endswith( ".stats" ):
 				title = []
 				for line in open(a + '/' + f):
 					if "Stats" in line or ":" not in line:

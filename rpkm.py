@@ -94,6 +94,8 @@ for line in MATRIX:
 	gene_name = line_l[0]
 	express_l = line_l[1:]
 	rpkm_cache = []
+	if gene_name not in unigene_length:
+		continue
 	for i in xrange(0,len(express_l) ):
 		rpkm = 10**9*float(express_l[i])/reads_count[title_l[i]]/unigene_length[gene_name]
 		all_data.append(rpkm)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 #coding:utf-8
 """
   Author:   --<>
@@ -50,8 +50,11 @@ if __name__ == '__main__':
 	for line in RAW:
 		line_l =line.strip().split("\t")
 		for key in line_l[1:]:
-			define = GO_DEF.select( GO_DEF.q.Go== key )[0].Def
-			CACHE.write(line_l[0]+'\t'+key+'\t'+define+'\n')
+			try:
+				define = GO_DEF.select( GO_DEF.q.Go== key )[0].Def
+				CACHE.write(line_l[0]+'\t'+key+'\t'+define+'\n')
+			except:
+				continue
 	CACHE.close()
 	all_go = pd.read_table( CACHE.name )
 	all_enrichgo = pd.read_table( options.Enrich )

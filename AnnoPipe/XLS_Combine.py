@@ -105,7 +105,7 @@ GeneFeature+Annotation.xlsx	注释的基因信息和基因序列等信息的总�
         if type(result_frame) ==str:
             continue
         stat_result[category] = [category,len(result_frame["Name"])  ]
-        STAT.write(category+'\t%s\t%.2f\n'%(len(result_frame["Name"] ) ,100.0* len(result_frame["Name"] )     ) )
+        #STAT.write(category+'\t%s\t%.2f\n'%(len(result_frame["Name"] ) ,100.0* len(result_frame["Name"] )     ) )
         
         result_frame["from"] = result_frame["Name"].str.rsplit('_',1).str.get(0)
         
