@@ -1,12 +1,12 @@
 #!/home/nfs/SOFTWARE/bin/nextflow
-params.Input = "./*.fasta"
-
+params.Protein = "./*.fasta"
+params.Nucl = "./*.fna"
 params.out = "./Out"
 params.eval = "1e-5"
 
 
-Channel.fromPath(params.Input).into {protein_Cazy; protein_TMHMM; protein_VFDB;  protein_CARDB; protein_PHI }
-
+Channel.fromPath(params.Protein).into {protein_Cazy; protein_TMHMM; protein_VFDB;  protein_CARDB; protein_PHI }
+Channel.fromPath(params.Protein).into {nucl_Resfinder}
 process Cazy {
     executor 'pbs'
 	publishDir "${params.out}/Cazy", mode: 'copy', overwrite: true
@@ -91,4 +91,14 @@ process PHI{
 	 """
 
 }
-
+process ResFinder{
+	executor 'pbs'
+	publishDir "${params.out}/Resfinder", mode: 'copy', overwrite: true
+	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
+	input :
+		file nucl from nucl_Resfinder
+	output:
+		file "*_*" into ResFinerResult
+	script:
+		" resfinder.py -i $nucl  -o ./ -p /home/nfs/Database/resfinder_db/"
+}
