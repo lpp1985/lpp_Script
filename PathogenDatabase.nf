@@ -6,7 +6,7 @@ params.eval = "1e-5"
 
 
 Channel.fromPath(params.Protein).into {protein_Cazy; protein_TMHMM; protein_VFDB;  protein_CARDB; protein_PHI }
-Channel.fromPath(params.Protein).into {nucl_Resfinder}
+Channel.fromPath(params.Nucl).into {nucl_Resfinder}
 process Cazy {
     executor 'pbs'
 	publishDir "${params.out}/Cazy", mode: 'copy', overwrite: true
@@ -98,7 +98,13 @@ process ResFinder{
 	input :
 		file nucl from nucl_Resfinder
 	output:
-		file "*_*" into ResFinerResult
+		file "*.tar.gz" into ResFinerResult
+
 	script:
-		" resfinder.py -i $nucl  -o ./ -p /home/nfs/Database/resfinder_db/"
+		out_name = nucl.baseName
+		""" resfinder.py -i $nucl  -o ./ -p /home/nfs/Database/resfinder_db/
+		    mkdir $out_name
+		    mv *_*  ${out_name}/
+		    tar -zcf ${out_name}.tar.gz  ${out_name}/
+		"""
 }
