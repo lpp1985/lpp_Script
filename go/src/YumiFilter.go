@@ -16,11 +16,9 @@ import (
 func Filter(f1 string, outputdir *string) {
 
 	seq_hash := make(map[string]string)
-<<<<<<< HEAD
-	f2 := strings.Replace(f1, "_1.", "_2.", -1)
-=======
+
 	f2 := strings.Replace(f1, "_1.clean.fq", "_2.clean.fq", -1)
->>>>>>> 4486e9ebd0d6577ee782f1cca62b0e383d0581d0
+
 	FQ1IO := lpp.GetBlockRead(f1, "\n", false, 10000000)
 
 	FQ2IO := lpp.GetBlockRead(f2, "\n", false, 10000000)

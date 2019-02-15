@@ -20,6 +20,7 @@ type ALNResult struct {
 
 func main() {
 	FASTAIO := lpp.GetBlockRead(os.Args[1], "\n>", false, 10000000)
+	gap, _ := strconv.Atoi(os.Args[3])
 	contig_length := make(map[string]int)
 	threshold, _ := strconv.ParseFloat(os.Args[2], 32)
 	fmt.Println("Reference\tReference_Start\tReference_End\tContig_from\tContig_end\tRef_length\tContig_length\tContig\tDirection\tAlignLength\n")
@@ -87,8 +88,8 @@ func main() {
 
 	for each_ref, data_hash := range align_hash {
 		for each_contig, _ := range data_hash {
-			align1, ref1, length1 := lpp.COORD_CHAIN(align_hash[each_ref][each_contig], ref_hash[each_ref][each_contig], 0)
-			align2, ref2, length2 := lpp.COORD_CHAIN(align_hash[each_ref][each_contig], ref_hash[each_ref][each_contig], 1)
+			align1, ref1, length1 := lpp.COORD_CHAIN(align_hash[each_ref][each_contig], ref_hash[each_ref][each_contig], gap, 0)
+			align2, ref2, length2 := lpp.COORD_CHAIN(align_hash[each_ref][each_contig], ref_hash[each_ref][each_contig], gap, 1)
 
 			_, ok := ALN_Result[each_contig]
 			if !ok {
