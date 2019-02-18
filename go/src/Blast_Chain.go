@@ -109,10 +109,10 @@ func main() {
 
 			ref1, align1, length1 := lpp.COORD_CHAIN(ref_hash[each_ref][each_contig], align_hash[each_ref][each_contig], gap, 0)
 			ref2, align2, length2 := lpp.COORD_CHAIN(ref_hash[each_ref][each_contig], align_hash[each_ref][each_contig], gap, 1)
-			fmt.Println(each_ref, each_contig)
-			fmt.Println(ref1, align1)
-			fmt.Println(ref2, align2)
-			fmt.Println("================")
+			// fmt.Println(each_ref, each_contig)
+			// fmt.Println(ref1, align1)
+			// fmt.Println(ref2, align2)
+			// fmt.Println("================")
 
 			_, ok := ALN_Result[each_contig]
 			if !ok {
