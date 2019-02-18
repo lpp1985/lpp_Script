@@ -109,8 +109,10 @@ func main() {
 
 			ref1, align1, length1 := lpp.COORD_CHAIN(ref_hash[each_ref][each_contig], align_hash[each_ref][each_contig], gap, 0)
 			ref2, align2, length2 := lpp.COORD_CHAIN(ref_hash[each_ref][each_contig], align_hash[each_ref][each_contig], gap, 1)
+			fmt.Println(each_ref, each_contig)
 			fmt.Println(ref1, align1)
 			fmt.Println(ref2, align2)
+			fmt.Println("================")
 
 			_, ok := ALN_Result[each_contig]
 			if !ok {
@@ -139,7 +141,7 @@ func main() {
 						ALN_Result[each_contig].Direct = "-"
 						ALN_Result[each_contig].Aln_list = [2]int{align2[0][0], align2[len(align2)-1][1]}
 						ALN_Result[each_contig].Reference = each_ref
-						ALN_Result[each_contig].Ref_list = [2]int{ref2[0][1], ref2[len(ref2)-1][1]}
+						ALN_Result[each_contig].Ref_list = [2]int{Max(ref2[0]), Min(ref2[len(ref2)-1])}
 					}
 				} else {
 					if length1 > ALN_Result[each_contig].Length {
