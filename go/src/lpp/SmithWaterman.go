@@ -5,7 +5,6 @@ import (
 
 	//	"fmt"
 
-	"fmt"
 	"math"
 )
 
@@ -41,6 +40,13 @@ import (
 
 // 	return result
 // }
+func Abs(data int) int {
+	if data < 0 {
+		return -data
+	} else {
+		return data
+	}
+}
 func COORD_MERGE(array [][2]int) int {
 	// array = COORD_SORT(array, status)
 
@@ -103,18 +109,17 @@ func COORD_CHAIN(array [][2]int, raw_array [][2]int, gap int, status int) ([][2]
 			if array[i][0] > array[i][1] {
 
 				cache := array[i][0]
+
+				array[i][0] = array[i][1]
+				array[i][1] = cache
+			}
+		} else {
+			if array[i][0] < array[i][1] {
+				cache := array[i][0]
 				array[i][0] = array[i][1]
 				array[i][1] = cache
 
-			} else {
-				if array[i][0] < array[i][1] {
-					cache := array[i][0]
-					array[i][0] = array[i][1]
-					array[i][1] = cache
-
-				}
 			}
-
 		}
 
 		liss[i] = 0
@@ -123,6 +128,11 @@ func COORD_CHAIN(array [][2]int, raw_array [][2]int, gap int, status int) ([][2]
 
 	max = 0
 	k = 0
+	// if status == 1 {
+	// 	fmt.Println(array)
+	// }
+	liss[0] = Abs(raw_array[0][1] - raw_array[0][0])
+	max = liss[0]
 	for i = 1; i < length; i++ {
 		//找到以array[i]为最末元素的最长递增子序列
 		for j = 0; j < i; j++ {
@@ -145,6 +155,7 @@ func COORD_CHAIN(array [][2]int, raw_array [][2]int, gap int, status int) ([][2]
 					}
 				}
 			} else {
+
 				// if array[j][1]-array[i][0] > gap {
 				// 	continue
 				// }
@@ -184,7 +195,7 @@ func COORD_CHAIN(array [][2]int, raw_array [][2]int, gap int, status int) ([][2]
 		result2 = append([][2]int{raw_array[k]}, result2...)
 	}
 	//	fmt.Println(result)
-	fmt.Println(result2)
+
 	total_length := COORD_MERGE(result2)
 	return result, result2, total_length
 }

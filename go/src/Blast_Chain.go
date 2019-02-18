@@ -60,9 +60,10 @@ func main() {
 	align_hash := make(map[string]map[string][][2]int)
 
 	ref_hash := make(map[string]map[string][][2]int)
-	RAWIO := lpp.GetBlockRead("", "\n", true, 100000)
+	RAWIO := lpp.GetBlockRead("", "\n", false, 100000)
 	for {
 		line, err := RAWIO.Next()
+
 		if err != nil {
 			break
 		}
@@ -105,8 +106,11 @@ func main() {
 
 	for each_ref, data_hash := range align_hash {
 		for each_contig, _ := range data_hash {
+
 			ref1, align1, length1 := lpp.COORD_CHAIN(ref_hash[each_ref][each_contig], align_hash[each_ref][each_contig], gap, 0)
 			ref2, align2, length2 := lpp.COORD_CHAIN(ref_hash[each_ref][each_contig], align_hash[each_ref][each_contig], gap, 1)
+			fmt.Println(ref1, align1)
+			fmt.Println(ref2, align2)
 
 			_, ok := ALN_Result[each_contig]
 			if !ok {
