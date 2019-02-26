@@ -5,7 +5,7 @@ params.Result = "Result"
 Result_path = params.input+params.Result+"/"
 genomeFile = file(params.genome)
 
-Channel.fromFilePairs(params.input+'/*_{1,2}*.fq.gz').into { all_reads }
+Channel.fromFilePairs(params.input+'/*_{1,2}.fq.gz').into { all_reads }
 process index {
     executor 'pbs'
     scratch true
@@ -31,7 +31,7 @@ process index {
 
 process mapping {
     	executor 'pbs'
-	cpus 32
+	cpus 16
 	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
 
     input:
@@ -44,7 +44,7 @@ process mapping {
     script:
 
 		"""
-		bwa mem  -M  -t 64  REF   ${reads[0]}  ${reads[1]}  1> ${sampleid}.sam  2>/dev/null
+		bwa mem  -M  -t 16  REF   ${reads[0]}  ${reads[1]}  1> ${sampleid}.sam  2>/dev/null
 		
 		samtools view -bS -@ 20  ${sampleid}.sam   -o  ${sampleid}.raw   2>/dev/null
 
@@ -70,7 +70,7 @@ process Combine{
         script:
                 """
                         samtools merge -@ 32  Total.bam $all_bam
-                        samtools sort  -@ 32  -m 4G Total.bam  -o Total.sort.bam
+                        samtools sort  -@ 16  -m 1G Total.bam  -o Total.sort.bam
                         mv Total.sort.bam Total.bam
 			bamtools stats -in Total.bam >Align.stats
 			samtools index Total.bam
