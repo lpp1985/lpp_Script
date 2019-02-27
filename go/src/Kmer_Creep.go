@@ -115,6 +115,9 @@ func main() {
 
 	for {
 		title, seq, err := RAW.Next()
+		if err != nil {
+			break
+		}
 		name := string(bytes.Fields(title)[0][1:])
 		all_situation := reg.FindAllStringSubmatch(string(title), -1)
 		cov, _ := strconv.Atoi(reg_cov.FindStringSubmatch(string(title))[1])
@@ -138,7 +141,9 @@ func main() {
 	RAW = lpp.Fasta{File: *input}
 	for {
 		title, _, err := RAW.Next()
+		fmt.Println(len(title))
 		name := string(bytes.Fields(title)[0][1:])
+
 		cov, _ := strconv.Atoi(reg_cov.FindStringSubmatch(string(title))[1])
 		if cov < 30 {
 			continue
@@ -208,15 +213,40 @@ func main() {
 			CACHE.WriteString(">" + name + "\n" + kmer_seq[name] + "\n")
 		}
 		CACHE.Close()
-		exec.Command(fmt.Sprintf(" cdhit-est -i %s -o %s ", "Cache.fasta", "Cluster"))
-		CLUSEROUT := lpp.Fasta{"File": "Cluster.clr"}
+		exec.Command(" cdhit-est", "-i", "Cache.fasta", "-o", "Cluster")
+
+		CLUSEROUT := lpp.GetBlockRead("Cluster.clstr", "\n", false, 10000)
 		for {
-			head, cont, err := CLUSEROUT.Next()
+
+			line, err := CLUSEROUT.Next()
 			if err != nil {
 				break
+			}
+			line = bytes.TrimSpace(line)
+			if string(line[len(line)-1]) == "*" {
+				line_l := bytes.Fields(line)
+				data := string(bytes.Trim(line_l[2][1:], ".")[0])
+				_, ok := kmer_PreFilter[data]
+				if ok {
+					delete(kmer_PreFilter, data)
+				}
+			}
+
+		}
+		//删除聚类得到的节点
+		for e_node, _ := range kmer_PreFilter {
+			_, ok := kmer_graph[e_node]
+			if ok {
+				delete(kmer_graph, e_node)
 			}
 		}
 		kmer_PreFilter = make(map[string]string)
 
+	}
+	//输出
+	for n, node := range All_list {
+
+		// OUTPUT.WriteString(node + "\n")
+		Traverse_5(n, node, 0, path, *threshold, true)
 	}
 }
