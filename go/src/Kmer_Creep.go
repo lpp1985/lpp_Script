@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"log"
 	"os/exec"
 
 	//"fmt"
@@ -21,6 +22,7 @@ var kmer_graph map[string]map[string]string = make(map[string]map[string]string)
 var kmer_seq map[string]string = make(map[string]string)
 var kmer_PreFilter map[string]string = make(map[string]string)
 var OUTPUT *os.File
+var no_filter map[string]string = make(map[string]string)
 
 func Contains(s_list []string, node string) bool {
 	res := false
@@ -101,7 +103,9 @@ func main() {
 	for {
 		line, err := raw_file.Next()
 		line = bytes.TrimSpace(line)
-		All_list = append(All_list, string(line))
+		if len(line) > 0 {
+			All_list = append(All_list, string(line))
+		}
 		if err != nil {
 			break
 		}
@@ -141,7 +145,9 @@ func main() {
 	RAW = lpp.Fasta{File: *input}
 	for {
 		title, _, err := RAW.Next()
-		fmt.Println(len(title))
+		if len(title) == 0 {
+			break
+		}
 		name := string(bytes.Fields(title)[0][1:])
 
 		cov, _ := strconv.Atoi(reg_cov.FindStringSubmatch(string(title))[1])
@@ -194,11 +200,22 @@ func main() {
 			break
 		}
 	}
+
+	// for n, node := range All_list {
+	// 	fmt.Println(node)
+	// 	fmt.Println(kmer_graph[node])
+	// 	// OUTPUT.WriteString(node + "\n")
+	// 	Traverse_5(n, node, 0, path, *threshold, true)
+
+	// }
+
 	/*
 		六次搜寻，将搜到的节点进行聚类
 	*/
+	fmt.Println(kmer_graph["26211+"])
 	for x := 0; x <= 6; x++ {
-		CACHE, _ := lpp.GetOuput("Cache.fasta", 1000)
+		CACHE, _ := lpp.GetOuput("Cache"+strconv.Itoa(x)+".fasta", 1000)
+
 		for n, node := range All_list {
 
 			// OUTPUT.WriteString(node + "\n")
@@ -210,12 +227,16 @@ func main() {
 
 		}
 		for name, _ := range kmer_PreFilter {
+
 			CACHE.WriteString(">" + name + "\n" + kmer_seq[name] + "\n")
 		}
 		CACHE.Close()
-		exec.Command(" cdhit-est", "-i", "Cache.fasta", "-o", "Cluster")
 
-		CLUSEROUT := lpp.GetBlockRead("Cluster.clstr", "\n", false, 10000)
+		err := exec.Command("cdhit-est", "-i", "Cache"+strconv.Itoa(x)+".fasta", "-o", "Cluster"+strconv.Itoa(x)).Run()
+		if err != nil {
+			log.Fatal(err)
+		}
+		CLUSEROUT := lpp.GetBlockRead("Cluster"+strconv.Itoa(x)+".clstr", "\n", false, 10000)
 		for {
 
 			line, err := CLUSEROUT.Next()
@@ -225,19 +246,30 @@ func main() {
 			line = bytes.TrimSpace(line)
 			if string(line[len(line)-1]) == "*" {
 				line_l := bytes.Fields(line)
-				data := string(bytes.Trim(line_l[2][1:], ".")[0])
-				_, ok := kmer_PreFilter[data]
-				if ok {
-					delete(kmer_PreFilter, data)
+				data := string(bytes.Trim(line_l[2][1:], "."))
+				data = data[:len(data)-1]
+				for _, tag := range [2]string{"+", "-"} {
+					name := data + tag
+					no_filter[name] = ""
+					_, ok := kmer_PreFilter[name]
+					if ok {
+						delete(kmer_PreFilter, name)
+					}
 				}
+
 			}
 
 		}
+		fmt.Println(kmer_PreFilter)
 		//删除聚类得到的节点
 		for e_node, _ := range kmer_PreFilter {
-			_, ok := kmer_graph[e_node]
-			if ok {
-				delete(kmer_graph, e_node)
+			_, nofilterok := no_filter[e_node]
+			if !nofilterok {
+				_, ok := kmer_graph[e_node]
+
+				if ok {
+					delete(kmer_graph, e_node)
+				}
 			}
 		}
 		kmer_PreFilter = make(map[string]string)
@@ -245,8 +277,10 @@ func main() {
 	}
 	//输出
 	for n, node := range All_list {
-
+		fmt.Println(node, n)
 		// OUTPUT.WriteString(node + "\n")
+		fmt.Println(kmer_graph["26211+"])
 		Traverse_5(n, node, 0, path, *threshold, true)
+
 	}
 }
