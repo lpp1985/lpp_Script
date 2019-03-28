@@ -3,11 +3,12 @@ package main
 import (
 	"bytes"
 	"flag"
+
 	//"fmt"
 	"lpp"
-	"strconv"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -28,7 +29,7 @@ func Contains(s_list []string, node string) bool {
 	}
 	return res
 }
-func Traverse_5(order int, node string, step int, path []string, threshold int) []string {
+func Traverse_5(order int, node string, step int, path []string, threshold int, OUT *os.File) []string {
 	if Contains(path, node) {
 		return path
 	}
@@ -36,7 +37,16 @@ func Traverse_5(order int, node string, step int, path []string, threshold int) 
 	//	_, ok := kmer_graph[node]
 
 	if step == threshold {
-		if len(path) > 0 {
+		status := 0
+		start := path[0][:len(path)-1]
+		for _, name := range path[1:] {
+			q_name := name[:len(name)-1]
+			if q_name == start {
+				status = 1
+			}
+
+		}
+		if len(path) > 0 && status == 0 {
 			OUTPUT.WriteString(">" + strings.Join(path, "; ") + "\n")
 			end_seq := ""
 			for i, name := range path {
@@ -64,7 +74,7 @@ func Traverse_5(order int, node string, step int, path []string, threshold int) 
 				path = path[:loc]
 			}
 
-			path = Traverse_5(order, son, step, path, threshold)
+			path = Traverse_5(order, son, step, path, threshold, OUT)
 		}
 
 	}
@@ -86,34 +96,50 @@ var kmer *int
 func main() {
 	has_son := make(map[string]string)
 	input := flag.String("i", "./", "Input File")
-	output := flag.String("o", "StringGraph.tsv", "Output File")
-	nodes_file := flag.String("l", "KmerList.tsv", "Kmer Id list")
+	output_forward := flag.String("f", "StringGraph_for.tsv", "Output File")
+	output_reverse := flag.String("r", "StringGraph_rev.tsv", "Output File")
+	nodesforward_file := flag.String("l", "KmerList_for.tsv", "Kmer Id list")
+	nodesreverse_file := flag.String("j", "KmerList_rev.tsv", "Kmer Id list")
 	kmer = flag.Int("k", 41, "kmer")
 	threshold := flag.Int("s", 10, "Step")
 	flag.Parse()
-	raw_file := lpp.GetBlockRead(*nodes_file, "\n", false, 10000)
-	var All_list  []string
+	raw_for_file := lpp.GetBlockRead(*nodesforward_file, "\n", false, 10000)
+	raw_rev_file := lpp.GetBlockRead(*nodesreverse_file, "\n", false, 10000)
+	var All_for_list []string
+	var All_rev_list []string
 	for {
-		line,err := raw_file.Next()
+		line, err := raw_for_file.Next()
 		line = bytes.TrimSpace(line)
-		All_list = append( All_list, string(line)  )
-		if err!=nil{
+		All_for_list = append(All_for_list, string(line))
+		if err != nil {
+			break
+		}
+
+	}
+	for {
+		line, err := raw_rev_file.Next()
+		line = bytes.TrimSpace(line)
+		All_rev_list = append(All_rev_list, string(line))
+		if err != nil {
 			break
 		}
 
 	}
 	RAW := lpp.Fasta{File: *input}
-	OUTPUT, _ = lpp.GetOuput(*output, 1000)
-
+	OUTPUT_FOR, _ := lpp.GetOuput(*output_forward, 1000)
+	OUTPUT_REV, _ := lpp.GetOuput(*output_reverse, 1000)
 	reg := regexp.MustCompile(`L\:(\S)\:(\d+)\:(\S)`)
 	reg_cov := regexp.MustCompile(`KC\:i\:(\d+)`)
 
 	for {
 		title, seq, err := RAW.Next()
+		if len(title) == 0 {
+			break
+		}
 		name := string(bytes.Fields(title)[0][1:])
 		all_situation := reg.FindAllStringSubmatch(string(title), -1)
-		cov,_ := strconv.Atoi( reg_cov.FindStringSubmatch(string(title))[1] )
-		if cov<30{
+		cov, _ := strconv.Atoi(reg_cov.FindStringSubmatch(string(title))[1])
+		if cov < 30 {
 			continue
 		}
 		if len(all_situation) == 0 {
@@ -134,8 +160,8 @@ func main() {
 	for {
 		title, _, err := RAW.Next()
 		name := string(bytes.Fields(title)[0][1:])
-		cov,_ := strconv.Atoi( reg_cov.FindStringSubmatch(string(title))[1] )
-		if cov<30{
+		cov, _ := strconv.Atoi(reg_cov.FindStringSubmatch(string(title))[1])
+		if cov < 30 {
 			continue
 		}
 		_, ok := has_son[name]
@@ -184,10 +210,14 @@ func main() {
 			break
 		}
 	}
-	for n, node := range All_list {
-		OUTPUT.WriteString(node + "\n")
-		Traverse_5(n, node, 0, path, *threshold)
-		
+	for _, node := range All_for_list {
+		// OUTPUT.WriteString(node + "\n")
+		Traverse_5(0, node, 0, path, *threshold, OUTPUT_FOR)
+
+	}
+	for _, node := range All_rev_list {
+		// OUTPUT.WriteString(node + "\n")
+		Traverse_5(0, node, 0, path, *threshold, OUTPUT_REV)
 
 	}
 }

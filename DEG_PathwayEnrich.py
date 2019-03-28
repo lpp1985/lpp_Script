@@ -48,7 +48,7 @@ if (nrow(Data)>1){
 
 
 }
-Data = Data[ Data$padj<0.005,  ]
+Data = Data[ Data$padj<0.05,  ]
 write.table(Data,row.names=F,file='%s',quote=FALSE,sep='\t')
 
         """% ( options.output) )

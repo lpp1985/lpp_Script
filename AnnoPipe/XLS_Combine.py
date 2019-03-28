@@ -101,6 +101,7 @@ GeneFeature+Annotation.xlsx	注释的基因信息和基因序列等信息的总�
         for chrosome in category_hash[category]:
             all_excel.append(  category_hash[category][chrosome]  )
         total_excel.extend(all_excel)
+	print( total_excel )
         result_frame = combine_xls(all_excel)
         if type(result_frame) ==str:
             continue

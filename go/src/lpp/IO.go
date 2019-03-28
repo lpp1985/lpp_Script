@@ -3,7 +3,6 @@ package lpp
 import (
 	"bufio"
 	"bytes"
-
 	"io"
 
 	"os"
@@ -108,17 +107,17 @@ func (SeqFile *Fasta) Next() (name []byte, seq []byte, err error) {
 		}
 	}
 	Data_block, err := SeqFile.IO.Next()
-
 	Data_block = bytes.TrimSuffix(Data_block, []byte(">"))
-	if string(Data_block[0]) != ">" {
+	if len( Data_block )>0 &&string(Data_block[0]) != ">" {
 
 		Data_block = append([]byte(">"), Data_block...)
 	}
 
 	Data_list := bytes.SplitN(Data_block, []byte("\n"), 2)
-	name = append(Data_list[0], '\n')
-	seq = Data_list[1]
-
+	if len(Data_list)>1{
+		name = append(Data_list[0], '\n')
+		seq = Data_list[1]
+	}
 	return name, seq, err
 }
 func GetBlockRead(filehandle string, blocktag string, header bool, buffer int) IO {
