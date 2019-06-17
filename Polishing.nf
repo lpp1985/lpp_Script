@@ -74,7 +74,7 @@ process Combine{
                         mv Total.sort.bam Total.bam
 			bamtools stats -in Total.bam >Align.stats
 			samtools index Total.bam
-			Polishing.sh ${genomeFile}
+			Polishing.sh ${genomeFile} Polishing
                 """
 
 
