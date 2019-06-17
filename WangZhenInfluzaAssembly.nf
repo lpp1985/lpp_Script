@@ -4,7 +4,7 @@ params.genome ="scaff.fa"
 Result_path = params.input+"/Result/"
 genomeFile = file(params.genome)
 
-Channel.fromFilePairs(params.input+'/*_{1,2}.fq.gz').into { all_reads, raw_reads }
+Channel.fromFilePairs(params.input+'/*_{1,2}.fq.gz').into { all_reads; raw_reads }
 
 
 process raw_mapping {
@@ -30,34 +30,13 @@ process raw_mapping {
 		
 		samtools view -bS -@ 20  ${sampleid}.sam   -o  ${sampleid}.raw   2>/dev/null
 		samtools sort ${sampleid}.raw  -o ${sampleid}.bam
-		HTseq_Count.py -i  ${sampleid}.bam -o ${sampleid}.count
+		HTseq_Count.py -s  ${sampleid}.bam -o ${sampleid}.count
 		PickBestRef.py  ${genomeFile}  ${sampleid}.count
 
 
 
 """
    
-}
-process index_pol {
-    executor 'pbs'
-    scratch true
-    cpus 1 
-    clusterOptions  " -d $PWD  -l nodes=1:ppn=1 -V "
-    input:
-		file "Best1.fa" from  best_ref
-
-    
-    output:
-		file "REF*" into STARgenomeIndex
-
-    script:
-    //
-    // STAR Generate Index and create genome length file
-    //
-    """
-        bwa index  Best1.fa -p REF
-
-    """
 }
 
 process Polish_mapping {
