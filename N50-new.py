@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #coding:utf-8
 # Author:  LPP --<lpp1985@hotmail.com>
 # Purpose: 

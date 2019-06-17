@@ -1,0 +1,146 @@
+Content-type:text/html
+
+
+<html>
+	<head>
+		<script>
+		function confirmReset(){
+
+	       var clickresult = false;
+
+	       clickresult =window.confirm("Clean all manipulation。\nAre you sure??");
+
+	       return clickresult;
+
+	}
+		</script>
+	</head>
+ <body>
+  <title>
+Kmer Pathway Finder
+</title> 
+  <style type="text/css">
+<!--
+div.poplay {
+  position: absolute;
+  padding: 2px;
+  background-color: #ffff99;
+  border-top: solid 1px #c0c0c0;
+  border-left: solid 1px #c0c0c0;
+  border-bottom: solid 1px #808080;
+  border-right: solid 1px #808080;
+  visibility: hidden;
+}
+
+span.popup
+{
+  font-weight: bold;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+form {
+  margin: 1px;
+}
+
+div.image {
+  position: absolute;
+  padding: 0px;
+  top: 0px;
+  padding: 0px;
+  border: solid 1px #000000;
+}
+
+img {
+  border: none;
+}
+
+
+-->
+</style> 
+  <table cellpadding="1" width="40%" cellspacing="0" border="0"> 
+   <tbody>
+    <tr> 
+     <td> &nbsp;&nbsp;&nbsp;<font size="15" class="title3"><b>{{ org }}  TransGene Kmer Graph</b></font> </td> 
+     <td valign="bottom" align="right"> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <table id="description" cellpadding="10" width="800"> 
+   <tbody>
+    <tr>
+     <td>Fish all transgene segment!</td>
+    </tr>
+   </tbody> 
+  </table> 
+  <fieldset > 
+   <legend>Parameter:</legend> 
+   <table width=60%"">
+    <tbody>
+     <tr>
+      <td> 
+       <form action="./run.py" method="get">
+	   <input type="hidden" name="org" value="{{org}}" />
+         Starting Contig ID 
+        <select name="start_node"> {% for each_begin in begin_list %} <option value="{{ each_begin.name}}">{{ each_begin.attr}} :{{ each_begin.name}}</option> {% endfor %} </select> 
+    </td>
+
+     </tr>
+	 <tr>
+	 
+	  <td>
+		Recover Deleted Nodes
+			<select multiple="multiple" name="Recover" size="4">
+			{% for each_deleted in deleted_nodes %}
+				  <option value="{{ each_deleted.name}}">{{ each_deleted.name}}</option>
+				  
+			{% endfor %}
+			</select>
+
+		
+	  </td>
+	  <td>
+			Deleted Nodes
+			<select multiple="multiple" name="deleted" size="4">
+			{% for each_node in all_nodes %}
+				  <option value="{{ each_node.name}}">{{ each_node.name}}</option>				  
+			{% endfor %}
+			</select>
+
+		
+	  </td>
+	  
+      
+     </tr>
+	 <tr>
+		
+		Step
+        <select name="step">
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+		</select> 
+		
+	  </tr>
+    </tbody>
+   </table> 
+   <table width="850">
+    <tbody>
+		<td align="center">
+			<input type="reset"  onclick="return confirmReset()" name="button" id="button" value="Cancel" onClick="return false"/>
+		</td>
+     <td align="center"> <input type="submit" id="submit" name="" value="Submit" /> </td>
+    </tbody>
+    <tr>
+	<td>
+	<a href="./Index.py">back to Index</a>
+	</td>
+    </tr>
+   </table> 
+   </form>
+  </fieldset> 
+  <embed src="{{graph}}" height=2000, width=3000  border=1 type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/" />   
+ </body>
+</html>

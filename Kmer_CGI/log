@@ -1,0 +1,11 @@
+2019/04/21 05:56:07 [W] [control.go:281] [ae3211ecdfaed792] read error: broken pipe
+2019/04/21 05:56:08 [I] [control.go:301] [ae3211ecdfaed792] control writer is closing
+2019/04/21 05:56:08 [I] [control.go:399] [ae3211ecdfaed792] try to reconnect to server...
+2019/04/21 05:56:07 [E] [control.go:148] [ae3211ecdfaed792] work connection closed, broken pipe
+2019/04/21 05:56:40 [I] [control.go:240] [ae3211ecdfaed792] login to server success, get run id [ae3211ecdfaed792], server udp port [0]
+2019/04/21 05:56:40 [I] [control.go:165] [ae3211ecdfaed792] [admin.transmission] start proxy success
+2019/04/21 05:56:40 [I] [control.go:165] [ae3211ecdfaed792] [admin.Html] start proxy success
+2019/04/21 05:56:40 [I] [control.go:165] [ae3211ecdfaed792] [admin.SMRTPIPE] start proxy success
+2019/04/21 05:56:40 [I] [control.go:165] [ae3211ecdfaed792] [admin.SMRTPIPE2] start proxy success
+2019/04/21 05:56:40 [I] [control.go:165] [ae3211ecdfaed792] [admin.SMRTPIPE3] start proxy success
+2019/04/21 05:56:40 [I] [control.go:165] [ae3211ecdfaed792] [admin.BLAST] start proxy success

@@ -461,8 +461,8 @@ if(! -f "$genome"){
 
   check_fasta_headers($genome); # check fasta headers
   
-  system("Genewise_GTF.py $already $rootDir/raw.gtf");
-  system("filterGenemark.py $rootDir/raw.gtf $rootDir/good.gtf");
+  system("/usr/bin/python Genewise_GTF.py $already $rootDir/raw.gtf");
+  system("/usr/bin/python filterGenemark.py $rootDir/raw.gtf $rootDir/good.gtf");
   new_species();                # create new species parameter files
   training();                   # train species-specific parameters with optimize_augustus.pl and etraining
 

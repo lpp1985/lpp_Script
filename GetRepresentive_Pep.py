@@ -7,7 +7,11 @@ has = Ddict()
 
 for t,s in fasta_check( open(sys.argv[1],'rU')  ):
 	gene = t.split()[0].rsplit("_",1)[0]
-	has[gene][len(s)]= t+s
+	s = re.sub("\s+","",s)
+	if s[-1]==".":
+		s = s[:-1]
+	
+	has[gene][len(s)]= t+s+"\n"
 for key in has:
 	for data in sorted( has[key] )[::-1]:
 		END.write( has[key][ data ]  )

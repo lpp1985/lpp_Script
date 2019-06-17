@@ -1,0 +1,78 @@
+Content-type:text/html
+
+
+<html>
+	<head>
+		<script>
+		function confirmReset(){
+
+	       var clickresult = false;
+
+	       clickresult =window.confirm("Clean all manipulation。\nAre you sure??");
+
+	       return clickresult;
+
+	}
+		</script>
+	</head>
+ <body>
+  <title>
+Kmer Pathway Finder
+</title> 
+  <style type="text/css">
+<!--
+div.poplay {
+  position: absolute;
+  padding: 2px;
+  background-color: #ffff99;
+  border-top: solid 1px #c0c0c0;
+  border-left: solid 1px #c0c0c0;
+  border-bottom: solid 1px #808080;
+  border-right: solid 1px #808080;
+  visibility: hidden;
+}
+table td{
+ white-space:pre-wrap;
+ word-wrap: break-word;
+}
+span.popup
+{
+  font-weight: bold;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+form {
+  margin: 0px;
+}
+
+div.image {
+  position: absolute;
+  padding: 0px;
+  top: 0px;
+  padding: 0px;
+  border: solid 1px #000000;
+}
+
+img {
+  border: none;
+}
+
+
+-->
+</style> 
+ <table cellpadding="0" width="40%" cellspacing="0" border="1" align="center"> 
+	<thead><tr><td bgcolor="#E3E2E2" align="center"><br><font size=30>Sample Name:</font></br></tr></td></thead>
+	<tbody>
+	<form action="./run.py" method="get">
+		{% for each_sample in sample_list %}
+		<tr><td><label><font size=10><input type="radio" name="org" value="{{each_sample}}">{{each_sample}}</font></label></td></tr>
+
+		{% endfor %}
+	</tbody>
+<tr><td align="center"> <input type="submit" id="submit" name="" value="Submit" /> </td></tr>
+</table>
+ 
+    
+ </body>
+</html>

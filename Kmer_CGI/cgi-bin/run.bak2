@@ -1,0 +1,128 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+from pymongo import MongoClient
+client = MongoClient('192.168.31.82', 27017)
+db = client["C5796"]
+loc_db = db.Location
+#print "Content-type:text/html"
+#print                               # 空行，告诉服务器结束头部
+#print '<html>'
+#print '<head>'
+#print '<meta charset="utf-8">'
+#print '<title>Hello World - 我的第一个 LPP CGI 程序！</title>'
+#print '</head>'
+#print '<body>'
+#print '<h2>Hello World! LPP 我是来自菜鸟教程的第一CGI程序</h2>'
+print "Content-type:text/html"
+print   
+print """
+
+<html>
+<title>
+KEGG PATHWAY: Citrate cycle (TCA cycle) - Reference pathway
+</title>
+<style type="text/css">
+<!--
+div.poplay {
+  position: absolute;
+  padding: 2px;
+  background-color: #ffff99;
+  border-top: solid 1px #c0c0c0;
+  border-left: solid 1px #c0c0c0;
+  border-bottom: solid 1px #808080;
+  border-right: solid 1px #808080;
+  visibility: hidden;
+}
+
+span.popup
+{
+  font-weight: bold;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+form {
+  margin: 0px;
+}
+
+div.image {
+  position: absolute;
+  padding: 0px;
+  top: 0px;
+  padding: 0px;
+  border: solid 1px #000000;
+}
+
+img {
+  border: none;
+}
+
+
+-->
+</style>
+
+<table cellpadding="0" width="100%" cellspacing="0" border="0">
+ <tbody><tr>
+  <td>
+   <a href="https://www.genome.jp/kegg/kegg2.html"><img align="middle" alt="KEGG" border="0" src="./KEGG PATHWAY_ Citrate cycle (TCA cycle) - Reference pathway_files/kegg3.gif"></a>
+   &nbsp;&nbsp;&nbsp;<font class="title3"><b>Citrate cycle (TCA cycle) - Reference pathway</b></font>
+  </td>
+  <td valign="bottom" align="right">
+   <a href="javascript:void(window.open(&#39;/kegg/document/help_pathway.html&#39;,&#39;KEGG_Help&#39;,&#39;toolbar=no,location=no,directories=no,width=720,height=640,resizable=yes,scrollbars=yes&#39;))"><img name="help" src="./KEGG PATHWAY_ Citrate cycle (TCA cycle) - Reference pathway_files/button_Hb.gif" border="0" align="middle" alt="Help" onmouseout="btn(this,&#39;Hb&#39;)" onmousedown="btn(this,&#39;Hbd&#39;)" onmouseover="btn(this,&#39;Hbh&#39;)" onmouseup="btn(this,&#39;Hb&#39;)"></a>
+  </td>
+ </tr>
+</tbody></table>
+
+
+  
+<table id="description" cellpadding="10" width="800"><tbody><tr><td>
+The citrate cycle (TCA cycle, Krebs cycle) is an important aerobic pathway for the final steps of the oxidation of carbohydrates and fatty acids. The cycle starts with acetyl-CoA, the activated form of acetate, derived from glycolysis and pyruvate oxidation for carbohydrates and from beta oxidation of fatty acids. The two-carbon acetyl group in acetyl-CoA is transferred to the four-carbon compound of oxaloacetate to form the six-carbon compound of citrate. In a series of reactions two carbons in citrate are oxidized to CO2 and the reaction pathway supplies NADH for use in the oxidative phosphorylation and other metabolic processes. The pathway also supplies important precursor metabolites including 2-oxoglutarate. At the end of the cycle the remaining four-carbon part is transformed back to oxaloacetate. According to the genome sequence data, many organisms seem to lack genes for the full cycle .</td></tr></tbody></table>
+<table><tbody><tr><td>
+<form name="selmenu" method="get">
+<select name="org_name">
+<option value="map" selected="">Reference pathway</option>
+<option value="ko">Reference pathway (KO)</option>
+<option value="ec">Reference pathway (EC)</option>
+
+</select>
+<input type="hidden" name="mapno" value="00020">
+<input type="hidden" name="mapscale" value="">
+<input type="button" value="Go" onclick="select_menu(this.form)">
+<input type="hidden" name="show_description" value="show">
+
+</form>
+</td><td>
+<form name="form2" method="get" action="https://www.genome.jp/kegg-bin/show_pathway">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<select name="select_scale" onchange="resize_map(this)">
+<option value="1.84">184%</option>
+<option value="1.5">150%</option>
+<option value="1.22">122%</option>
+<option value="1.0" selected="">100%</option>
+<option value="0.82">82%</option>
+<option value="0.67">67%</option>
+<option value="0.55">55%</option>
+</select>
+&nbsp;&nbsp;<input type="text" name="query" size="20" value="">
+<input type="hidden" name="map" value="map00020">
+<input type="hidden" name="scale" value="">
+<input type="hidden" name="orgs">
+<input type="hidden" name="auto_image" value="">
+<input type="hidden" name="show_description" value="show">
+<input type="hidden" name="multi_query">
+
+<!--</form>-->
+</form></td></tr></tbody></table>
+
+"""
+
+print """<img src="/Graph/test.png" name="pathwayimage" usemap="#mapdata" border="1">"""
+
+print("""<map name="mapdata">""")
+for i in loc_db.find({'name': "rec"}):
+    start_x,start_y,end_x,end_y=i["location"]
+    print("""<area shape="rect" coords="%d,%d,%d,%d" href="/dbget-bin/www_bget?K05774+2.7.4.23+R06836" title="K05774 (phnN), 2.7.4.23, R06836">"""%(start_x,start_y,end_x,end_y ))
+print("""<area shape="rect" coords="%d,%d,%d,%d" href="/dbget-bin/www_bget?K05774+2.7.4.23+R06836" title="K05774 (phnN), 2.7.4.23, R06836">"""%(0,0,20,20 ))
+print("""</map>""")
+print '</body>'
+print '</html>'

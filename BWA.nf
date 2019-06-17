@@ -4,7 +4,7 @@ params.genome ="scaff.fa"
 Result_path = params.input+"/Result/"
 genomeFile = file(params.genome)
 
-Channel.fromFilePairs(params.input+'/*_R{1,2}.fq.gz').into { all_reads }
+Channel.fromFilePairs(params.input+'/*_{1,2}.fq.gz').into { all_reads }
 process index {
     executor 'pbs'
     scratch true

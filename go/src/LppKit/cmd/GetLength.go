@@ -53,11 +53,10 @@ var GetLengthCmd = &cobra.Command{
 			seq = bytes.Replace(seq, []byte("\n"), []byte(""), -1)
 			length := len(seq)
 
-			output_byte := name
-			output_byte = append(output_byte, []byte("\t")...)
-			output_byte = append(output_byte, []byte(string(length))...)
-			output_byte = append(output_byte, []byte("\n")...)
-			OUTPUTBUF.Write(output_byte)
+			output_byte := string(name)
+			output_byte += "\t"
+			output_byte += string(length)+"\n"
+			OUTPUTBUF.WriteString(output_byte)
 			if err != nil {
 				break
 			}

@@ -1,0 +1,37 @@
+import cgi
+from pymongo import MongoClient
+form = cgi.FieldStorage()
+
+
+client = MongoClient('192.168.31.82', 27017)
+node = form.getvalue('node')
+org = form.getvalue('org')
+#if not org:
+#       print("error")
+#       sys.exit()
+db = client["C5796"]
+seq_db = db.Sequence
+sequence = seq_db.find_one({"name":"33178130+"})["seq"]
+print "Content-type:text/html"
+print
+print """
+<html>
+<head>
+        <title> Node  {node} in {org}</title>
+</head>        
+       
+<body>       
+       <table cellpadding="0" width="100%" cellspacing="0" border="0">
+ <tbody><tr>
+  <td>
+      <font class="title3"><b>Sequence of Node {node} in {org}</b></font>
+  </td>
+  <td valign="bottom" align="right">
+   <br><font size=20>{sequence}</font></br>
+  </td>
+ </tr>
+</tbody></table>
+</body>
+</html>
+
+""".format(node=node,org=org,sequence=sequence)

@@ -1,0 +1,24 @@
+#!/usr/bin/python
+#coding:utf-8
+"""
+  Author:   --<>
+  Purpose: 
+  Created: 2019/4/1
+"""
+import cgi
+from pymongo import MongoClient
+form = cgi.FieldStorage() 
+
+
+client = MongoClient('192.168.31.82', 27017)
+node = form.getvalue('node')
+org = form.getvalue('org')    
+#if not org:
+#	print("error")
+#	sys.exit()
+db = client[org]
+seq_db = db.Sequence
+sequence = seq_db.find_one({"name":node})["seq"]
+print "Content-type:text/html"
+print   
+print( sequence )

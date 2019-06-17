@@ -127,7 +127,7 @@ if __name__ == '__main__':
     OROTHO = open(options.output_path+"1.Orthologs_Cluster.txt",'rU')
     OROTHORESULT = open(options.output_path+"1.Orthologs_Cluster.txt1",'w')
     OROTHORESULT.write(OROTHO.next()[:-1]+'\tFunction\n')
-    function=""
+    function="Hypothetical Protein"
     for line in OROTHO:
         line_l = line[:-1].split("\t")
         
