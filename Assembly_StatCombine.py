@@ -8,8 +8,9 @@ for f in all_data:
 	if i==0:
 		i=1
 		END.write("Sample\t"+ RAW.next())
+		
 	else:
 		RAW.next()
-		name = f.rsplit(".",1)[0]
-		END.write( name+'\t'+RAW.next() )
+	name = f.rsplit(".",1)[0]
+	END.write( name+'\t'+RAW.next() )
 

@@ -10,7 +10,7 @@ Channel.fromFilePairs(params.input+'/*_{1,2}.fq.gz').into { all_reads; raw_reads
 process raw_mapping {
 
     executor 'pbs'
-	cpus 32
+	cpus 64
 	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
 
     input:
@@ -43,6 +43,7 @@ process Polish_mapping {
     	executor 'pbs'
 	cpus 16
 	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
+	publishDir "$Result_path", mode: 'copy', overwrite: true
 
     input:
 		file ref from  best_ref
@@ -62,7 +63,7 @@ process Polish_mapping {
 
 		samtools sort ${sampleid}.raw  -o ${sampleid}.bam
 		samtools index  ${sampleid}.bam
-		Polishing.sh ${genomeFile} ${sampleid}
+		Polishing.sh ${ref} ${sampleid}
 
 """
    
