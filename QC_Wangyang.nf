@@ -43,7 +43,7 @@ process qc {
 	output:
 		set val(sampleid),file("*pair{1,2}") into qc_result
 		set val(sampleid),file("*pair{1,2}") into qc_result_ForStat
-		file ("*R?.gz") into gzip_result
+		file ("*R?.fq.gz") into gzip_result
 	script:
 		"""
 		sickle pe -t sanger -n -l 100 -q ${params.quality} \
@@ -52,9 +52,9 @@ process qc {
 			-o  ${sampleid}.pair1\
 			-p  ${sampleid}.pair2\
 			-s  ${sampleid}.fail
-		gzip -c ${sampleid}.pair1 >${sampleid}_R1.gz
+		gzip -c ${sampleid}.pair1 >${sampleid}_R1.fq.gz
 
-		gzip -c ${sampleid}.pair2 > ${sampleid}_R2.gz
+		gzip -c ${sampleid}.pair2 > ${sampleid}_R2.fq.gz
 		
 		"""
 		
