@@ -37,13 +37,13 @@ process RAW_QualityStats{
 
 process qc {
 	maxForks 6
-	publishDir "$qc_path", mode: 'copy', overwrite: true
+	
 	input: 
 		set val(sampleid),file(reads) from all_file
 	output:
 		set val(sampleid),file("*pair{1,2}") into qc_result
 		set val(sampleid),file("*pair{1,2}") into qc_result_ForStat
-		file ("*R?.fq.gz") into gzip_result
+		set val(sampleid),file("*pair{1,2}") into qc_result_gz
 	script:
 		"""
 		sickle pe -t sanger -n -l 100 -q ${params.quality} \
@@ -52,13 +52,39 @@ process qc {
 			-o  ${sampleid}.pair1\
 			-p  ${sampleid}.pair2\
 			-s  ${sampleid}.fail
-		gzip -c ${sampleid}.pair1 >${sampleid}_R1.fq.gz
 
-		gzip -c ${sampleid}.pair2 > ${sampleid}_R2.fq.gz
-		
 		"""
 		
 }
+
+process GZ{
+	
+	maxForks 6
+	publishDir "$qc_path", mode: 'copy', overwrite: true
+
+	input:
+	
+		set val(sampleid),file(qc_pair) from qc_result_gz 
+		
+	output:
+
+		file ("*R?.fq.gz") into gzip_result
+		
+		
+		
+	"""	
+		gzip -c ${qc_pair[0]}  >${sampleid}_R1.fq.gz
+
+		gzip -c ${qc_pair[1]} > ${sampleid}_R2.fq.gz
+
+		
+		
+	"""
+
+
+
+}
+
 
 process QC_STAT_PROCESS{
 	
