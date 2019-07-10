@@ -12,7 +12,7 @@ Channel.fromFilePairs(params.input+'/*_{1,2}.*.gz').into {qc_plot_raw; all_file 
 
 process RAW_QualityStats{
 	
-	maxForks 6
+	maxForks 20
 	input:
 		set val(sampleid),file(reads) from qc_plot_raw
 		
@@ -36,7 +36,7 @@ process RAW_QualityStats{
 
 
 process qc {
-	maxForks 6
+	maxForks 20
 	
 	input: 
 		set val(sampleid),file(reads) from all_file
@@ -59,7 +59,7 @@ process qc {
 
 process GZ{
 	
-	maxForks 6
+	maxForks 20
 	publishDir "$qc_path", mode: 'copy', overwrite: true
 
 	input:
@@ -88,7 +88,7 @@ process GZ{
 
 process QC_STAT_PROCESS{
 	
-	maxForks 6
+	maxForks 20
 
 	input:
 	
@@ -116,7 +116,7 @@ process QC_STAT_PROCESS{
 
 process QC_STAT_PROCESS{
 
-	maxForks 6
+	maxForks 20
 
 
 	input:
