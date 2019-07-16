@@ -6,7 +6,27 @@ params.eval = "1e-5"
 
 
 Channel.fromPath(params.Protein).into {protein_Cazy; protein_TMHMM; protein_VFDB;  protein_CARDB; protein_PHI }
-Channel.fromPath(params.Nucl).into {nucl_Resfinder}
+Channel.fromPath(params.Nucl).into {nucl_Resfinder; nucl_Virulence}
+process VirluFinder {
+	executor 'pbs'
+	publishDir "${params.out}/Resfinder", mode: 'copy', overwrite: true
+	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
+	input :
+		file nucl from nucl_Resfinder
+	output:
+		file "*.tar.gz" into VirResult
+
+	script:
+		out_name = nucl.baseName
+		""" 
+		mkdir ${out_name}
+		virulencefinder.py  -i   $nuc -o ${out_name}   -p /home/nfs/SOFTWARE/Other/virulencefinder_db/
+		
+		  tar -zcf ${out_name}.tar.gz  ${out_name}/
+		"""
+}
+
+
 process Cazy {
     executor 'pbs'
 	publishDir "${params.out}/Cazy", mode: 'copy', overwrite: true
