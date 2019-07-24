@@ -13,7 +13,7 @@ Channel.fromFilePairs(params.input+'/*_R{1,2}.gz').into { all_reads; raw_reads }
 process raw_mapping {
 
     executor 'pbs'
-	cpus 64
+	cpus 32
 	clusterOptions  " -d $PWD  -l nodes=1:ppn=16 -v PATH=$PATH"
 
     input:
@@ -27,11 +27,10 @@ process raw_mapping {
     script:
 
 		"""
-		#bwa index  ${genomeFile} -p REF
-		bwa mem  -M  -t 64  $db_path/$db_name   ${reads[0]}  ${reads[1]}   2>/dev/null|samtools view -bS -F12 -@40 -T ${genomeFile} - | samtools sort -@10 -o ${sampleid}.bam
+		bwa mem  -M  -t 64  $db_path/$db_name   ${reads[0]}  ${reads[1]} 1>${sampleid}.raw  2>/dev/null
 		
-		#samtools view -bS -@ 20  ${sampleid}.sam   -o  ${sampleid}.raw   2>/dev/null
-		#samtools sort ${sampleid}.raw  -o ${sampleid}.bam
+		samtools view -bS -@ 20  ${sampleid}.sam   -o  ${sampleid}.raw   2>/dev/null
+		samtools sort ${sampleid}.raw  -o ${sampleid}.bam
 		HTseq_Count.py -s  ${sampleid}.bam -o ${sampleid}.count
 		PickBestRef.py  ${genomeFile}  ${sampleid}.count
 
