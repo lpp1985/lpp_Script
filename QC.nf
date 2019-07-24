@@ -6,7 +6,7 @@ qc_path = params.input+"/Qc/"
 stats_path = params.input+"/STATS/"
 
 
-Channel.fromFilePairs(params.input+'/*_R{1,2}.*.gz').into {qc_plot_raw; all_file }
+Channel.fromFilePairs(params.input+'/*_{1,2}.*.gz').into {qc_plot_raw; all_file }
 
 
 
