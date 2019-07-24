@@ -1,10 +1,13 @@
 #!/usr/bin/nextflow
 params.input ="./"
 params.genome ="scaff.fa"
-Result_path = params.input+"/Result/"
+params.index = "REF*"
+params.output= "Result"
+Result_path = params.output
 genomeFile = file(params.genome)
-
-Channel.fromFilePairs(params.input+'/*_{1,2}.fq.gz').into { all_reads; raw_reads }
+db_name = file(params.index).name
+db_path = file(params.index).parent
+Channel.fromFilePairs(params.input+'/*_R{1,2}.gz').into { all_reads; raw_reads }
 
 
 process raw_mapping {
@@ -15,7 +18,6 @@ process raw_mapping {
 
     input:
 		file genomeFile
-		
 		set val(sampleid),file(reads) from all_reads
 		file genomeFile
 
@@ -25,11 +27,11 @@ process raw_mapping {
     script:
 
 		"""
-		bwa index  ${genomeFile} -p REF
-		bwa mem  -M  -t 64  REF   ${reads[0]}  ${reads[1]}  1> ${sampleid}.sam  2>/dev/null
+		#bwa index  ${genomeFile} -p REF
+		bwa mem  -M  -t 64  $db_path/$db_name   ${reads[0]}  ${reads[1]}   2>/dev/null|samtools view -bS -F12 -@40 -T ${genomeFile} - | samtools sort -@10 -o ${sampleid}.bam
 		
-		samtools view -bS -@ 20  ${sampleid}.sam   -o  ${sampleid}.raw   2>/dev/null
-		samtools sort ${sampleid}.raw  -o ${sampleid}.bam
+		#samtools view -bS -@ 20  ${sampleid}.sam   -o  ${sampleid}.raw   2>/dev/null
+		#samtools sort ${sampleid}.raw  -o ${sampleid}.bam
 		HTseq_Count.py -s  ${sampleid}.bam -o ${sampleid}.count
 		PickBestRef.py  ${genomeFile}  ${sampleid}.count
 

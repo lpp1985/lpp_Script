@@ -7,7 +7,6 @@ params.ref="ref.fasta"
  * Finally assign the result channel to the variable 'fasta'
  */
 outputpath = "./"
-ref_data = file( params.ref)
 
 Channel
     .fromPath(params.query)
@@ -28,7 +27,6 @@ Channel
     input:
 
 		file Scaff from Prokka_input
-		file ref_data
  
     output:
 		file '*.tar.gz' into Annotationa
