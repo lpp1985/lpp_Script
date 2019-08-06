@@ -13,7 +13,7 @@ if __name__ == '__main__':
     final_reads = {}
     read_category = {}
     all_seq = {}
-    END_BEST = open("Best1.fa",'w')
+    END_BEST = open(sys.argv[3],'w')
     for t,s in fasta_check( open(sys.argv[1],'rU') ):
         cat = re.search(  "\s+\((\S+)\)",t ).group(1)
         name = t.split()[0][1:]

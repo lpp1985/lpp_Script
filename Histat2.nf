@@ -4,10 +4,10 @@ Result_path = params.input+"/Result/"
 
 db_name = file(params.index).name
 db_path = file(params.index).parent
-Channel.fromFilePairs(params.input+'/*R{1,2}*.gz').into { all_reads }
+Channel.fromFilePairs(params.input+'/*_{1,2}*.gz').into { all_reads }
 
 
-process mapping {
+process HISAT2 {
       executor 'pbs'
 	maxForks 40
   cpus 32
@@ -21,11 +21,11 @@ process mapping {
 
     script:
 		//
-		// STAR Mapper
+		// HISAT2 Mapper
 		//
 		"""
 		hisat2 -p 32  --dta -x $db_path/$db_name   -1  ${reads[0]} -2  ${reads[1]} -S align.sam
-		samtools view -bS -F -@ 32 align.sam -o ${sampleid}.raw
+		samtools view -bS  -@ 32 align.sam -o ${sampleid}.raw
 		samtools sort  -@ 20 ${sampleid}.raw -o ${sampleid}.bam
 		"""
    
