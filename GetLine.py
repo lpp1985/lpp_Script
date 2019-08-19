@@ -5,7 +5,6 @@ LIST = open(sys.argv[2],'rU')
 all_need = {}
 for line in LIST:
 	all_need[ line.split()[0]  ] = ""
-print( all_need  )
 END = open(sys.argv[3],'w')
 END.write( RAW.next() )
 for line in RAW:

@@ -67,6 +67,7 @@ process Polish{
         output:
 		file "Polishing*" into Polishing_result
 		file "Align.stats" into stats
+		file "*.cov" into cov
         script:
                 """
                         samtools merge -@ 32  Total.bam $all_bam
@@ -75,6 +76,8 @@ process Polish{
 			bamtools stats -in Total.bam >Align.stats
 			samtools index Total.bam
 			Polishing.sh ${genomeFile} Polishing
+			/home/nfs/SOFTWARE/Other/blobtools/blobtools  create -i ${genomeFile} -b  Total.bam
+
                 """
 
 

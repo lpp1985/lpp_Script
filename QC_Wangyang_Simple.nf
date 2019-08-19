@@ -13,7 +13,7 @@ Channel.fromFilePairs(params.input+'/*_{1,2}.*.gz').into { all_file }
 
 
 process qc {
-	maxForks 6
+	maxForks 16
 	
 	input: 
 		set val(sampleid),file(reads) from all_file

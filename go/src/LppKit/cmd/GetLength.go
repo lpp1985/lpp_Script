@@ -17,6 +17,7 @@ package cmd
 import (
 	"bufio"
 	"bytes"
+	"strconv"
 
 	"lpp"
 	"os"
@@ -52,11 +53,11 @@ var GetLengthCmd = &cobra.Command{
 			seq := bytes.SplitN(line, []byte("\n"), 2)[1]
 			seq = bytes.Replace(seq, []byte("\n"), []byte(""), -1)
 			length := len(seq)
+			output := string(name)
+			output += "\t"
+			output += strconv.Itoa(length) + "\n"
 
-			output_byte := string(name)
-			output_byte += "\t"
-			output_byte += string(length)+"\n"
-			OUTPUTBUF.WriteString(output_byte)
+			OUTPUTBUF.WriteString(output)
 			if err != nil {
 				break
 			}
