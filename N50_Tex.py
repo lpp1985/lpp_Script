@@ -11,7 +11,7 @@ mean= data_l[5]
 N50 = data_l[1]
 TotalBase = data_l[-2]
 BaseNumber = data_l[-1]
-tex = """\begin{table}[H]
+tex = r"""\begin{table}[H]
 \begin{center}
 
     \caption{质控后Subreads统计表}

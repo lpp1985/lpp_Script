@@ -13,10 +13,13 @@ def trans(data):
 
 	for i in xrange( 0 , len(data_list) ):
 		if re.match(  "^\d+\.\d+$"  ,  data_list[i]   ):
-			data_list[i] = "%.2f"%(  float(data_list[i])  )
-			
+			data_list[i] = r"$\n"+"umprint{%.2f}$"%(  float(data_list[i])  )
+		elif re.match("^\d+$",data_list[i]):
+			 data_list[i] = r"$\n"+"umprint{%s}$"%(  data_list[i]  )
 	data = "\t".join(data_list)+'\n'
-	data=data .replace( "\\","\\\\")
+	#print(data)
+	#data=data .replace( "\\","\\\\")
+	#print(data)
 	data = re.sub(  "(?=[^\\\])%","\%",data )
 	data = re.sub(  "(?=[^\\\])_","\_",data )
 	data=data.replace("\t","&")
