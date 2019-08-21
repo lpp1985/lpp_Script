@@ -7,7 +7,7 @@ Result_path = params.output
 genomeFile = file(params.genome)
 db_name = file(params.index).name
 db_path = file(params.index).parent
-Channel.fromFilePairs(params.input+'/*_R{1,2}.gz').into { all_reads; raw_reads }
+Channel.fromFilePairs(params.input+'/*_{1,2}.fq.gz').into { all_reads; raw_reads }
 
 
 process raw_mapping {
