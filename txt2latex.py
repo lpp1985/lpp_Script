@@ -51,7 +51,7 @@ if __name__ == "__main__":
 	title_l =  title.split("\t")
 	format_tag =["c"]*len(  title_l) 
 	for i in xrange(0,len(title_l)):
-		if len(title_l[i])>15:
+		if len(title_l[i])>10:
 			format_tag[i]="X"
 	
 	for line in RAW:
@@ -83,7 +83,8 @@ if __name__ == "__main__":
 		line = trans(line)
 		OUTPUT.write(line+'\n')
 	OUTPUT.write("\\hline\n\\end{tabularx}\n\\end{center}\n")
-	if len(format_tag)>8:
+	
+	if len(format_tag)-2>8:
 		OUTPUT.write("\\end{sidewaystable}\n")
 	else:
 		OUTPUT.write("\\end{table}\n")
